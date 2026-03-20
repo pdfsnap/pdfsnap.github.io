@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ADSENSE CODE -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7352879981287034" crossorigin="anonymous"></script>
+
+  <!-- SEO -->
+  <meta name="keywords" content="free pdf converter, pdf to word, pdf to jpg, image compress, resize image, freepdfconverterr, online pdf tools, image tools online free"/>
+  <meta name="author" content="Freepdfconverterr"/>
+  <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE"/>
+
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Freepdfconverterr — Free PDF & Image Tools Online</title>
+  <meta name="description" content="Freepdfconverterr - Free online PDF and Image tools. Convert PDF to Word, compress images, resize, crop and more. No signup required."/>
+  <link rel="icon" type="image/x-icon" href="favicon.ico"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f; --surface: #13131a; --card: #1a1a24; --border: #2a2a3a;
+      --accent: #ff4d00; --accent2: #ff8c42; --text: #f0f0f5; --muted: #8888aa;
+      --success: #00e5a0; --blue: #4d8fff; --purple: #a855f7;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+    /* ADBLOCKER OVERLAY */
+    .adblock-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.97); backdrop-filter: blur(10px); align-items: center; justify-content: center; padding: 1rem; }
+    .adblock-overlay.show { display: flex; }
+    .adblock-box { background: var(--card); border: 2px solid var(--accent); border-radius: 20px; padding: 2.5rem; max-width: 460px; width: 100%; text-align: center; animation: slideUp 0.4s ease; }
+    .adblock-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .adblock-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; margin-bottom: 0.7rem; }
+    .adblock-title span { color: var(--accent); }
+    .adblock-desc { color: var(--muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .adblock-steps { text-align: left; background: var(--surface); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; }
+    .adblock-step { display: flex; align-items: flex-start; gap: 0.8rem; margin-bottom: 0.9rem; font-size: 0.88rem; line-height: 1.5; }
+    .adblock-step:last-child { margin-bottom: 0; }
+    .step-num-circle { background: var(--accent); color: white; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; margin-top: 2px; }
+    .btn-adblock { display: block; width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; padding: 1rem; font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-bottom: 0.8rem; }
+    .btn-adblock:hover { background: var(--accent2); }
+    .adblock-note { font-size: 0.76rem; color: var(--muted); }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 2.5rem; background: rgba(10,10,15,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .logo { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-badge { font-size: 0.68rem; background: var(--accent); color: white; padding: 3px 10px; border-radius: 99px; font-weight: 700; }
+
+    /* HERO */
+    .hero { position: relative; z-index: 1; text-align: center; padding: 5.5rem 2rem 3.5rem; overflow: hidden; }
+    .hero-glow { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 700px; height: 400px; background: radial-gradient(ellipse, rgba(255,77,0,0.15) 0%, transparent 70%); pointer-events: none; }
+    .hero-tag { display: inline-block; border: 1px solid var(--accent); color: var(--accent); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 14px; border-radius: 99px; margin-bottom: 1.2rem; animation: fadeUp 0.6s ease both; }
+    h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 5vw, 4.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; animation: fadeUp 0.7s 0.1s ease both; }
+    h1 em { color: var(--accent); font-style: normal; }
+    .hero-sub { margin: 1rem auto 0; color: var(--muted); font-size: 1rem; max-width: 480px; animation: fadeUp 0.7s 0.2s ease both; }
+    .hero-stats { display: flex; justify-content: center; gap: 2.5rem; margin-top: 2.5rem; animation: fadeUp 0.7s 0.3s ease both; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 1.7rem; font-weight: 800; }
+    .stat-label { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+
+    /* AD BANNER */
+    .ad-banner { position: relative; z-index: 1; max-width: 728px; margin: 0 auto 1.5rem; background: var(--surface); border: 1px dashed var(--border); border-radius: 12px; height: 90px; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.78rem; }
+
+    /* TABS */
+    .tabs-wrap { position: relative; z-index: 1; display: flex; justify-content: center; gap: 0.6rem; padding: 0 2rem 2rem; flex-wrap: wrap; }
+    .tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 0.55rem 1.3rem; border-radius: 99px; font-size: 0.86rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .tab-btn.active, .tab-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+    /* TOOLS GRID */
+    .section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 2rem 5rem; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .section-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 1.1rem; }
+    .tool-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.6rem; cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden; animation: fadeUp 0.5s ease both; }
+    .tool-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,77,0,0.07) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; }
+    .tool-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,77,0,0.12); }
+    .tool-card:hover::before { opacity: 1; }
+    .tool-card.hidden { display: none; }
+    .tool-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 1rem; }
+    .tool-name { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .tool-desc { color: var(--muted); font-size: 0.84rem; line-height: 1.5; }
+    .tool-badge { position: absolute; top: 1rem; right: 1rem; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; }
+    .badge-hot { background: rgba(255,77,0,0.2); color: var(--accent); }
+    .badge-free { background: rgba(0,229,160,0.15); color: var(--success); }
+    .badge-new { background: rgba(77,143,255,0.2); color: var(--blue); }
+
+    /* HOW IT WORKS */
+    .how-section { position: relative; z-index: 1; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 4rem 2rem; text-align: center; }
+    .how-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; margin-top: 2.5rem; max-width: 900px; margin-left: auto; margin-right: auto; }
+    .how-step-num { font-family: 'Syne', sans-serif; font-size: 2.8rem; font-weight: 800; color: var(--accent); opacity: 0.3; line-height: 1; }
+    .how-step-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin: 0.4rem 0 0.3rem; }
+    .how-step-desc { color: var(--muted); font-size: 0.84rem; line-height: 1.5; }
+
+    /* MODAL */
+    .overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 1rem; }
+    .overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 20px; width: 100%; max-width: 540px; padding: 2rem; position: relative; animation: slideUp 0.3s ease; max-height: 90vh; overflow-y: auto; }
+    .modal-close { position: absolute; top: 1.1rem; right: 1.1rem; background: var(--surface); border: 1px solid var(--border); color: var(--muted); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .modal-close:hover { color: var(--text); border-color: var(--accent); }
+    .modal-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .modal-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 1.6rem; }
+    .dropzone { border: 2px dashed var(--border); border-radius: 14px; padding: 2.2rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.25s; position: relative; }
+    .dropzone:hover, .dropzone.dragover { border-color: var(--accent); background: rgba(255,77,0,0.04); }
+    .dropzone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .drop-icon { font-size: 2.2rem; margin-bottom: 0.7rem; }
+    .drop-text { font-size: 0.92rem; color: var(--muted); }
+    .drop-text strong { color: var(--text); }
+    .drop-formats { font-size: 0.76rem; color: var(--muted); margin-top: 0.3rem; }
+    .file-selected { display: none; align-items: center; gap: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1.1rem; margin-top: 1rem; }
+    .file-selected.show { display: flex; }
+    .file-info { flex: 1; }
+    .file-name { font-size: 0.88rem; font-weight: 600; word-break: break-all; }
+    .file-size { font-size: 0.76rem; color: var(--muted); }
+    .file-remove { cursor: pointer; color: var(--muted); transition: color 0.2s; }
+    .file-remove:hover { color: var(--accent); }
+    .progress-wrap { margin-top: 1.1rem; display: none; }
+    .progress-wrap.show { display: block; }
+    .progress-bar-bg { background: var(--surface); border-radius: 99px; height: 6px; overflow: hidden; margin-bottom: 0.4rem; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; width: 0%; transition: width 0.4s ease; }
+    .progress-text { font-size: 0.8rem; color: var(--muted); text-align: center; }
+    .result-box { display: none; margin-top: 1.1rem; background: rgba(0,229,160,0.08); border: 1px solid rgba(0,229,160,0.25); border-radius: 12px; padding: 1.2rem; text-align: center; }
+    .result-box.show { display: block; animation: fadeUp 0.3s ease; }
+    .result-text { font-size: 0.92rem; color: var(--success); font-weight: 600; margin-bottom: 1rem; }
+    .btn-download { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--success); color: #0a0a0f; border: none; border-radius: 10px; padding: 0.65rem 1.4rem; font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+    .btn-download:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,229,160,0.3); }
+    .btn-convert { display: block; width: 100%; margin-top: 1.2rem; background: var(--accent); color: white; border: none; border-radius: 12px; padding: 0.95rem; font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.25s; }
+    .btn-convert:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,77,0,0.3); }
+    .btn-convert:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* FOOTER */
+    footer { position: relative; z-index: 1; text-align: center; padding: 2.5rem 2rem; color: var(--muted); font-size: 0.83rem; border-top: 1px solid var(--border); }
+    footer strong { color: var(--text); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.2rem; }
+      .hero { padding: 3.5rem 1.2rem 2.5rem; }
+      .hero-stats { gap: 1.5rem; }
+      .section { padding: 0 1.2rem 3rem; }
+      .modal { padding: 1.4rem; }
+      .adblock-box { padding: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ADBLOCKER OVERLAY -->
+<div class="adblock-overlay" id="adblockOverlay">
+  <div class="adblock-box">
+    <div class="adblock-icon">🛡️</div>
+    <div class="adblock-title">Please Disable <span>Ad Blocker</span></div>
+    <div class="adblock-desc">Our tools are 100% free. We only show a few small ads to keep this website running for free. Please whitelist our site!</div>
+    <div class="adblock-steps">
+      <div class="adblock-step">
+        <div class="step-num-circle">1</div>
+        <div>Click the <strong>Ad Blocker icon</strong> in your browser toolbar</div>
+      </div>
+      <div class="adblock-step">
+        <div class="step-num-circle">2</div>
+        <div>Select <strong>"Disable on this site"</strong> or <strong>"Whitelist"</strong></div>
+      </div>
+      <div class="adblock-step">
+        <div class="step-num-circle">3</div>
+        <div><strong>Refresh the page</strong> and enjoy all free tools!</div>
+      </div>
+    </div>
+    <button class="btn-adblock" onclick="dismissAdblock()">✅ I've Disabled Ad Blocker — Continue</button>
+    <div class="adblock-note">⚡ All 16+ tools remain completely free after whitelisting</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">Free<span>PDFConverterr</span></a>
+  <span class="nav-badge">100% Free</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">⚡ No signup · No watermark · Instant</div>
+  <h1>Free PDF & Image<br/><em>Tools Online</em></h1>
+  <p class="hero-sub">Convert, compress, resize and transform your files instantly. No account needed ever.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">16+</div><div class="stat-label">Free Tools</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free Forever</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label">Signup Required</div></div>
+  </div>
+</section>
+
+<!-- AD BANNER TOP -->
+<div class="ad-banner">📢 Advertisement — Google AdSense</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <button class="tab-btn active" onclick="filterTools('all', this)">🔥 All Tools</button>
+  <button class="tab-btn" onclick="filterTools('pdf', this)">📄 PDF Tools</button>
+  <button class="tab-btn" onclick="filterTools('image', this)">🖼️ Image Tools</button>
+</div>
+
+<!-- TOOLS GRID -->
+<section class="section">
+  <div class="section-title" id="gridTitle">All Tools</div>
+  <p class="section-sub">Tap any tool to get started instantly — no account needed</p>
+  <div class="tools-grid">
+
+    <!-- PDF TOOLS -->
+    <div class="tool-card" data-cat="pdf" onclick="openTool('pdf2word')" style="animation-delay:0.05s">
+      <span class="tool-badge badge-hot">🔥 Popular</span>
+      <div class="tool-icon" style="background:rgba(255,77,0,0.12)">📄</div>
+      <div class="tool-name">PDF to Word</div>
+      <div class="tool-desc">Convert PDF to editable Word (.docx) documents instantly.</div>
+    </div>
+
+    <div class="tool-card" data-cat="pdf" onclick="openTool('pdf2jpg')" style="animation-delay:0.08s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(255,140,66,0.12)">🖼️</div>
+      <div class="tool-name">PDF to JPG</div>
+      <div class="tool-desc">Convert each PDF page into a high-quality JPG image.</div>
+    </div>
+
+    <div class="tool-card" data-cat="pdf" onclick="openTool('jpg2pdf')" style="animation-delay:0.11s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(0,229,160,0.1)">🔄</div>
+      <div class="tool-name">JPG to PDF</div>
+      <div class="tool-desc">Turn JPG or PNG images into a single PDF file easily.</div>
+    </div>
+
+    <div class="tool-card" data-cat="pdf" onclick="openTool('merge')" style="animation-delay:0.14s">
+      <span class="tool-badge badge-hot">🔥 Popular</span>
+      <div class="tool-icon" style="background:rgba(100,100,255,0.12)">🗂️</div>
+      <div class="tool-name">Merge PDF</div>
+      <div class="tool-desc">Combine multiple PDF files into one single document.</div>
+    </div>
+
+    <div class="tool-card" data-cat="pdf" onclick="openTool('split')" style="animation-delay:0.17s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(255,200,0,0.1)">✂️</div>
+      <div class="tool-name">Split PDF</div>
+      <div class="tool-desc">Split a large PDF into smaller files by page range.</div>
+    </div>
+
+    <div class="tool-card" data-cat="pdf" onclick="openTool('compress')" style="animation-delay:0.2s">
+      <span class="tool-badge badge-hot">🔥 Popular</span>
+      <div class="tool-icon" style="background:rgba(255,77,0,0.12)">📦</div>
+      <div class="tool-name">Compress PDF</div>
+      <div class="tool-desc">Reduce PDF file size without losing quality. Great for email.</div>
+    </div>
+
+    <div class="tool-card" data-cat="pdf" onclick="openTool('pdf2ppt')" style="animation-delay:0.23s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(255,100,100,0.1)">📊</div>
+      <div class="tool-name">PDF to PPT</div>
+      <div class="tool-desc">Convert PDF presentations to editable PowerPoint slides.</div>
+    </div>
+
+    <div class="tool-card" data-cat="pdf" onclick="openTool('word2pdf')" style="animation-delay:0.26s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(0,150,255,0.1)">📝</div>
+      <div class="tool-name">Word to PDF</div>
+      <div class="tool-desc">Convert Word (.docx) documents to PDF with perfect formatting.</div>
+    </div>
+
+    <div class="tool-card" data-cat="pdf" onclick="openTool('rotate')" style="animation-delay:0.29s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(180,100,255,0.1)">🔃</div>
+      <div class="tool-name">Rotate PDF</div>
+      <div class="tool-desc">Rotate PDF pages 90°, 180°, or 270° and save changes.</div>
+    </div>
+
+    <!-- IMAGE TOOLS -->
+    <div class="tool-card" data-cat="image" onclick="openTool('imgcompress')" style="animation-delay:0.32s">
+      <span class="tool-badge badge-hot">🔥 Popular</span>
+      <div class="tool-icon" style="background:rgba(0,229,160,0.12)">🗜️</div>
+      <div class="tool-name">Compress Image</div>
+      <div class="tool-desc">Reduce image file size without visible quality loss. JPG & PNG.</div>
+    </div>
+
+    <div class="tool-card" data-cat="image" onclick="openTool('imgresize')" style="animation-delay:0.35s">
+      <span class="tool-badge badge-new">✨ New</span>
+      <div class="tool-icon" style="background:rgba(77,143,255,0.12)">📐</div>
+      <div class="tool-name">Resize Image</div>
+      <div class="tool-desc">Resize any image to exact pixels or percentage instantly.</div>
+    </div>
+
+    <div class="tool-card" data-cat="image" onclick="openTool('jpg2png')" style="animation-delay:0.38s">
+      <span class="tool-badge badge-new">✨ New</span>
+      <div class="tool-icon" style="background:rgba(255,77,143,0.12)">🔁</div>
+      <div class="tool-name">JPG to PNG</div>
+      <div class="tool-desc">Convert JPG images to PNG format easily and for free.</div>
+    </div>
+
+    <div class="tool-card" data-cat="image" onclick="openTool('png2jpg')" style="animation-delay:0.41s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(255,200,0,0.1)">🔀</div>
+      <div class="tool-name">PNG to JPG</div>
+      <div class="tool-desc">Convert PNG images to JPG to reduce file size easily.</div>
+    </div>
+
+    <div class="tool-card" data-cat="image" onclick="openTool('cropimg')" style="animation-delay:0.44s">
+      <span class="tool-badge badge-new">✨ New</span>
+      <div class="tool-icon" style="background:rgba(168,85,247,0.12)">✂️</div>
+      <div class="tool-name">Crop Image</div>
+      <div class="tool-desc">Crop your images to any size or aspect ratio for free.</div>
+    </div>
+
+    <div class="tool-card" data-cat="image" onclick="openTool('watermark')" style="animation-delay:0.47s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(255,77,0,0.1)">💧</div>
+      <div class="tool-name">Add Watermark</div>
+      <div class="tool-desc">Add text watermark to protect your photos online instantly.</div>
+    </div>
+
+    <div class="tool-card" data-cat="image" onclick="openTool('removebg')" style="animation-delay:0.5s">
+      <span class="tool-badge badge-hot">🔥 Popular</span>
+      <div class="tool-icon" style="background:rgba(0,229,160,0.1)">🪄</div>
+      <div class="tool-name">Remove Background</div>
+      <div class="tool-desc">Automatically remove image background in one click for free.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AD BANNER MIDDLE -->
+<div class="ad-banner">📢 Advertisement — Google AdSense</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div style="font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;margin-bottom:0.4rem">How It Works</div>
+  <p style="color:var(--muted);font-size:0.9rem">Simple 3 step process — done in seconds</p>
+  <div class="how-steps">
+    <div><div class="how-step-num">01</div><div class="how-step-title">Select Tool</div><div class="how-step-desc">Choose any PDF or Image tool from our collection above.</div></div>
+    <div><div class="how-step-num">02</div><div class="how-step-title">Upload File</div><div class="how-step-desc">Tap to upload or drag & drop your file. No account needed.</div></div>
+    <div><div class="how-step-num">03</div><div class="how-step-title">Download</div><div class="how-step-desc">Your file is processed instantly. Tap download and done!</div></div>
+  </div>
+</section>
+
+<!-- AD BANNER BOTTOM -->
+<div class="ad-banner" style="margin:0;border-radius:0;max-width:100%;border-left:none;border-right:none;border-bottom:none;">
+  📢 Advertisement — Google AdSense
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with ❤️ by <strong>Freepdfconverterr</strong> &nbsp;·&nbsp; Free PDF & Image Tools &nbsp;·&nbsp; No Signup &nbsp;·&nbsp; No Watermark</p>
+  <p style="margin-top:0.4rem;font-size:0.75rem">Privacy Policy &nbsp;·&nbsp; Terms of Use &nbsp;·&nbsp; Contact</p>
+</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeOnOverlay(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modal-title">Tool</div>
+    <p class="modal-sub" id="modal-sub">Description</p>
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" onchange="handleFile(event)"/>
+      <div class="drop-icon">📂</div>
+      <div class="drop-text"><strong>Tap to upload</strong> or drag & drop</div>
+      <div class="drop-formats" id="drop-formats">Supported formats</div>
+    </div>
+    <div class="file-selected" id="fileSelected">
+      <span id="fileIcon" style="font-size:1.5rem">📄</span>
+      <div class="file-info">
+        <div class="file-name" id="fileName">filename</div>
+        <div class="file-size" id="fileSize">0 KB</div>
+      </div>
+      <span class="file-remove" onclick="removeFile()">✕</span>
+    </div>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-text" id="progressText">Processing...</div>
+    </div>
+    <div class="result-box" id="resultBox">
+      <div style="font-size:2rem;margin-bottom:0.5rem">✅</div>
+      <div class="result-text">Done! Your file is ready to download.</div>
+      <a class="btn-download" id="downloadBtn" href="#" download>⬇️ Download File</a>
+    </div>
+    <button class="btn-convert" id="convertBtn" onclick="startConvert()" disabled>Convert Now →</button>
+  </div>
+</div>
+
+<script>
+  // ========================
+  // ADBLOCK DETECTION
+  // ========================
+  function detectAdblock() {
+    const bait = document.createElement('div');
+    bait.className = 'adsbox pub_300x250 pub_728x90 text-ad textAd ad-slot';
+    bait.style.cssText = 'position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;';
+    bait.innerHTML = '&nbsp;';
+    document.body.appendChild(bait);
+    setTimeout(() => {
+      const blocked = bait.offsetHeight === 0 || bait.offsetParent === null || window.getComputedStyle(bait).display === 'none' || window.getComputedStyle(bait).visibility === 'hidden';
+      if (blocked) {
+        document.getElementById('adblockOverlay').classList.add('show');
+      }
+      document.body.removeChild(bait);
+    }, 200);
+  }
+
+  function dismissAdblock() {
+    document.getElementById('adblockOverlay').classList.remove('show');
+    setTimeout(detectAdblock, 2000);
+  }
+
+  window.addEventListener('load', () => setTimeout(detectAdblock, 1500));
+
+  // ========================
+  // TOOL CONFIG
+  // ========================
+  const tools = {
+    pdf2word:    { name:'PDF to Word',       sub:'Upload your PDF — we will convert it to an editable Word (.docx) file.',  formats:'PDF files only',       accept:'.pdf',            icon:'📄', out:'docx' },
+    pdf2jpg:     { name:'PDF to JPG',        sub:'Upload your PDF — each page will be saved as a JPG image.',               formats:'PDF files only',       accept:'.pdf',            icon:'🖼️', out:'jpg'  },
+    jpg2pdf:     { name:'JPG to PDF',        sub:'Upload a JPG or PNG image — we will convert it to a PDF file.',           formats:'JPG, PNG images',      accept:'.jpg,.jpeg,.png', icon:'🔄', out:'pdf'  },
+    merge:       { name:'Merge PDF',         sub:'Upload multiple PDFs — they will be merged into one file.',               formats:'PDF files only',       accept:'.pdf',            icon:'🗂️', out:'pdf'  },
+    split:       { name:'Split PDF',         sub:'Upload a PDF — split into separate files by page range.',                 formats:'PDF files only',       accept:'.pdf',            icon:'✂️', out:'pdf'  },
+    compress:    { name:'Compress PDF',      sub:'Upload your PDF — we will reduce the file size while keeping quality.',   formats:'PDF files only',       accept:'.pdf',            icon:'📦', out:'pdf'  },
+    pdf2ppt:     { name:'PDF to PPT',        sub:'Upload your PDF — we will convert it to a PowerPoint (.pptx) file.',     formats:'PDF files only',       accept:'.pdf',            icon:'📊', out:'pptx' },
+    word2pdf:    { name:'Word to PDF',       sub:'Upload a Word document — we will convert it to PDF instantly.',           formats:'DOCX, DOC files',      accept:'.docx,.doc',      icon:'📝', out:'pdf'  },
+    rotate:      { name:'Rotate PDF',        sub:'Upload your PDF — rotate all pages 90°, 180° or 270°.',                  formats:'PDF files only',       accept:'.pdf',            icon:'🔃', out:'pdf'  },
+    imgcompress: { name:'Compress Image',    sub:'Upload your image — reduce file size without losing quality.',            formats:'JPG, PNG images',      accept:'.jpg,.jpeg,.png', icon:'🗜️', out:'jpg'  },
+    imgresize:   { name:'Resize Image',      sub:'Upload your image — resize to any width and height instantly.',           formats:'JPG, PNG images',      accept:'.jpg,.jpeg,.png', icon:'📐', out:'jpg'  },
+    jpg2png:     { name:'JPG to PNG',        sub:'Upload a JPG image — we will convert it to PNG format.',                  formats:'JPG images only',      accept:'.jpg,.jpeg',      icon:'🔁', out:'png'  },
+    png2jpg:     { name:'PNG to JPG',        sub:'Upload a PNG image — we will convert it to JPG format.',                  formats:'PNG images only',      accept:'.png',            icon:'🔀', out:'jpg'  },
+    cropimg:     { name:'Crop Image',        sub:'Upload your image — crop it to any size or aspect ratio.',                formats:'JPG, PNG images',      accept:'.jpg,.jpeg,.png', icon:'✂️', out:'jpg'  },
+    watermark:   { name:'Add Watermark',     sub:'Upload your image — add a custom text watermark to protect it.',          formats:'JPG, PNG images',      accept:'.jpg,.jpeg,.png', icon:'💧', out:'jpg'  },
+    removebg:    { name:'Remove Background', sub:'Upload your image — automatically remove the background.',                formats:'JPG, PNG images',      accept:'.jpg,.jpeg,.png', icon:'🪄', out:'png'  },
+  };
+
+  let currentTool = null;
+  let selectedFile = null;
+
+  // ========================
+  // FILTER TABS
+  // ========================
+  function filterTools(cat, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tool-card').forEach(card => {
+      card.classList.toggle('hidden', cat !== 'all' && card.dataset.cat !== cat);
+    });
+    const titles = { all: 'All Tools', pdf: 'PDF Tools', image: 'Image Tools' };
+    document.getElementById('gridTitle').textContent = titles[cat];
+  }
+
+  // ========================
+  // MODAL
+  // ========================
+  function openTool(id) {
+    currentTool = id;
+    const t = tools[id];
+    document.getElementById('modal-title').textContent = t.name;
+    document.getElementById('modal-sub').textContent = t.sub;
+    document.getElementById('drop-formats').textContent = 'Supported: ' + t.formats;
+    document.getElementById('fileInput').accept = t.accept;
+    resetModal();
+    document.getElementById('overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
+    resetModal();
+  }
+
+  function closeOnOverlay(e) {
+    if (e.target === document.getElementById('overlay')) closeModal();
+  }
+
+  function resetModal() {
+    selectedFile = null;
+    document.getElementById('fileSelected').classList.remove('show');
+    document.getElementById('progressWrap').classList.remove('show');
+    document.getElementById('resultBox').classList.remove('show');
+    document.getElementById('convertBtn').disabled = true;
+    document.getElementById('convertBtn').textContent = 'Convert Now →';
+    document.getElementById('convertBtn').onclick = startConvert;
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('fileInput').value = '';
+  }
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    selectedFile = file;
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileSize').textContent = formatSize(file.size);
+    document.getElementById('fileIcon').textContent = tools[currentTool].icon;
+    document.getElementById('fileSelected').classList.add('show');
+    document.getElementById('convertBtn').disabled = false;
+    document.getElementById('progressWrap').classList.remove('show');
+    document.getElementById('resultBox').classList.remove('show');
+  }
+
+  function removeFile() { resetModal(); }
+
+  function formatSize(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+    return (b / 1048576).toFixed(2) + ' MB';
+  }
+
+  const dz = document.getElementById('dropzone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile({ target: { files: [file] } });
+  });
+
+  function startConvert() {
+    if (!selectedFile) return;
+    const btn = document.getElementById('convertBtn');
+    btn.disabled = true; btn.textContent = 'Converting...';
+    document.getElementById('progressWrap').classList.add('show');
+    document.getElementById('resultBox').classList.remove('show');
+    let progress = 0;
+    const msgs = ['Reading file...', 'Processing...', 'Optimizing...', 'Almost done...'];
+    const iv = setInterval(() => {
+      progress += Math.random() * 18 + 5;
+      if (progress >= 100) { progress = 100; clearInterval(iv); finishConvert(); }
+      document.getElementById('progressBar').style.width = progress + '%';
+      document.getElementById('progressText').textContent = msgs[Math.min(Math.floor(progress / 25), 3)];
+    }, 300);
+  }
+
+  function finishConvert() {
+    document.getElementById('progressText').textContent = 'Done! ✅';
+    const t = tools[currentTool];
+    const blob = new Blob([`Freepdfconverterr Output\nTool: ${t.name}\nFile: ${selectedFile.name}\n\nNote: To enable real conversions integrate ILovePDF API or ConvertAPI.`], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const dlBtn = document.getElementById('downloadBtn');
+    dlBtn.href = url;
+    dlBtn.download = selectedFile.name.replace(/\.[^.]+$/, '') + '_converted.' + t.out;
+    document.getElementById('resultBox').classList.add('show');
+    const btn = document.getElementById('convertBtn');
+    btn.textContent = 'Convert Another →';
+    btn.disabled = false;
+    btn.onclick = () => resetModal();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
