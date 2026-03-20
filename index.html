@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDFZap — Free Online PDF Tools</title>
+  <meta name="description" content="Free online PDF tools. Convert PDF to Word, PDF to JPG, JPG to PDF, Merge PDFs and more. No signup required."/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --card: #1a1a24;
+      --border: #2a2a3a;
+      --accent: #ff4d00;
+      --accent2: #ff8c42;
+      --text: #f0f0f5;
+      --muted: #8888aa;
+      --success: #00e5a0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* BG noise texture */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .logo span { color: var(--accent); }
+    .nav-badge {
+      font-size: 0.7rem; background: var(--accent);
+      color: white; padding: 2px 8px; border-radius: 99px;
+      font-weight: 600; letter-spacing: 0.05em;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 7rem 2rem 5rem;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(255,77,0,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 5px 16px; border-radius: 99px;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.6s ease both;
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -0.02em;
+      animation: fadeUp 0.7s 0.1s ease both;
+    }
+    h1 em { color: var(--accent); font-style: normal; }
+    .hero-sub {
+      margin-top: 1.2rem;
+      color: var(--muted); font-size: 1.1rem; max-width: 520px;
+      margin-left: auto; margin-right: auto;
+      animation: fadeUp 0.7s 0.2s ease both;
+    }
+    .hero-stats {
+      display: flex; justify-content: center; gap: 3rem;
+      margin-top: 3rem;
+      animation: fadeUp 0.7s 0.3s ease both;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem; font-weight: 800; color: var(--text);
+    }
+    .stat-label { color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+
+    /* TOOLS GRID */
+    .section {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 2rem 2rem 6rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem; font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .section-sub { color: var(--muted); font-size: 0.95rem; margin-bottom: 2.5rem; }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .tool-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.8rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,77,0,0.07) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .tool-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(255,77,0,0.15); }
+    .tool-card:hover::before { opacity: 1; }
+
+    .tool-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.1rem;
+    }
+    .tool-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem;
+    }
+    .tool-desc { color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+    .tool-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 99px;
+    }
+    .badge-free { background: rgba(0,229,160,0.15); color: var(--success); }
+    .badge-hot { background: rgba(255,77,0,0.2); color: var(--accent); }
+
+    /* MODAL / TOOL PANEL */
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 100%; max-width: 560px;
+      padding: 2.2rem;
+      position: relative;
+      animation: slideUp 0.3s ease;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); width: 34px; height: 34px;
+      border-radius: 50%; cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { color: var(--text); border-color: var(--accent); }
+
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem; font-weight: 800; margin-bottom: 0.3rem;
+    }
+    .modal-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.8rem; }
+
+    /* DROP ZONE */
+    .dropzone {
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--accent);
+      background: rgba(255,77,0,0.04);
+    }
+    .dropzone input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+    .drop-text { font-size: 0.95rem; color: var(--muted); }
+    .drop-text strong { color: var(--text); }
+    .drop-formats { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; }
+
+    .file-selected {
+      display: none;
+      align-items: center; gap: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.2rem;
+      margin-top: 1rem;
+    }
+    .file-selected.show { display: flex; }
+    .file-icon-sm { font-size: 1.6rem; }
+    .file-info { flex: 1; }
+    .file-name { font-size: 0.9rem; font-weight: 600; word-break: break-all; }
+    .file-size { font-size: 0.78rem; color: var(--muted); }
+    .file-remove { cursor: pointer; color: var(--muted); font-size: 1.1rem; transition: color 0.2s; }
+    .file-remove:hover { color: var(--accent); }
+
+    .btn-convert {
+      display: block; width: 100%;
+      margin-top: 1.4rem;
+      background: var(--accent);
+      color: white; border: none;
+      border-radius: 12px; padding: 1rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.02em;
+    }
+    .btn-convert:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,77,0,0.35); }
+    .btn-convert:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* PROGRESS */
+    .progress-wrap { margin-top: 1.2rem; display: none; }
+    .progress-wrap.show { display: block; }
+    .progress-bar-bg {
+      background: var(--surface); border-radius: 99px;
+      height: 6px; overflow: hidden; margin-bottom: 0.5rem;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 99px;
+      width: 0%; transition: width 0.4s ease;
+    }
+    .progress-text { font-size: 0.82rem; color: var(--muted); text-align: center; }
+
+    /* RESULT */
+    .result-box {
+      display: none; margin-top: 1.2rem;
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.25);
+      border-radius: 12px; padding: 1.2rem;
+      text-align: center;
+    }
+    .result-box.show { display: block; animation: fadeUp 0.3s ease; }
+    .result-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .result-text { font-size: 0.95rem; color: var(--success); font-weight: 600; margin-bottom: 1rem; }
+    .btn-download {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--success); color: #0a0a0f;
+      border: none; border-radius: 10px;
+      padding: 0.7rem 1.5rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.92rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-download:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,229,160,0.3); }
+
+    /* HOW IT WORKS */
+    .how-section {
+      position: relative; z-index: 1;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 5rem 2rem;
+    }
+    .how-inner { max-width: 900px; margin: 0 auto; }
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem; margin-top: 3rem;
+    }
+    .how-step { text-align: center; }
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem; font-weight: 800;
+      color: var(--accent); opacity: 0.3;
+      line-height: 1;
+    }
+    .step-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      margin: 0.5rem 0 0.3rem;
+    }
+    .step-desc { color: var(--muted); font-size: 0.87rem; line-height: 1.5; }
+
+    /* AD PLACEHOLDER */
+    .ad-banner {
+      position: relative; z-index: 1;
+      max-width: 728px; margin: 2rem auto;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      height: 90px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center; padding: 3rem 2rem;
+      color: var(--muted); font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+    footer strong { color: var(--text); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.2rem; }
+      .hero { padding: 4rem 1.2rem 3rem; }
+      .hero-stats { gap: 1.5rem; }
+      .section { padding: 1rem 1.2rem 4rem; }
+      .modal { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">PDF<span>Zap</span></a>
+  <span class="nav-badge">100% Free</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">⚡ No signup · No watermark · Instant</div>
+  <h1>PDF Tools That<br/><em>Actually Work</em></h1>
+  <p class="hero-sub">Convert, compress, and transform your PDF files online for free. No account needed.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Free Tools</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free Forever</div></div>
+    <div class="stat"><div class="stat-num">0</div><div class="stat-label">Signup Required</div></div>
+  </div>
+</section>
+
+<!-- AD BANNER TOP -->
+<div class="ad-banner" id="ad-top">
+  <!-- Google AdSense code goes here -->
+  📢 Advertisement · Place your Google AdSense code here
+</div>
+
+<!-- TOOLS GRID -->
+<section class="section">
+  <div class="section-title">All PDF Tools</div>
+  <p class="section-sub">Click any tool to get started instantly</p>
+
+  <div class="tools-grid" id="toolsGrid">
+
+    <div class="tool-card" onclick="openTool('pdf2word')" style="animation-delay:0.05s">
+      <span class="tool-badge badge-hot">🔥 Popular</span>
+      <div class="tool-icon" style="background:rgba(255,77,0,0.12)">📄</div>
+      <div class="tool-name">PDF to Word</div>
+      <div class="tool-desc">Convert PDF files to editable Word (.docx) documents instantly.</div>
+    </div>
+
+    <div class="tool-card" onclick="openTool('pdf2jpg')" style="animation-delay:0.1s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(255,140,66,0.12)">🖼️</div>
+      <div class="tool-name">PDF to JPG</div>
+      <div class="tool-desc">Convert each PDF page into a high-quality JPG image.</div>
+    </div>
+
+    <div class="tool-card" onclick="openTool('jpg2pdf')" style="animation-delay:0.15s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(0,229,160,0.1)">🔄</div>
+      <div class="tool-name">JPG to PDF</div>
+      <div class="tool-desc">Turn one or more JPG images into a single PDF file.</div>
+    </div>
+
+    <div class="tool-card" onclick="openTool('merge')" style="animation-delay:0.2s">
+      <span class="tool-badge badge-hot">🔥 Popular</span>
+      <div class="tool-icon" style="background:rgba(100,100,255,0.12)">🗂️</div>
+      <div class="tool-name">Merge PDF</div>
+      <div class="tool-desc">Combine multiple PDF files into one single document.</div>
+    </div>
+
+    <div class="tool-card" onclick="openTool('split')" style="animation-delay:0.25s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(255,200,0,0.1)">✂️</div>
+      <div class="tool-name">Split PDF</div>
+      <div class="tool-desc">Split a large PDF into smaller individual files by page range.</div>
+    </div>
+
+    <div class="tool-card" onclick="openTool('compress')" style="animation-delay:0.3s">
+      <span class="tool-badge badge-hot">🔥 Popular</span>
+      <div class="tool-icon" style="background:rgba(255,77,0,0.12)">📦</div>
+      <div class="tool-name">Compress PDF</div>
+      <div class="tool-desc">Reduce PDF file size without losing quality. Great for email.</div>
+    </div>
+
+    <div class="tool-card" onclick="openTool('pdf2ppt')" style="animation-delay:0.35s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(255,100,100,0.1)">📊</div>
+      <div class="tool-name">PDF to PPT</div>
+      <div class="tool-desc">Convert PDF presentations to editable PowerPoint slides.</div>
+    </div>
+
+    <div class="tool-card" onclick="openTool('word2pdf')" style="animation-delay:0.4s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(0,150,255,0.1)">📝</div>
+      <div class="tool-name">Word to PDF</div>
+      <div class="tool-desc">Convert Word (.docx) documents to PDF with perfect formatting.</div>
+    </div>
+
+    <div class="tool-card" onclick="openTool('rotate')" style="animation-delay:0.45s">
+      <span class="tool-badge badge-free">Free</span>
+      <div class="tool-icon" style="background:rgba(180,100,255,0.1)">🔃</div>
+      <div class="tool-name">Rotate PDF</div>
+      <div class="tool-desc">Rotate PDF pages 90°, 180°, or 270° and save changes.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AD BANNER MIDDLE -->
+<div class="ad-banner">
+  <!-- Google AdSense code goes here -->
+  📢 Advertisement · Place your Google AdSense code here
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <div class="how-inner">
+    <div class="section-title" style="text-align:center">How It Works</div>
+    <p class="section-sub" style="text-align:center">3 simple steps — done in seconds</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">01</div>
+        <div class="step-title">Select a Tool</div>
+        <div class="step-desc">Choose the PDF tool you need from our collection above.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">02</div>
+        <div class="step-title">Upload File</div>
+        <div class="step-desc">Drag & drop or click to upload your file. No account needed.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">03</div>
+        <div class="step-title">Download</div>
+        <div class="step-desc">Your file is processed instantly. Click download and you're done!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<!-- AD BANNER BOTTOM -->
+<div class="ad-banner" style="margin-bottom:0;border-radius:0;max-width:100%;border-left:none;border-right:none;border-bottom:none;">
+  📢 Advertisement · Place your Google AdSense code here
+</div>
+
+<footer>
+  <p>Made with ❤️ by <strong>PDFZap</strong> &nbsp;·&nbsp; Free Online PDF Tools &nbsp;·&nbsp; No Signup &nbsp;·&nbsp; No Watermark</p>
+  <p style="margin-top:0.5rem;font-size:0.78rem">Privacy Policy &nbsp;·&nbsp; Terms of Use &nbsp;·&nbsp; Contact</p>
+</footer>
+
+<!-- MODAL OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeOnOverlay(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modal-title">Tool Name</div>
+    <p class="modal-sub" id="modal-sub">Tool description</p>
+
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="fileInput" onchange="handleFile(event)"/>
+      <div class="drop-icon">📂</div>
+      <div class="drop-text"><strong>Click to upload</strong> or drag & drop</div>
+      <div class="drop-formats" id="drop-formats">Supported: PDF, JPG, PNG, DOCX</div>
+    </div>
+
+    <div class="file-selected" id="fileSelected">
+      <span class="file-icon-sm" id="fileIcon">📄</span>
+      <div class="file-info">
+        <div class="file-name" id="fileName">filename.pdf</div>
+        <div class="file-size" id="fileSize">0 KB</div>
+      </div>
+      <span class="file-remove" onclick="removeFile()" title="Remove">✕</span>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-text" id="progressText">Processing...</div>
+    </div>
+
+    <div class="result-box" id="resultBox">
+      <div class="result-icon">✅</div>
+      <div class="result-text">Conversion complete! Your file is ready.</div>
+      <a class="btn-download" id="downloadBtn" href="#" download>⬇️ Download File</a>
+    </div>
+
+    <button class="btn-convert" id="convertBtn" onclick="startConvert()" disabled>
+      Convert Now →
+    </button>
+  </div>
+</div>
+
+<script>
+  // Tool config
+  const tools = {
+    pdf2word:  { name: 'PDF to Word',     sub: 'Upload your PDF — we\'ll convert it to an editable Word (.docx) file.',   formats: 'Supported: PDF files only',        accept: '.pdf',             icon: '📄', out: 'docx' },
+    pdf2jpg:   { name: 'PDF to JPG',      sub: 'Upload your PDF — each page will be saved as a JPG image.',               formats: 'Supported: PDF files only',        accept: '.pdf',             icon: '🖼️', out: 'jpg'  },
+    jpg2pdf:   { name: 'JPG to PDF',      sub: 'Upload a JPG or PNG image — we\'ll convert it to a PDF file.',            formats: 'Supported: JPG, PNG images',       accept: '.jpg,.jpeg,.png',  icon: '🔄', out: 'pdf'  },
+    merge:     { name: 'Merge PDF',       sub: 'Upload multiple PDFs — they will be merged into one file.',               formats: 'Supported: PDF files only',        accept: '.pdf',             icon: '🗂️', out: 'pdf'  },
+    split:     { name: 'Split PDF',       sub: 'Upload a PDF — select page ranges to split into separate files.',         formats: 'Supported: PDF files only',        accept: '.pdf',             icon: '✂️', out: 'pdf'  },
+    compress:  { name: 'Compress PDF',    sub: 'Upload your PDF — we\'ll reduce the file size while keeping quality.',    formats: 'Supported: PDF files only',        accept: '.pdf',             icon: '📦', out: 'pdf'  },
+    pdf2ppt:   { name: 'PDF to PPT',      sub: 'Upload your PDF — we\'ll convert it to a PowerPoint (.pptx) file.',      formats: 'Supported: PDF files only',        accept: '.pdf',             icon: '📊', out: 'pptx' },
+    word2pdf:  { name: 'Word to PDF',     sub: 'Upload a Word document — we\'ll convert it to a PDF instantly.',         formats: 'Supported: DOCX, DOC files',       accept: '.docx,.doc',       icon: '📝', out: 'pdf'  },
+    rotate:    { name: 'Rotate PDF',      sub: 'Upload your PDF — rotate all or specific pages easily.',                  formats: 'Supported: PDF files only',        accept: '.pdf',             icon: '🔃', out: 'pdf'  },
+  };
+
+  let currentTool = null;
+  let selectedFile = null;
+
+  function openTool(toolId) {
+    currentTool = toolId;
+    const t = tools[toolId];
+    document.getElementById('modal-title').textContent = t.name;
+    document.getElementById('modal-sub').textContent = t.sub;
+    document.getElementById('drop-formats').textContent = t.formats;
+    document.getElementById('fileInput').accept = t.accept;
+    resetModal();
+    document.getElementById('overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('overlay').classList.remove('active');
+    document.body.style.overflow = '';
+    resetModal();
+  }
+
+  function closeOnOverlay(e) {
+    if (e.target === document.getElementById('overlay')) closeModal();
+  }
+
+  function resetModal() {
+    selectedFile = null;
+    document.getElementById('fileSelected').classList.remove('show');
+    document.getElementById('progressWrap').classList.remove('show');
+    document.getElementById('resultBox').classList.remove('show');
+    document.getElementById('convertBtn').disabled = true;
+    document.getElementById('convertBtn').textContent = 'Convert Now →';
+    document.getElementById('progressBar').style.width = '0%';
+    document.getElementById('fileInput').value = '';
+  }
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    selectedFile = file;
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileSize').textContent = formatSize(file.size);
+    document.getElementById('fileIcon').textContent = tools[currentTool].icon;
+    document.getElementById('fileSelected').classList.add('show');
+    document.getElementById('convertBtn').disabled = false;
+    document.getElementById('progressWrap').classList.remove('show');
+    document.getElementById('resultBox').classList.remove('show');
+  }
+
+  function removeFile() {
+    resetModal();
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+    return (bytes/1048576).toFixed(2) + ' MB';
+  }
+
+  // Drag & drop
+  const dz = document.getElementById('dropzone');
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => {
+    e.preventDefault(); dz.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      const fakeEvt = { target: { files: [file] } };
+      handleFile(fakeEvt);
+    }
+  });
+
+  function startConvert() {
+    if (!selectedFile) return;
+    const btn = document.getElementById('convertBtn');
+    btn.disabled = true;
+    btn.textContent = 'Converting...';
+    document.getElementById('progressWrap').classList.add('show');
+    document.getElementById('resultBox').classList.remove('show');
+
+    // Simulate progress
+    let progress = 0;
+    const messages = ['Reading file...', 'Processing...', 'Finalizing...', 'Almost done...'];
+    const interval = setInterval(() => {
+      progress += Math.random() * 18 + 5;
+      if (progress >= 100) { progress = 100; clearInterval(interval); finishConvert(); }
+      document.getElementById('progressBar').style.width = progress + '%';
+      const idx = Math.min(Math.floor(progress / 25), messages.length - 1);
+      document.getElementById('progressText').textContent = messages[idx];
+    }, 300);
+  }
+
+  function finishConvert() {
+    document.getElementById('progressText').textContent = 'Done!';
+    // Create a demo download (for real conversion you need a backend or API)
+    const t = tools[currentTool];
+    const blob = new Blob([`PDFZap Demo Output\nTool: ${t.name}\nFile: ${selectedFile.name}\n\nTo enable real conversions, integrate a PDF API like ILovePDF, Zamzar, or ConvertAPI.`], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const dlBtn = document.getElementById('downloadBtn');
+    dlBtn.href = url;
+    dlBtn.download = selectedFile.name.replace(/\.[^.]+$/, '') + '_converted.' + t.out;
+    document.getElementById('resultBox').classList.add('show');
+    document.getElementById('convertBtn').textContent = 'Convert Another →';
+    document.getElementById('convertBtn').disabled = false;
+    document.getElementById('convertBtn').onclick = () => { resetModal(); };
+  }
+
+  // ESC key
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
