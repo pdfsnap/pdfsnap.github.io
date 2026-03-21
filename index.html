@@ -1185,5 +1185,12 @@ function toast(msg, type) {
   setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 4000);
 }
 </script>
+  <script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js')
+  .then(()=>console.log('PWA Ready!'))
+  .catch(e=>console.log('SW Error:',e));
+}
+</script>
 </body>
 </html>
