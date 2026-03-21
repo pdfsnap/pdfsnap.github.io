@@ -1,7 +1,7 @@
 // Freepdfconverterr Service Worker
 // Version 1.0
 
-const CACHE_NAME = 'freepdfconverterr-v1';
+const CACHE_NAME = 'freepdfconverterr-v2';
 const ASSETS = [
   '/',
   '/index.html',
