@@ -1,22 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NT288WP4YR"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NT288WP4YR');</script>
-<link rel="manifest" href="manifest.json"/>
-<meta name="theme-color" content="#ff4d00"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="FreePDF"/>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7352879981287034" crossorigin="anonymous"></script>
-<meta name="keywords" content="free pdf converter,pdf to word,pdf to jpg,image compress,resize image,freepdfconverterr,merge pdf,split pdf,rotate pdf,watermark pdf,jpg to png,png to jpg,online pdf tools"/>
-<meta name="author" content="Freepdfconverterr"/>
+<!-- Critical meta first -->
 <meta charset="UTF-8"/>
-<meta name="google-site-verification" content="5ZxCmC9IahybqzrrNd2T9PtoRazD18AYYd9qR8jo1Xk"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#ff4d00"/>
 <title>Freepdfconverterr — Free PDF &amp; Image Tools Online</title>
 <meta name="description" content="Free online PDF and Image tools. Merge, split, compress, rotate, watermark, convert PDF and images. No signup required. 100% browser based."/>
+<meta name="keywords" content="free pdf converter,pdf to word,pdf to jpg,image compress,resize image,freepdfconverterr,merge pdf,split pdf,rotate pdf,watermark pdf,jpg to png,png to jpg,online pdf tools"/>
+<meta name="author" content="Freepdfconverterr"/>
+<meta name="google-site-verification" content="5ZxCmC9IahybqzrrNd2T9PtoRazD18AYYd9qR8jo1Xk"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="FreePDF"/>
+<!-- Preconnect to speed up third-party resources -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://www.googletagmanager.com"/>
+<link rel="preconnect" href="https://pagead2.googlesyndication.com"/>
+<!-- Favicon -->
 <link rel="icon" type="image/x-icon" href="favicon.ico"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<!-- PWA manifest -->
+<link rel="manifest" href="manifest.json"/>
+<!-- Fonts: non-blocking with font-display swap -->
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap&font-display=swap" rel="stylesheet" media="print" onload="this.media='all'"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/></noscript>
+<!-- Analytics: deferred so it never blocks render -->
+<script defer src="https://www.googletagmanager.com/gtag/js?id=G-NT288WP4YR"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NT288WP4YR',{'transport_type':'beacon'});</script>
+<!-- AdSense: load after page is interactive -->
+<script>window.addEventListener('load',function(){var s=document.createElement('script');s.async=true;s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7352879981287034';s.crossOrigin='anonymous';document.head.appendChild(s);});</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0a0a0f;--sur:#13131a;--card:#1a1a24;--bdr:#2a2a3a;--acc:#ff4d00;--acc2:#ff8c42;--txt:#f0f0f5;--mut:#8888aa;--ok:#00e5a0;--bl:#4d8fff;--warn:#ffb800}
@@ -83,7 +95,7 @@ h1 em{color:var(--acc);font-style:normal}
 .section-title{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.25rem}
 .section-sub{color:var(--mut);font-size:.87rem;margin-bottom:1.8rem}
 .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
-.tool-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:1.3rem;cursor:pointer;transition:all .22s;position:relative}
+.tool-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:1.3rem;cursor:pointer;transition:border-color .22s,transform .22s,box-shadow .22s;position:relative;contain:layout style}
 .tool-card:hover{border-color:var(--acc);transform:translateY(-3px);box-shadow:0 10px 30px rgba(255,77,0,.1)}
 .tool-card.hidden{display:none}
 .tool-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:.8rem}
@@ -208,6 +220,21 @@ h1 em{color:var(--acc);font-style:normal}
 .re-meta{font-size:.73rem;color:var(--mut);margin-top:.12rem}
 .re-desc{font-size:.77rem;color:var(--mut);margin-top:.18rem}
 .re-badge{font-size:.67rem;padding:2px 8px;border-radius:99px;font-weight:700;white-space:nowrap;flex-shrink:0;background:rgba(255,184,0,.13);color:var(--warn)}
+/* SHARE BUTTON */
+.btn-share{background:transparent;border:1px solid var(--bdr);color:var(--mut);padding:.28rem .75rem;border-radius:99px;font-size:.72rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:all .2s;flex-shrink:0}
+.btn-share:hover{border-color:var(--ok);color:var(--ok)}
+/* SHARE MODAL */
+.share-modal{background:var(--card);border:1px solid var(--bdr);border-radius:18px;width:100%;max-width:380px;padding:1.6rem;position:relative}
+.share-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:.25rem}
+.share-sub{color:var(--mut);font-size:.81rem;margin-bottom:1.1rem}
+.share-url-row{display:flex;gap:.4rem;margin-bottom:.9rem}
+.share-url-row input{flex:1;background:var(--sur);border:1px solid var(--bdr);color:var(--txt);border-radius:8px;padding:.45rem .7rem;font-size:.78rem;font-family:'DM Sans',sans-serif;outline:none;cursor:text}
+.share-url-row button{background:var(--acc);color:#fff;border:none;border-radius:8px;padding:.45rem .85rem;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .2s}
+.share-url-row button:hover{background:var(--acc2)}
+.share-btns{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.share-btn{display:flex;align-items:center;gap:.5rem;background:var(--sur);border:1px solid var(--bdr);color:var(--txt);border-radius:10px;padding:.55rem .85rem;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
+.share-btn:hover{border-color:var(--acc);color:var(--acc)}
+.share-btn .sb-icon{font-size:1.1rem;flex-shrink:0}
 /* TOAST */
 .toast-wrap{position:fixed;bottom:1.4rem;right:1.4rem;z-index:9999;display:flex;flex-direction:column;gap:.4rem;pointer-events:none}
 .toast{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:.65rem .95rem;font-size:.82rem;display:flex;align-items:center;gap:.55rem;box-shadow:0 6px 24px rgba(0,0,0,.4);animation:tIn .25s ease;max-width:280px;pointer-events:auto}
@@ -407,6 +434,27 @@ footer strong{color:var(--txt)}
   </div>
 </div>
 
+<!-- SHARE MODAL -->
+<div class="overlay" id="shareOv" style="z-index:600">
+  <div class="share-modal">
+    <button class="modal-close" onclick="closeShare()">✕</button>
+    <div class="share-title">🔗 Share This Tool</div>
+    <div class="share-sub" id="shareSubTxt">Share with friends and help them work smarter!</div>
+    <div class="share-url-row">
+      <input type="text" id="shareUrlInput" readonly/>
+      <button onclick="copyShareUrl()">📋 Copy</button>
+    </div>
+    <div class="share-btns">
+      <a class="share-btn" id="shareWhatsApp" href="#" target="_blank" rel="noopener"><span class="sb-icon">💬</span> WhatsApp</a>
+      <a class="share-btn" id="shareTwitter"  href="#" target="_blank" rel="noopener"><span class="sb-icon">🐦</span> Twitter / X</a>
+      <a class="share-btn" id="shareFacebook" href="#" target="_blank" rel="noopener"><span class="sb-icon">👥</span> Facebook</a>
+      <a class="share-btn" id="shareLinkedIn" href="#" target="_blank" rel="noopener"><span class="sb-icon">💼</span> LinkedIn</a>
+      <a class="share-btn" id="shareEmail"    href="#"><span class="sb-icon">📧</span> Email</a>
+      <button class="share-btn" onclick="nativeShare()"><span class="sb-icon">📤</span> More...</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   <strong>Freepdfconverterr</strong> — All tools run entirely in your browser. No files uploaded to any server.<br/>
   <span style="margin-top:.3rem;display:block">© 2026 Freepdfconverterr · <a href="blog.html" style="color:#ff4d00;text-decoration:none;">Blog</a> · <a href="privacy-policy.html" style="color:#ff4d00;text-decoration:none;">Privacy Policy</a> · <a href="about.html" style="color:#ff4d00;text-decoration:none;">About</a> · <a href="contact.html" style="color:#ff4d00;text-decoration:none;">Contact</a></span>
@@ -435,32 +483,31 @@ loadScript(PDFLIB_CDN, function(){
 
 // ═══ TOOLS CONFIG ═══
 var TOOLS = [
-  // PDF
-  {id:'merge',       cat:'pdf',   icon:'🗂️', bg:'rgba(100,100,255,0.12)', badge:'hot',  label:'🔥 Popular', name:'Merge PDF',           desc:'Combine multiple PDFs into one document instantly.', accept:'.pdf', multi:true,  opts:'none'},
-  {id:'split',       cat:'pdf',   icon:'✂️', bg:'rgba(255,200,0,0.1)',   badge:'free', label:'Free',       name:'Split PDF',           desc:'Extract a page range or specific pages from a PDF.', accept:'.pdf', multi:false, opts:'split'},
-  {id:'rotate',      cat:'pdf',   icon:'🔃', bg:'rgba(180,100,255,0.1)', badge:'free', label:'Free',       name:'Rotate PDF',          desc:'Rotate all pages 90°, 180° or 270° clockwise.',      accept:'.pdf', multi:false, opts:'rotate'},
-  {id:'compress',    cat:'pdf',   icon:'🗜️',bg:'rgba(0,229,160,0.12)',  badge:'hot',  label:'🔥 Popular', name:'Compress PDF',        desc:'Reduce PDF file size while keeping good quality.',   accept:'.pdf', multi:false, opts:'pdfquality'},
-  {id:'pdf2jpg',     cat:'pdf',   icon:'🖼️',bg:'rgba(255,140,66,0.12)', badge:'hot',  label:'🔥 Popular', name:'PDF to JPG',           desc:'Convert every page of a PDF into a JPG image.',      accept:'.pdf', multi:false, opts:'quality'},
-  {id:'jpg2pdf',     cat:'pdf',   icon:'🔄', bg:'rgba(0,229,160,0.1)',   badge:'free', label:'Free',       name:'Images to PDF',        desc:'Combine JPG/PNG images into a single PDF.',          accept:'image/*', multi:true, opts:'none'},
-  {id:'watermarkpdf',cat:'pdf',   icon:'💧', bg:'rgba(255,77,0,0.12)',   badge:'free', label:'Free',       name:'Watermark PDF',        desc:'Stamp custom text watermark on every PDF page.',     accept:'.pdf', multi:false, opts:'wmpdf'},
-  {id:'pagenumbers', cat:'pdf',   icon:'🔢', bg:'rgba(77,143,255,0.12)', badge:'new',  label:'✨ New',      name:'Add Page Numbers',     desc:'Add page numbers to every page of your PDF.',        accept:'.pdf', multi:false, opts:'pagenum'},
+  {id:'merge',       cat:'pdf',   icon:'🗂️', bg:'rgba(100,100,255,0.12)', badge:'hot',  label:'🔥 Popular', name:'Merge PDF',           desc:'Combine multiple PDFs. Reorder files, rename output, optional auto-compress.', accept:'.pdf', multi:true,  opts:'merge'},
+  {id:'split',       cat:'pdf',   icon:'✂️', bg:'rgba(255,200,0,0.1)',   badge:'free', label:'Free',       name:'Split PDF',           desc:'Split by range, every N pages, all pages, or remove specific pages.', accept:'.pdf', multi:false, opts:'split'},
+  {id:'rotate',      cat:'pdf',   icon:'🔃', bg:'rgba(180,100,255,0.1)', badge:'free', label:'Free',       name:'Rotate PDF',          desc:'Rotate all, odd, even, or specific pages. Choose any angle.',      accept:'.pdf', multi:false, opts:'rotate'},
+  {id:'compress',    cat:'pdf',   icon:'🗜️',bg:'rgba(0,229,160,0.12)',  badge:'hot',  label:'🔥 Popular', name:'Compress PDF',        desc:'4 quality presets (Screen/eBook/Printer/Prepress). Optional grayscale.',   accept:'.pdf', multi:false, opts:'pdfquality'},
+  {id:'pdf2jpg',     cat:'pdf',   icon:'🖼️',bg:'rgba(255,140,66,0.12)', badge:'hot',  label:'🔥 Popular', name:'PDF to JPG',           desc:'Convert PDF pages to JPG or PNG. Set scale, quality, and page range.',      accept:'.pdf', multi:false, opts:'pdf2jpg'},
+  {id:'jpg2pdf',     cat:'pdf',   icon:'🔄', bg:'rgba(0,229,160,0.1)',   badge:'free', label:'Free',       name:'Images to PDF',        desc:'Combine images into PDF. Choose A4/Letter/image size, margins, fit mode.',          accept:'image/*', multi:true, opts:'jpg2pdf'},
+  {id:'watermarkpdf',cat:'pdf',   icon:'💧', bg:'rgba(255,77,0,0.12)',   badge:'free', label:'Free',       name:'Watermark PDF',        desc:'Custom text, color, angle, opacity. Apply to all or specific pages.',     accept:'.pdf', multi:false, opts:'wmpdf'},
+  {id:'pagenumbers', cat:'pdf',   icon:'🔢', bg:'rgba(77,143,255,0.12)', badge:'new',  label:'✨ New',      name:'Add Page Numbers',     desc:'6 positions, 4 formats, custom start number, skip cover pages.',        accept:'.pdf', multi:false, opts:'pagenum'},
   {id:'grayscalepdf',cat:'pdf',   icon:'⬛', bg:'rgba(150,150,150,0.1)', badge:'new',  label:'✨ New',      name:'Grayscale PDF',        desc:'Convert a colorful PDF to black and white.',         accept:'.pdf', multi:false, opts:'none'},
   {id:'reorderpdf',  cat:'pdf',   icon:'🔀', bg:'rgba(255,77,0,0.1)',    badge:'new',  label:'✨ New',      name:'Reverse PDF Pages',    desc:'Reverse the order of all pages in your PDF.',        accept:'.pdf', multi:false, opts:'none'},
   // IMAGE
-  {id:'imgcompress', cat:'image', icon:'🗜️',bg:'rgba(0,229,160,0.12)',  badge:'hot',  label:'🔥 Popular', name:'Compress Image',       desc:'Reduce image size by choosing a quality level.',     accept:'image/*', multi:false, opts:'quality'},
-  {id:'resize',      cat:'image', icon:'📐', bg:'rgba(77,143,255,0.12)', badge:'free', label:'Free',       name:'Resize Image',         desc:'Resize image to exact pixel dimensions.',            accept:'image/*', multi:false, opts:'resize'},
-  {id:'crop',        cat:'image', icon:'✂️', bg:'rgba(168,85,247,0.12)', badge:'free', label:'Free',       name:'Crop Image',           desc:'Crop image by entering exact pixel coordinates.',    accept:'image/*', multi:false, opts:'crop'},
-  {id:'jpg2png',     cat:'image', icon:'🔁', bg:'rgba(255,77,143,0.12)', badge:'free', label:'Free',       name:'JPG to PNG',           desc:'Convert JPG images to transparent PNG format.',      accept:'.jpg,.jpeg', multi:true, opts:'none'},
-  {id:'png2jpg',     cat:'image', icon:'🔀', bg:'rgba(255,200,0,0.1)',   badge:'free', label:'Free',       name:'PNG to JPG',           desc:'Convert PNG to JPG to reduce file size.',            accept:'.png', multi:true, opts:'quality'},
-  {id:'webp2jpg',    cat:'image', icon:'🔄', bg:'rgba(0,200,255,0.1)',   badge:'new',  label:'✨ New',      name:'WebP to JPG',          desc:'Convert WebP images to JPG format easily.',          accept:'.webp', multi:true, opts:'none'},
-  {id:'jpg2webp',    cat:'image', icon:'🌐', bg:'rgba(100,200,100,0.1)', badge:'new',  label:'✨ New',      name:'JPG to WebP',          desc:'Convert JPG to WebP for faster websites.',           accept:'.jpg,.jpeg,.png', multi:true, opts:'quality'},
-  {id:'watermarkimg',cat:'image', icon:'💧', bg:'rgba(255,77,0,0.1)',    badge:'free', label:'Free',       name:'Watermark Image',      desc:'Add custom text watermark to protect your images.',  accept:'image/*', multi:false, opts:'wmimg'},
+  {id:'imgcompress', cat:'image', icon:'🗜️',bg:'rgba(0,229,160,0.12)',  badge:'hot',  label:'🔥 Popular', name:'Compress Image',       desc:'Set quality, choose JPG/PNG/WebP output format.',     accept:'image/*', multi:false, opts:'quality'},
+  {id:'resize',      cat:'image', icon:'📐', bg:'rgba(77,143,255,0.12)', badge:'free', label:'Free',       name:'Resize Image',         desc:'Presets for HD/Social Media/Instagram or custom pixels.',            accept:'image/*', multi:false, opts:'resize'},
+  {id:'crop',        cat:'image', icon:'✂️', bg:'rgba(168,85,247,0.12)', badge:'free', label:'Free',       name:'Crop Image',           desc:'Manual crop or quick center/corner square crop shortcut.',    accept:'image/*', multi:false, opts:'crop'},
+  {id:'jpg2png',     cat:'image', icon:'🔁', bg:'rgba(255,77,143,0.12)', badge:'free', label:'Free',       name:'JPG to PNG',           desc:'Convert JPG to transparent PNG. Set quality and background.',      accept:'.jpg,.jpeg', multi:true, opts:'convfmt'},
+  {id:'png2jpg',     cat:'image', icon:'🔀', bg:'rgba(255,200,0,0.1)',   badge:'free', label:'Free',       name:'PNG to JPG',           desc:'Convert PNG to JPG. Set quality and background fill color.',            accept:'.png', multi:true, opts:'convfmt'},
+  {id:'webp2jpg',    cat:'image', icon:'🔄', bg:'rgba(0,200,255,0.1)',   badge:'new',  label:'✨ New',      name:'WebP to JPG',          desc:'Convert WebP to JPG. Set quality and background color.',          accept:'.webp', multi:true, opts:'convfmt'},
+  {id:'jpg2webp',    cat:'image', icon:'🌐', bg:'rgba(100,200,100,0.1)', badge:'new',  label:'✨ New',      name:'JPG to WebP',          desc:'Convert to WebP for faster websites. Set quality level.',           accept:'.jpg,.jpeg,.png', multi:true, opts:'convfmt'},
+  {id:'watermarkimg',cat:'image', icon:'💧', bg:'rgba(255,77,0,0.1)',    badge:'free', label:'Free',       name:'Watermark Image',      desc:'6 positions incl. tiled. Custom color, font size, opacity.',  accept:'image/*', multi:false, opts:'wmimg'},
   {id:'grayscale',   cat:'image', icon:'🖤', bg:'rgba(150,150,150,0.12)',badge:'free', label:'Free',       name:'Image to Grayscale',   desc:'Convert color images to beautiful black and white.', accept:'image/*', multi:true, opts:'none'},
-  {id:'flip',        cat:'image', icon:'🔄', bg:'rgba(0,200,255,0.1)',   badge:'free', label:'Free',       name:'Flip Image',           desc:'Flip images horizontally or vertically.',            accept:'image/*', multi:false, opts:'flip'},
-  {id:'rotateimg',   cat:'image', icon:'🔃', bg:'rgba(255,140,0,0.1)',   badge:'free', label:'Free',       name:'Rotate Image',         desc:'Rotate images 90°, 180° or 270° for free.',          accept:'image/*', multi:false, opts:'rotimg'},
-  {id:'brightness',  cat:'image', icon:'☀️', bg:'rgba(255,230,0,0.1)',   badge:'new',  label:'✨ New',      name:'Brightness & Contrast',desc:'Adjust brightness and contrast of your images.',     accept:'image/*', multi:false, opts:'bright'},
+  {id:'flip',        cat:'image', icon:'🔄', bg:'rgba(0,200,255,0.1)',   badge:'free', label:'Free',       name:'Flip Image',           desc:'Flip horizontal, vertical, or both. Choose JPG or PNG output.',            accept:'image/*', multi:false, opts:'flip'},
+  {id:'rotateimg',   cat:'image', icon:'🔃', bg:'rgba(255,140,0,0.1)',   badge:'free', label:'Free',       name:'Rotate Image',         desc:'Preset angles or any custom angle. Choose background fill.',          accept:'image/*', multi:false, opts:'rotimg'},
+  {id:'brightness',  cat:'image', icon:'☀️', bg:'rgba(255,230,0,0.1)',   badge:'new',  label:'✨ New',      name:'Brightness & Contrast',desc:'Adjust brightness, contrast, saturation and hue shift.',     accept:'image/*', multi:false, opts:'bright'},
   {id:'sharpen',     cat:'image', icon:'🔆', bg:'rgba(255,100,100,0.1)', badge:'new',  label:'✨ New',      name:'Sharpen Image',        desc:'Make blurry images sharp and clear.',                accept:'image/*', multi:false, opts:'none'},
-  {id:'blur',        cat:'image', icon:'🌫️',bg:'rgba(100,100,255,0.1)', badge:'new',  label:'✨ New',      name:'Blur Image',           desc:'Add blur effect to your images.',                    accept:'image/*', multi:false, opts:'bluropt'},
+  {id:'blur',        cat:'image', icon:'🌫️',bg:'rgba(100,100,255,0.1)', badge:'new',  label:'✨ New',      name:'Blur Image',           desc:'Gaussian or box blur with adjustable radius.',                    accept:'image/*', multi:false, opts:'bluropt'},
   {id:'imgpdf',      cat:'image', icon:'📄', bg:'rgba(255,77,143,0.1)',  badge:'new',  label:'✨ New',      name:'Image to PDF',         desc:'Convert a single image to a PDF document.',          accept:'image/*', multi:false, opts:'none'},
 ];
 
@@ -524,7 +571,10 @@ function buildGrid() {
       '<div class="tool-desc">'+t.desc+'</div>'+
       '<div class="tool-foot">'+
         '<span class="tool-cat">'+(t.cat==='pdf'?'📄 PDF':'🖼️ Image')+'</span>'+
+        '<div style="display:flex;gap:.4rem;align-items:center">'+
+        '<button class="btn-share" onclick="shareTool(event,\''+t.id+'\',\''+t.name+'\')">🔗 Share</button>'+
         '<button class="btn-report-tool" onclick="openRep(event,\''+t.name+'\')">⚑ Report</button>'+
+        '</div>'+
       '</div>';
     card.addEventListener('click', function(e){
       if (e.target.closest('.btn-report-tool')) return;
@@ -549,19 +599,310 @@ function filterTools(cat, btn) {
 
 // ═══ OPTS HTML ═══
 function getOptsHTML(opts) {
-  if (opts === 'quality')    return '<div class="opts"><div class="opts-title">⚙️ Options</div><label>Quality (higher = better quality, larger file)</label><div class="qrow"><input type="range" id="optQ" min="10" max="100" value="85" oninput="document.getElementById(\'qv\').textContent=this.value+\'%\'"/><span class="qval" id="qv">85%</span></div></div>';
-  if (opts === 'pdfquality') return '<div class="opts"><div class="opts-title">⚙️ Options</div><label>Compression Level</label><select id="optPQ"><option value="high">High Compression (smaller file)</option><option value="med" selected>Medium (balanced)</option><option value="low">Low Compression (better quality)</option></select></div>';
-  if (opts === 'split')      return '<div class="opts"><div class="opts-title">⚙️ Page Range</div><div class="row2"><div><label>From Page</label><input type="number" id="optFrom" value="1" min="1"/></div><div><label>To Page (0 = last)</label><input type="number" id="optTo" value="0" min="0"/></div></div></div>';
-  if (opts === 'rotate')     return '<div class="opts"><div class="opts-title">⚙️ Options</div><label>Rotation Angle</label><select id="optRot"><option value="90">90° Clockwise ↻</option><option value="180">180° Flip</option><option value="270">270° Counter-clockwise ↺</option></select></div>';
-  if (opts === 'wmpdf')      return '<div class="opts"><div class="opts-title">⚙️ Watermark Settings</div><label>Watermark Text</label><input type="text" id="optWM" placeholder="e.g. CONFIDENTIAL" value="WATERMARK"/><label>Font Size</label><input type="number" id="optWMSize" value="48" min="12" max="120"/></div>';
-  if (opts === 'pagenum')    return '<div class="opts"><div class="opts-title">⚙️ Page Number Settings</div><label>Position</label><select id="optPNPos"><option value="bottom-center">Bottom Center</option><option value="bottom-right">Bottom Right</option><option value="bottom-left">Bottom Left</option><option value="top-center">Top Center</option></select><label>Starting Number</label><input type="number" id="optPNStart" value="1" min="1"/></div>';
-  if (opts === 'resize')     return '<div class="opts"><div class="opts-title">⚙️ New Size</div><div class="row2"><div><label>Width (px)</label><input type="number" id="optW" placeholder="e.g. 800"/></div><div><label>Height (px)</label><input type="number" id="optH" placeholder="e.g. 600"/></div></div><label>Keep Aspect Ratio</label><select id="optAR"><option value="1">Yes — keep proportions</option><option value="0">No — use exact values</option></select></div>';
-  if (opts === 'crop')       return '<div class="opts"><div class="opts-title">⚙️ Crop Area</div><div class="row2"><div><label>X — Left (px)</label><input type="number" id="optX" value="0" min="0"/></div><div><label>Y — Top (px)</label><input type="number" id="optY" value="0" min="0"/></div></div><div class="row2"><div><label>Crop Width (px)</label><input type="number" id="optCW" placeholder="full width"/></div><div><label>Crop Height (px)</label><input type="number" id="optCH" placeholder="full height"/></div></div></div>';
-  if (opts === 'wmimg')      return '<div class="opts"><div class="opts-title">⚙️ Watermark Settings</div><label>Watermark Text</label><input type="text" id="optIMGWM" placeholder="© Your Name" value="© Freepdfconverterr"/><label>Text Color</label><select id="optWMC"><option value="white">White</option><option value="black">Black</option><option value="#ff4d00">Orange</option><option value="#00e5a0">Green</option></select><label>Opacity</label><div class="qrow"><input type="range" id="optWMO" min="10" max="90" value="50" oninput="document.getElementById(\'wmov\').textContent=this.value+\'%\'"/><span class="qval" id="wmov">50%</span></div></div>';
-  if (opts === 'flip')       return '<div class="opts"><div class="opts-title">⚙️ Options</div><label>Flip Direction</label><select id="optFlip"><option value="h">↔ Horizontal (Left ↔ Right)</option><option value="v">↕ Vertical (Up ↕ Down)</option></select></div>';
-  if (opts === 'rotimg')     return '<div class="opts"><div class="opts-title">⚙️ Options</div><label>Rotation Angle</label><select id="optRotI"><option value="90">90° Clockwise ↻</option><option value="180">180°</option><option value="270">270° Counter-clockwise ↺</option></select></div>';
-  if (opts === 'bright')     return '<div class="opts"><div class="opts-title">⚙️ Adjustments</div><label>Brightness</label><div class="qrow"><input type="range" id="optB" min="-100" max="100" value="0" oninput="document.getElementById(\'bv\').textContent=this.value"/><span class="qval" id="bv">0</span></div><label style="margin-top:.5rem;display:block">Contrast</label><div class="qrow"><input type="range" id="optC" min="-100" max="100" value="0" oninput="document.getElementById(\'cv\').textContent=this.value"/><span class="qval" id="cv">0</span></div></div>';
-  if (opts === 'bluropt')    return '<div class="opts"><div class="opts-title">⚙️ Options</div><label>Blur Amount</label><div class="qrow"><input type="range" id="optBlur" min="1" max="20" value="5" oninput="document.getElementById(\'blurv\').textContent=this.value+\'px\'"/><span class="qval" id="blurv">5px</span></div></div>';
+  if (opts === 'merge') return `
+    <div class="opts"><div class="opts-title">⚙️ Merge Options</div>
+      <label>Output File Name</label><input type="text" id="optMergeName" value="merged" placeholder="output filename (no .pdf)"/>
+      <label>Page Order</label>
+      <select id="optMergeOrder">
+        <option value="asc">Files in upload order (top → bottom)</option>
+        <option value="desc">Files in reverse order (bottom → top)</option>
+      </select>
+      <label>After merging</label>
+      <select id="optMergePost">
+        <option value="none">Just download the merged PDF</option>
+        <option value="compress">Also compress the merged PDF</option>
+      </select>
+    </div>`;
+  if (opts === 'split') return `
+    <div class="opts"><div class="opts-title">⚙️ Split Mode</div>
+      <label>How to split</label>
+      <select id="optSplitMode" onchange="toggleSplitMode(this.value)">
+        <option value="range">Extract a page range (e.g. pages 2–5)</option>
+        <option value="every">Split every N pages into separate PDFs</option>
+        <option value="all">Extract every page as a separate PDF</option>
+        <option value="remove">Remove specific pages, keep the rest</option>
+      </select>
+      <div id="splitRangeOpts"><div class="row2"><div><label>From Page</label><input type="number" id="optFrom" value="1" min="1"/></div><div><label>To Page (0 = last)</label><input type="number" id="optTo" value="0" min="0"/></div></div></div>
+      <div id="splitEveryOpts" style="display:none"><label>Pages per file</label><input type="number" id="optEvery" value="1" min="1"/></div>
+      <div id="splitRemoveOpts" style="display:none"><label>Pages to remove (comma-separated, e.g. 1,3,5)</label><input type="text" id="optRemovePages" placeholder="e.g. 1,3,5"/></div>
+    </div>`;
+  if (opts === 'rotate') return `
+    <div class="opts"><div class="opts-title">⚙️ Rotation Options</div>
+      <label>Which pages to rotate</label>
+      <select id="optRotScope">
+        <option value="all">All pages</option>
+        <option value="odd">Odd pages only (1, 3, 5…)</option>
+        <option value="even">Even pages only (2, 4, 6…)</option>
+        <option value="custom">Specific pages (enter below)</option>
+      </select>
+      <div id="rotCustomPages" style="display:none"><label>Page numbers (comma-separated)</label><input type="text" id="optRotPages" placeholder="e.g. 1,3,7"/></div>
+      <label>Rotation Angle</label>
+      <select id="optRot">
+        <option value="90">90° Clockwise ↻</option>
+        <option value="180">180° Flip ↕</option>
+        <option value="270">270° Counter-clockwise ↺</option>
+      </select>
+    </div>`;
+  if (opts === 'pdfquality') return `
+    <div class="opts"><div class="opts-title">⚙️ Compression Options</div>
+      <label>Compression Preset</label>
+      <select id="optPQ">
+        <option value="screen">Screen (72 DPI) — smallest file, web/email use</option>
+        <option value="ebook" selected>eBook (150 DPI) — balanced quality &amp; size</option>
+        <option value="printer">Printer (300 DPI) — high quality, larger file</option>
+        <option value="prepress">Prepress (300 DPI) — maximum quality</option>
+      </select>
+      <label>Output File Name</label>
+      <input type="text" id="optCompressName" value="compressed" placeholder="output filename"/>
+      <label style="display:flex;align-items:center;gap:.5rem;margin-top:.4rem">
+        <input type="checkbox" id="optCompressGray"/> Convert to grayscale (further reduces size)
+      </label>
+    </div>`;
+  if (opts === 'pdf2jpg') return `
+    <div class="opts"><div class="opts-title">⚙️ PDF to JPG Options</div>
+      <label>Image Quality</label>
+      <div class="qrow"><input type="range" id="optQ" min="10" max="100" value="90" oninput="document.getElementById('qv').textContent=this.value+'%'"/><span class="qval" id="qv">90%</span></div>
+      <label>Render Scale (higher = sharper image)</label>
+      <select id="optPDFScale">
+        <option value="1.5">1.5x — fast, smaller files</option>
+        <option value="2.0" selected>2x — balanced (recommended)</option>
+        <option value="3.0">3x — high resolution, larger files</option>
+      </select>
+      <label>Output Format</label>
+      <select id="optPDFOutFmt">
+        <option value="jpeg">JPG (smaller file size)</option>
+        <option value="png">PNG (transparent, lossless)</option>
+      </select>
+      <label>Pages to convert</label>
+      <select id="optPDFPages">
+        <option value="all">All pages</option>
+        <option value="first">First page only</option>
+        <option value="range">Page range</option>
+      </select>
+      <div id="pdfPageRange" style="display:none">
+        <div class="row2"><div><label>From</label><input type="number" id="optPFrom" value="1" min="1"/></div><div><label>To</label><input type="number" id="optPTo" value="1" min="1"/></div></div>
+      </div>
+    </div>`;
+  if (opts === 'jpg2pdf') return `
+    <div class="opts"><div class="opts-title">⚙️ Images to PDF Options</div>
+      <label>Page Size</label>
+      <select id="optJ2PSize">
+        <option value="image">Fit to image size (each page = image dimensions)</option>
+        <option value="a4">A4 Portrait (210×297mm)</option>
+        <option value="a4l">A4 Landscape (297×210mm)</option>
+        <option value="letter">US Letter Portrait (216×279mm)</option>
+      </select>
+      <label>Image Fit (for fixed page sizes)</label>
+      <select id="optJ2PFit">
+        <option value="contain">Fit inside page — keep aspect ratio</option>
+        <option value="fill">Fill page — may stretch image</option>
+        <option value="center">Center at original size</option>
+      </select>
+      <label>Page Margin</label>
+      <select id="optJ2PMargin">
+        <option value="0">No margin</option>
+        <option value="20">Small margin (20px)</option>
+        <option value="40" selected>Normal margin (40px)</option>
+        <option value="80">Large margin (80px)</option>
+      </select>
+      <label>Output File Name</label>
+      <input type="text" id="optJ2PName" value="images" placeholder="output filename"/>
+    </div>`;
+  if (opts === 'wmpdf') return `
+    <div class="opts"><div class="opts-title">⚙️ Watermark Options</div>
+      <label>Watermark Text</label>
+      <input type="text" id="optWM" placeholder="e.g. CONFIDENTIAL" value="CONFIDENTIAL"/>
+      <div class="row2">
+        <div><label>Font Size</label><input type="number" id="optWMSize" value="52" min="12" max="140"/></div>
+        <div><label>Rotation Angle</label><input type="number" id="optWMAngle" value="45" min="0" max="360"/></div>
+      </div>
+      <label>Text Color</label>
+      <select id="optWMColor">
+        <option value="grey">Grey (subtle)</option>
+        <option value="red">Red (warning)</option>
+        <option value="blue">Blue (official)</option>
+        <option value="black">Black (bold)</option>
+        <option value="orange">Orange</option>
+      </select>
+      <label>Opacity</label>
+      <div class="qrow"><input type="range" id="optWMOp" min="5" max="60" value="25" oninput="document.getElementById('wmopv').textContent=this.value+'%'"/><span class="qval" id="wmopv">25%</span></div>
+      <label>Apply to</label>
+      <select id="optWMPages">
+        <option value="all">All pages</option>
+        <option value="first">First page only</option>
+        <option value="odd">Odd pages only</option>
+        <option value="even">Even pages only</option>
+      </select>
+    </div>`;
+  if (opts === 'pagenum') return `
+    <div class="opts"><div class="opts-title">⚙️ Page Number Options</div>
+      <div class="row2">
+        <div><label>Position</label>
+          <select id="optPNPos">
+            <option value="bottom-center">Bottom Center</option>
+            <option value="bottom-right">Bottom Right</option>
+            <option value="bottom-left">Bottom Left</option>
+            <option value="top-center">Top Center</option>
+            <option value="top-right">Top Right</option>
+            <option value="top-left">Top Left</option>
+          </select>
+        </div>
+        <div><label>Start From</label><input type="number" id="optPNStart" value="1" min="0"/></div>
+      </div>
+      <label>Format</label>
+      <select id="optPNFormat">
+        <option value="num">1, 2, 3 …</option>
+        <option value="of">1 of 10, 2 of 10 …</option>
+        <option value="dash">— 1 —, — 2 — …</option>
+        <option value="pg">Page 1, Page 2 …</option>
+      </select>
+      <label>Font Size</label>
+      <input type="number" id="optPNSize" value="12" min="8" max="32"/>
+      <label>Skip first N pages (e.g. cover page)</label>
+      <input type="number" id="optPNSkip" value="0" min="0"/>
+    </div>`;
+  if (opts === 'quality') return `
+    <div class="opts"><div class="opts-title">⚙️ Image Quality</div>
+      <label>Quality (higher = better quality, larger file)</label>
+      <div class="qrow"><input type="range" id="optQ" min="10" max="100" value="85" oninput="document.getElementById('qv').textContent=this.value+'%'"/><span class="qval" id="qv">85%</span></div>
+      <label>Output Format</label>
+      <select id="optOutFmt">
+        <option value="jpeg">JPG — smaller file</option>
+        <option value="png">PNG — lossless, larger</option>
+        <option value="webp">WebP — best compression</option>
+      </select>
+    </div>`;
+  if (opts === 'resize') return `
+    <div class="opts"><div class="opts-title">⚙️ Resize Options</div>
+      <label>Preset Sizes</label>
+      <select id="optResizePreset" onchange="applyResizePreset(this.value)">
+        <option value="">Custom (enter below)</option>
+        <option value="1920x1080">1920×1080 — Full HD</option>
+        <option value="1280x720">1280×720 — HD</option>
+        <option value="800x600">800×600 — Standard</option>
+        <option value="400x300">400×300 — Thumbnail</option>
+        <option value="150x150">150×150 — Small Square</option>
+        <option value="1200x630">1200×630 — Social Media (OG)</option>
+        <option value="1080x1080">1080×1080 — Instagram Square</option>
+        <option value="1080x1920">1080×1920 — Story / TikTok</option>
+      </select>
+      <div class="row2">
+        <div><label>Width (px)</label><input type="number" id="optW" placeholder="e.g. 800"/></div>
+        <div><label>Height (px)</label><input type="number" id="optH" placeholder="e.g. 600"/></div>
+      </div>
+      <label>Aspect Ratio</label>
+      <select id="optAR">
+        <option value="1">Keep aspect ratio (recommended)</option>
+        <option value="0">Stretch to exact size</option>
+      </select>
+      <label>Output Quality</label>
+      <div class="qrow"><input type="range" id="optRQ" min="50" max="100" value="90" oninput="document.getElementById('rqv').textContent=this.value+'%'"/><span class="qval" id="rqv">90%</span></div>
+    </div>`;
+  if (opts === 'crop') return `
+    <div class="opts"><div class="opts-title">⚙️ Crop Area (in pixels)</div>
+      <div class="row2"><div><label>Left (X)</label><input type="number" id="optX" value="0" min="0"/></div><div><label>Top (Y)</label><input type="number" id="optY" value="0" min="0"/></div></div>
+      <div class="row2"><div><label>Width</label><input type="number" id="optCW" placeholder="full"/></div><div><label>Height</label><input type="number" id="optCH" placeholder="full"/></div></div>
+      <label>Square crop shortcut</label>
+      <select id="optCropSquare" onchange="applySquareCrop(this.value)">
+        <option value="">Manual (use values above)</option>
+        <option value="center">Center square crop</option>
+        <option value="tl">Top-left square crop</option>
+        <option value="tr">Top-right square crop</option>
+      </select>
+    </div>`;
+  if (opts === 'wmimg') return `
+    <div class="opts"><div class="opts-title">⚙️ Image Watermark Options</div>
+      <label>Watermark Text</label>
+      <input type="text" id="optIMGWM" placeholder="© Your Name" value="© Freepdfconverterr"/>
+      <div class="row2">
+        <div><label>Position</label>
+          <select id="optWMPos">
+            <option value="center">Center (diagonal)</option>
+            <option value="bottom-right">Bottom Right</option>
+            <option value="bottom-left">Bottom Left</option>
+            <option value="top-right">Top Right</option>
+            <option value="top-left">Top Left</option>
+            <option value="tile">Tiled (repeat)</option>
+          </select>
+        </div>
+        <div><label>Text Color</label>
+          <select id="optWMC">
+            <option value="white">White</option>
+            <option value="black">Black</option>
+            <option value="#ff4d00">Orange</option>
+            <option value="#00e5a0">Green</option>
+            <option value="#4d8fff">Blue</option>
+          </select>
+        </div>
+      </div>
+      <label>Font Size (auto if 0)</label>
+      <input type="number" id="optWMFS" value="0" min="0" max="200" placeholder="0 = auto"/>
+      <label>Opacity</label>
+      <div class="qrow"><input type="range" id="optWMO" min="10" max="90" value="50" oninput="document.getElementById('wmov').textContent=this.value+'%'"/><span class="qval" id="wmov">50%</span></div>
+    </div>`;
+  if (opts === 'flip') return `
+    <div class="opts"><div class="opts-title">⚙️ Flip Options</div>
+      <label>Flip Direction</label>
+      <select id="optFlip">
+        <option value="h">↔ Horizontal (mirror left/right)</option>
+        <option value="v">↕ Vertical (flip upside down)</option>
+        <option value="both">↔↕ Both directions</option>
+      </select>
+      <label>Output Format</label>
+      <select id="optFlipFmt">
+        <option value="jpeg">JPG</option>
+        <option value="png">PNG (keeps transparency)</option>
+      </select>
+    </div>`;
+  if (opts === 'rotimg') return `
+    <div class="opts"><div class="opts-title">⚙️ Rotation Options</div>
+      <label>Rotation Angle</label>
+      <select id="optRotI">
+        <option value="90">90° Clockwise ↻</option>
+        <option value="180">180° Flip</option>
+        <option value="270">270° Counter-clockwise ↺</option>
+      </select>
+      <label>Custom Angle (overrides selection above)</label>
+      <input type="number" id="optRotCustom" placeholder="e.g. 45 (leave blank to use above)" min="-360" max="360"/>
+      <label>Background fill (for custom angles)</label>
+      <select id="optRotBg">
+        <option value="white">White</option>
+        <option value="black">Black</option>
+        <option value="transparent">Transparent (PNG only)</option>
+      </select>
+    </div>`;
+  if (opts === 'bright') return `
+    <div class="opts"><div class="opts-title">⚙️ Color Adjustments</div>
+      <label>Brightness</label>
+      <div class="qrow"><input type="range" id="optB" min="-100" max="100" value="0" oninput="document.getElementById('bv').textContent=this.value"/><span class="qval" id="bv">0</span></div>
+      <label>Contrast</label>
+      <div class="qrow"><input type="range" id="optC" min="-100" max="100" value="0" oninput="document.getElementById('cv').textContent=this.value"/><span class="qval" id="cv">0</span></div>
+      <label>Saturation</label>
+      <div class="qrow"><input type="range" id="optSat" min="-100" max="100" value="0" oninput="document.getElementById('satv').textContent=this.value"/><span class="qval" id="satv">0</span></div>
+      <label>Hue Shift (°)</label>
+      <div class="qrow"><input type="range" id="optHue" min="-180" max="180" value="0" oninput="document.getElementById('huev').textContent=this.value+'°'"/><span class="qval" id="huev">0°</span></div>
+    </div>`;
+  if (opts === 'bluropt') return `
+    <div class="opts"><div class="opts-title">⚙️ Blur Options</div>
+      <label>Blur Amount</label>
+      <div class="qrow"><input type="range" id="optBlur" min="1" max="30" value="5" oninput="document.getElementById('blurv').textContent=this.value+'px'"/><span class="qval" id="blurv">5px</span></div>
+      <label>Blur Type</label>
+      <select id="optBlurType">
+        <option value="gaussian">Gaussian (smooth, natural)</option>
+        <option value="box">Box (fast, blocky)</option>
+      </select>
+    </div>`;
+  if (opts === 'convfmt') return `
+    <div class="opts"><div class="opts-title">⚙️ Conversion Options</div>
+      <label>Output Quality</label>
+      <div class="qrow"><input type="range" id="optQ" min="50" max="100" value="92" oninput="document.getElementById('qv').textContent=this.value+'%'"/><span class="qval" id="qv">92%</span></div>
+      <label>Background Color (for JPG output)</label>
+      <select id="optBg">
+        <option value="white">White</option>
+        <option value="black">Black</option>
+        <option value="#f0f0f0">Light Grey</option>
+      </select>
+    </div>`;
   return '';
 }
 
@@ -719,74 +1060,170 @@ async function runTool() {
 async function tMerge() {
   var PDFDoc = PDFLib.PDFDocument;
   var merged = await PDFDoc.create();
-  for (var i = 0; i < toolFiles.length; i++) {
-    setP(Math.round(5+85*(i/toolFiles.length)), 'Merging file '+(i+1)+' of '+toolFiles.length+'...');
-    var buf = await toolFiles[i].arrayBuffer();
-    var src = await PDFDoc.load(buf);
+  var files = toolFiles.slice();
+  var order = document.getElementById('optMergeOrder') ? document.getElementById('optMergeOrder').value : 'asc';
+  if (order === 'desc') files = files.slice().reverse();
+  for (var i = 0; i < files.length; i++) {
+    setP(Math.round(5+80*(i/files.length)), 'Merging file '+(i+1)+' of '+files.length+'...');
+    var buf = await files[i].arrayBuffer();
+    var src = await PDFDoc.load(buf, {ignoreEncryption:true});
     var pages = await merged.copyPages(src, src.getPageIndices());
     pages.forEach(function(p){ merged.addPage(p); });
   }
-  setP(95, 'Saving...'); var bytes = await merged.save();
-  showResults([{name:'merged.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+  setP(90, 'Saving...');
+  var doCompress = document.getElementById('optMergePost') && document.getElementById('optMergePost').value === 'compress';
+  var bytes = await merged.save({useObjectStreams: doCompress});
+  var fname = (document.getElementById('optMergeName') ? document.getElementById('optMergeName').value.trim() : '') || 'merged';
+  if (!fname.endsWith('.pdf')) fname += '.pdf';
+  showResults([{name:fname, size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
 }
 
 async function tSplit() {
   setP(10, 'Loading PDF...');
   var PDFDoc = PDFLib.PDFDocument;
   var buf = await toolFiles[0].arrayBuffer();
-  var src = await PDFDoc.load(buf);
+  var src = await PDFDoc.load(buf, {ignoreEncryption:true});
   var total = src.getPageCount();
-  var from = Math.max(1, parseInt(document.getElementById('optFrom').value)||1) - 1;
-  var to = parseInt(document.getElementById('optTo').value)||0;
-  if (to <= 0) to = total; to = Math.min(total, to) - 1;
-  setP(50, 'Extracting pages '+(from+1)+' to '+(to+1)+'...');
-  var newDoc = await PDFDoc.create();
-  var indices = []; for (var i = from; i <= to; i++) indices.push(i);
-  var pages = await newDoc.copyPages(src, indices);
-  pages.forEach(function(p){ newDoc.addPage(p); });
-  setP(90, 'Saving...'); var bytes = await newDoc.save();
-  showResults([{name:'split_p'+(from+1)+'-'+(to+1)+'.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+  var mode = document.getElementById('optSplitMode') ? document.getElementById('optSplitMode').value : 'range';
+  var results = [];
+
+  if (mode === 'range') {
+    var from = Math.max(1, parseInt(document.getElementById('optFrom').value)||1) - 1;
+    var to = parseInt(document.getElementById('optTo').value)||0;
+    if (to <= 0) to = total; to = Math.min(total, to) - 1;
+    setP(50, 'Extracting pages '+(from+1)+' to '+(to+1)+'...');
+    var newDoc = await PDFDoc.create();
+    var idxs = []; for (var i = from; i <= to; i++) idxs.push(i);
+    var pages = await newDoc.copyPages(src, idxs);
+    pages.forEach(function(p){ newDoc.addPage(p); });
+    var bytes = await newDoc.save();
+    results.push({name:'pages_'+(from+1)+'-'+(to+1)+'.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))});
+
+  } else if (mode === 'every') {
+    var n = Math.max(1, parseInt(document.getElementById('optEvery').value)||1);
+    var part = 0;
+    for (var start = 0; start < total; start += n) {
+      part++;
+      setP(Math.round(10+80*(start/total)), 'Creating part '+part+'...');
+      var d = await PDFDoc.create();
+      var end = Math.min(start+n-1, total-1);
+      var idxs2 = []; for (var j=start;j<=end;j++) idxs2.push(j);
+      var pg = await d.copyPages(src, idxs2); pg.forEach(function(p){ d.addPage(p); });
+      var b = await d.save();
+      results.push({name:'part'+part+'_p'+(start+1)+'-'+(end+1)+'.pdf', size:fmtSize(b.length), url:URL.createObjectURL(new Blob([b],{type:'application/pdf'}))});
+    }
+
+  } else if (mode === 'all') {
+    for (var i = 0; i < total; i++) {
+      setP(Math.round(10+80*(i/total)), 'Extracting page '+(i+1)+' of '+total+'...');
+      var d = await PDFDoc.create();
+      var pg = await d.copyPages(src,[i]); d.addPage(pg[0]);
+      var b = await d.save();
+      results.push({name:'page_'+(i+1)+'.pdf', size:fmtSize(b.length), url:URL.createObjectURL(new Blob([b],{type:'application/pdf'}))});
+    }
+
+  } else if (mode === 'remove') {
+    var removeStr = (document.getElementById('optRemovePages').value||'').trim();
+    var removeSet = new Set(removeStr.split(',').map(function(x){ return parseInt(x.trim())-1; }).filter(function(x){ return !isNaN(x)&&x>=0&&x<total; }));
+    setP(50, 'Removing '+removeSet.size+' pages...');
+    var d = await PDFDoc.create();
+    var keepIdxs = []; for (var i=0;i<total;i++) if (!removeSet.has(i)) keepIdxs.push(i);
+    var pg = await d.copyPages(src, keepIdxs); pg.forEach(function(p){ d.addPage(p); });
+    var b = await d.save();
+    results.push({name:'removed_pages.pdf', size:fmtSize(b.length), url:URL.createObjectURL(new Blob([b],{type:'application/pdf'}))});
+  }
+
+  setP(100,'Done!');
+  showResults(results);
 }
 
 async function tRotatePDF() {
   setP(10, 'Loading PDF...'); var PDFDoc = PDFLib.PDFDocument;
-  var buf = await toolFiles[0].arrayBuffer(); var doc = await PDFDoc.load(buf);
+  var buf = await toolFiles[0].arrayBuffer(); var doc = await PDFDoc.load(buf, {ignoreEncryption:true});
   var angle = parseInt(document.getElementById('optRot').value)||90;
+  var scope = document.getElementById('optRotScope') ? document.getElementById('optRotScope').value : 'all';
+  var customPages = new Set();
+  if (scope === 'custom') {
+    var cp = (document.getElementById('optRotPages') ? document.getElementById('optRotPages').value : '').trim();
+    cp.split(',').forEach(function(x){ var n=parseInt(x.trim()); if(!isNaN(n)&&n>0) customPages.add(n-1); });
+  }
   setP(50, 'Rotating pages...');
-  doc.getPages().forEach(function(p){ var cur = p.getRotation().angle; p.setRotation(PDFLib.degrees((cur+angle)%360)); });
+  doc.getPages().forEach(function(p, i){
+    var shouldRotate = scope==='all' || (scope==='odd'&&i%2===0) || (scope==='even'&&i%2===1) || (scope==='custom'&&customPages.has(i));
+    if (shouldRotate) { var cur = p.getRotation().angle; p.setRotation(PDFLib.degrees((cur+angle)%360)); }
+  });
   setP(90, 'Saving...'); var bytes = await doc.save();
   showResults([{name:'rotated.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
 }
 
 async function tCompressPDF() {
   setP(10, 'Loading PDF...'); var PDFDoc = PDFLib.PDFDocument;
-  var buf = await toolFiles[0].arrayBuffer(); var doc = await PDFDoc.load(buf);
-  setP(60, 'Compressing...');
-  var opts = {useObjectStreams: true};
-  setP(90, 'Saving...'); var bytes = await doc.save(opts);
-  var origSize = toolFiles[0].size;
-  var newSize = bytes.length;
-  var saved = origSize > newSize ? Math.round((1-newSize/origSize)*100) : 0;
-  showResults([{name:'compressed.pdf', size:fmtSize(bytes.length)+' (saved '+saved+'%)', url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+  var buf = await toolFiles[0].arrayBuffer(); var doc = await PDFDoc.load(buf, {ignoreEncryption:true});
+  var preset = document.getElementById('optPQ') ? document.getElementById('optPQ').value : 'ebook';
+  var doGray = document.getElementById('optCompressGray') && document.getElementById('optCompressGray').checked;
+  setP(40, 'Applying compression preset: '+preset+'...');
+  // If grayscale is checked, render each page via pdf.js and re-embed
+  if (doGray) {
+    setP(50, 'Converting to grayscale...');
+    var pdf = await pdfjsLib.getDocument({data: new Uint8Array(buf)}).promise;
+    var scaleMap = {screen:1.0, ebook:1.5, printer:2.0, prepress:2.5};
+    var qualMap  = {screen:0.5, ebook:0.75, printer:0.9, prepress:0.95};
+    var scale = scaleMap[preset]||1.5; var qual = qualMap[preset]||0.75;
+    var newDoc = await PDFDoc.create();
+    for (var i=1;i<=pdf.numPages;i++) {
+      setP(Math.round(50+40*(i/pdf.numPages)),'Grayscale page '+i+'...');
+      var page = await pdf.getPage(i); var vp = page.getViewport({scale:scale});
+      var canvas = document.createElement('canvas'); canvas.width=vp.width; canvas.height=vp.height;
+      var ctx=canvas.getContext('2d'); await page.render({canvasContext:ctx,viewport:vp}).promise;
+      var id=ctx.getImageData(0,0,canvas.width,canvas.height);
+      for (var j=0;j<id.data.length;j+=4){var g=id.data[j]*0.299+id.data[j+1]*0.587+id.data[j+2]*0.114;id.data[j]=id.data[j+1]=id.data[j+2]=g;}
+      ctx.putImageData(id,0,0);
+      var blob=await new Promise(function(res){canvas.toBlob(res,'image/jpeg',qual);}); var imgBuf=await blob.arrayBuffer();
+      var img=await newDoc.embedJpg(imgBuf); var np=newDoc.addPage([img.width,img.height]); np.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
+    }
+    var bytes=await newDoc.save({useObjectStreams:true});
+    var fname = (document.getElementById('optCompressName')?document.getElementById('optCompressName').value.trim():'compressed')||'compressed';
+    if(!fname.endsWith('.pdf')) fname+='.pdf';
+    var saved=toolFiles[0].size>bytes.length?Math.round((1-bytes.length/toolFiles[0].size)*100):0;
+    showResults([{name:fname, size:fmtSize(bytes.length)+' (saved '+saved+'%)', url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+    return;
+  }
+  setP(80, 'Saving compressed PDF...');
+  var bytes = await doc.save({useObjectStreams: true});
+  var fname = (document.getElementById('optCompressName')?document.getElementById('optCompressName').value.trim():'compressed')||'compressed';
+  if(!fname.endsWith('.pdf')) fname+='.pdf';
+  var saved = toolFiles[0].size>bytes.length ? Math.round((1-bytes.length/toolFiles[0].size)*100) : 0;
+  showResults([{name:fname, size:fmtSize(bytes.length)+' (saved '+saved+'%)', url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
 }
 
 async function tPDF2JPG() {
   setP(5, 'Loading PDF renderer...');
   var buf = await toolFiles[0].arrayBuffer();
   var pdf = await pdfjsLib.getDocument({data: new Uint8Array(buf)}).promise;
-  var count = pdf.numPages;
-  var qualEl = document.getElementById('optQ');
-  var qual = qualEl ? parseInt(qualEl.value)/100 : 0.85;
+  var total = pdf.numPages;
+  var qual = document.getElementById('optQ') ? parseInt(document.getElementById('optQ').value)/100 : 0.90;
+  var scale = document.getElementById('optPDFScale') ? parseFloat(document.getElementById('optPDFScale').value) : 2.0;
+  var fmt = document.getElementById('optPDFOutFmt') ? document.getElementById('optPDFOutFmt').value : 'jpeg';
+  var mime = fmt === 'png' ? 'image/png' : 'image/jpeg';
+  var ext = fmt === 'png' ? 'png' : 'jpg';
+  var pagesMode = document.getElementById('optPDFPages') ? document.getElementById('optPDFPages').value : 'all';
+  var pageFrom = 1, pageTo = total;
+  if (pagesMode === 'first') { pageFrom=1; pageTo=1; }
+  else if (pagesMode === 'range') {
+    pageFrom = parseInt(document.getElementById('optPFrom').value)||1;
+    pageTo   = parseInt(document.getElementById('optPTo').value)||total;
+    pageTo   = Math.min(pageTo, total);
+  }
   var results = [];
-  for (var i = 1; i <= count; i++) {
-    setP(Math.round(5+90*(i/count)), 'Rendering page '+i+' of '+count+'...');
+  for (var i = pageFrom; i <= pageTo; i++) {
+    setP(Math.round(5+90*((i-pageFrom)/(pageTo-pageFrom+1))), 'Rendering page '+i+' of '+pageTo+'...');
     var page = await pdf.getPage(i);
-    var vp = page.getViewport({scale:2.0});
+    var vp = page.getViewport({scale:scale});
     var canvas = document.createElement('canvas');
     canvas.width = vp.width; canvas.height = vp.height;
     await page.render({canvasContext:canvas.getContext('2d'), viewport:vp}).promise;
-    var blob = await new Promise(function(res){ canvas.toBlob(res,'image/jpeg',qual); });
-    results.push({name:'page-'+i+'.jpg', size:fmtSize(blob.size), url:URL.createObjectURL(blob)});
+    var blob = await new Promise(function(res){ canvas.toBlob(res, mime, qual); });
+    results.push({name:'page-'+i+'.'+ext, size:fmtSize(blob.size), url:URL.createObjectURL(blob)});
   }
   showResults(results);
 }
@@ -794,27 +1231,79 @@ async function tPDF2JPG() {
 async function tJPG2PDF() {
   setP(5, 'Creating PDF...'); var PDFDoc = PDFLib.PDFDocument;
   var doc = await PDFDoc.create();
+  var sizeMode = document.getElementById('optJ2PSize') ? document.getElementById('optJ2PSize').value : 'image';
+  var fitMode  = document.getElementById('optJ2PFit')  ? document.getElementById('optJ2PFit').value  : 'contain';
+  var margin   = parseInt(document.getElementById('optJ2PMargin') ? document.getElementById('optJ2PMargin').value : '40') || 0;
+  // A4: 595x842pt, Letter: 612x792pt (at 72dpi)
+  var pageSizes = {a4:[595,842], a4l:[842,595], letter:[612,792]};
   for (var i = 0; i < toolFiles.length; i++) {
     setP(Math.round(5+85*(i/toolFiles.length)), 'Adding image '+(i+1)+'...');
     var buf = await toolFiles[i].arrayBuffer();
-    var img = toolFiles[i].type === 'image/png' ? await doc.embedPng(buf) : await doc.embedJpg(buf);
-    var page = doc.addPage([img.width, img.height]);
-    page.drawImage(img, {x:0, y:0, width:img.width, height:img.height});
+    var isWebp = toolFiles[i].type === 'image/webp';
+    var isPng  = toolFiles[i].type === 'image/png';
+    var embedBuf = buf;
+    // webp needs canvas conversion first
+    if (isWebp || (!isPng && toolFiles[i].type !== 'image/jpeg')) {
+      var imgEl = await loadImgEl(toolFiles[i]);
+      var cv = document.createElement('canvas'); cv.width=imgEl.width; cv.height=imgEl.height;
+      cv.getContext('2d').drawImage(imgEl,0,0);
+      var bl = await new Promise(function(res){cv.toBlob(res,'image/jpeg',0.95);});
+      embedBuf = await bl.arrayBuffer(); isPng = false;
+    }
+    var img = isPng ? await doc.embedPng(embedBuf) : await doc.embedJpg(embedBuf);
+    var iw = img.width, ih = img.height;
+    var pw, ph;
+    if (sizeMode === 'image') { pw=iw; ph=ih; }
+    else { var ps=pageSizes[sizeMode]||[595,842]; pw=ps[0]; ph=ps[1]; }
+    var page = doc.addPage([pw, ph]);
+    if (sizeMode === 'image') {
+      page.drawImage(img, {x:0, y:0, width:iw, height:ih});
+    } else {
+      var m = margin;
+      var availW = pw - m*2, availH = ph - m*2;
+      var dw=iw, dh=ih;
+      if (fitMode === 'contain') {
+        var ratio = Math.min(availW/iw, availH/ih);
+        dw=iw*ratio; dh=ih*ratio;
+        page.drawImage(img, {x: m+(availW-dw)/2, y: m+(availH-dh)/2, width:dw, height:dh});
+      } else if (fitMode === 'fill') {
+        page.drawImage(img, {x:m, y:m, width:availW, height:availH});
+      } else {
+        page.drawImage(img, {x:(pw-iw)/2, y:(ph-ih)/2, width:iw, height:ih});
+      }
+    }
   }
-  setP(95, 'Saving...'); var bytes = await doc.save();
-  showResults([{name:'images.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+  setP(95, 'Saving...');
+  var bytes = await doc.save();
+  var fname = (document.getElementById('optJ2PName') ? document.getElementById('optJ2PName').value.trim() : 'images') || 'images';
+  if(!fname.endsWith('.pdf')) fname+='.pdf';
+  showResults([{name:fname, size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
 }
 
 async function tWatermarkPDF() {
   setP(10, 'Loading PDF...'); var PDFDoc = PDFLib.PDFDocument;
-  var buf = await toolFiles[0].arrayBuffer(); var doc = await PDFDoc.load(buf);
+  var buf = await toolFiles[0].arrayBuffer(); var doc = await PDFDoc.load(buf, {ignoreEncryption:true});
   var font = await doc.embedFont(PDFLib.StandardFonts.HelveticaBold);
-  var text = (document.getElementById('optWM').value||'WATERMARK').trim();
-  var size = parseInt(document.getElementById('optWMSize').value)||48;
+  var text  = (document.getElementById('optWM') ? document.getElementById('optWM').value : 'CONFIDENTIAL').trim() || 'CONFIDENTIAL';
+  var size  = parseInt(document.getElementById('optWMSize') ? document.getElementById('optWMSize').value : '52') || 52;
+  var angle = parseInt(document.getElementById('optWMAngle') ? document.getElementById('optWMAngle').value : '45') || 45;
+  var colorName = document.getElementById('optWMColor') ? document.getElementById('optWMColor').value : 'grey';
+  var opacity   = (parseInt(document.getElementById('optWMOp') ? document.getElementById('optWMOp').value : '25')||25) / 100;
+  var scope     = document.getElementById('optWMPages') ? document.getElementById('optWMPages').value : 'all';
+  var colorMap = {grey:PDFLib.rgb(0.6,0.6,0.6), red:PDFLib.rgb(0.8,0.1,0.1), blue:PDFLib.rgb(0.1,0.2,0.8), black:PDFLib.rgb(0,0,0), orange:PDFLib.rgb(1,0.3,0)};
+  var color = colorMap[colorName] || colorMap.grey;
   setP(50, 'Adding watermark...');
-  doc.getPages().forEach(function(page){
+  doc.getPages().forEach(function(page, i){
+    var apply = scope==='all' || (scope==='first'&&i===0) || (scope==='odd'&&i%2===0) || (scope==='even'&&i%2===1);
+    if (!apply) return;
     var s = page.getSize();
-    page.drawText(text, {x:s.width/2-text.length*size*0.25, y:s.height/2, size:size, font:font, color:PDFLib.rgb(0.75,0.75,0.75), opacity:0.35, rotate:PDFLib.degrees(45)});
+    var textW = font.widthOfTextAtSize(text, size);
+    page.drawText(text, {
+      x: s.width/2 - textW/2,
+      y: s.height/2 - size/2,
+      size: size, font: font, color: color, opacity: opacity,
+      rotate: PDFLib.degrees(angle)
+    });
   });
   setP(90, 'Saving...'); var bytes = await doc.save();
   showResults([{name:'watermarked.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
@@ -822,19 +1311,34 @@ async function tWatermarkPDF() {
 
 async function tPageNumbers() {
   setP(10, 'Loading PDF...'); var PDFDoc = PDFLib.PDFDocument;
-  var buf = await toolFiles[0].arrayBuffer(); var doc = await PDFDoc.load(buf);
+  var buf = await toolFiles[0].arrayBuffer(); var doc = await PDFDoc.load(buf, {ignoreEncryption:true});
   var font = await doc.embedFont(PDFLib.StandardFonts.Helvetica);
-  var pos = document.getElementById('optPNPos').value || 'bottom-center';
-  var start = parseInt(document.getElementById('optPNStart').value)||1;
+  var pos    = (document.getElementById('optPNPos')    ? document.getElementById('optPNPos').value    : 'bottom-center');
+  var start  = parseInt(document.getElementById('optPNStart') ? document.getElementById('optPNStart').value : '1') || 1;
+  var fmt    = (document.getElementById('optPNFormat') ? document.getElementById('optPNFormat').value : 'num');
+  var fsize  = parseInt(document.getElementById('optPNSize')  ? document.getElementById('optPNSize').value  : '12') || 12;
+  var skip   = parseInt(document.getElementById('optPNSkip')  ? document.getElementById('optPNSkip').value  : '0') || 0;
+  var total  = doc.getPageCount();
   setP(50, 'Adding page numbers...');
   doc.getPages().forEach(function(page, i){
-    var s = page.getSize(); var num = String(start+i);
+    if (i < skip) return;
+    var s = page.getSize();
+    var num = start + (i - skip);
+    var label;
+    if      (fmt==='of')   label = num+' of '+(total-skip);
+    else if (fmt==='dash') label = '— '+num+' —';
+    else if (fmt==='pg')   label = 'Page '+num;
+    else                   label = String(num);
+    var tw = font.widthOfTextAtSize(label, fsize);
     var x, y;
-    if (pos==='bottom-center') { x=s.width/2-10; y=20; }
-    else if (pos==='bottom-right') { x=s.width-40; y=20; }
-    else if (pos==='bottom-left') { x=20; y=20; }
-    else { x=s.width/2-10; y=s.height-30; }
-    page.drawText(num, {x:x, y:y, size:12, font:font, color:PDFLib.rgb(0,0,0)});
+    var pad = 18;
+    if (pos==='bottom-center') { x=(s.width-tw)/2; y=pad; }
+    else if (pos==='bottom-right') { x=s.width-tw-pad; y=pad; }
+    else if (pos==='bottom-left')  { x=pad; y=pad; }
+    else if (pos==='top-center')   { x=(s.width-tw)/2; y=s.height-fsize-pad; }
+    else if (pos==='top-right')    { x=s.width-tw-pad; y=s.height-fsize-pad; }
+    else                           { x=pad; y=s.height-fsize-pad; }
+    page.drawText(label, {x:x, y:y, size:fsize, font:font, color:PDFLib.rgb(0,0,0)});
   });
   setP(90, 'Saving...'); var bytes = await doc.save();
   showResults([{name:'numbered.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
@@ -900,30 +1404,37 @@ function toBlob(canvas, mime, q) {
 async function tCompress() {
   setP(20,'Loading image...');
   var qual = parseInt(document.getElementById('optQ').value)/100 || 0.85;
+  var fmt  = document.getElementById('optOutFmt') ? document.getElementById('optOutFmt').value : 'jpeg';
+  var mime = fmt==='png'?'image/png':fmt==='webp'?'image/webp':'image/jpeg';
+  var ext  = fmt==='png'?'png':fmt==='webp'?'webp':'jpg';
   var img = await loadImgEl(toolFiles[0]);
-  var c = document.createElement('canvas');
-  c.width=img.width; c.height=img.height;
-  c.getContext('2d').drawImage(img,0,0);
+  var c = document.createElement('canvas'); c.width=img.width; c.height=img.height;
+  var ctx=c.getContext('2d');
+  if (mime!=='image/png'){ ctx.fillStyle='#fff'; ctx.fillRect(0,0,c.width,c.height); }
+  ctx.drawImage(img,0,0);
   setP(70,'Compressing...');
-  var blob = await toBlob(c,'image/jpeg',qual);
-  showResults([{name:'compressed.jpg', size:fmtSize(blob.size), url:URL.createObjectURL(blob)}]);
+  var blob = await toBlob(c,mime,qual);
+  showResults([{name:'compressed.'+ext, size:fmtSize(blob.size), url:URL.createObjectURL(blob)}]);
 }
 
 async function tResize() {
   setP(20,'Loading image...');
   var img = await loadImgEl(toolFiles[0]);
   var keepAR = document.getElementById('optAR').value==='1';
-  var w = parseInt(document.getElementById('optW').value)||img.width;
-  var h = parseInt(document.getElementById('optH').value)||img.height;
+  var w = parseInt(document.getElementById('optW').value)||0;
+  var h = parseInt(document.getElementById('optH').value)||0;
+  if (!w && !h) { w=img.width; h=img.height; }
+  var ratio = img.width/img.height;
   if (keepAR) {
-    var ratio = img.width/img.height;
-    if (document.getElementById('optW').value && !document.getElementById('optH').value) h=Math.round(w/ratio);
-    else if (!document.getElementById('optW').value && document.getElementById('optH').value) w=Math.round(h*ratio);
+    if (w && !h) h=Math.round(w/ratio);
+    else if (!w && h) w=Math.round(h*ratio);
+    else if (w && h) { var rr=Math.min(w/img.width,h/img.height); w=Math.round(img.width*rr); h=Math.round(img.height*rr); }
   }
-  setP(60,'Resizing to '+w+'x'+h+'...');
+  setP(60,'Resizing to '+w+'\xd7'+h+'...');
   var c = document.createElement('canvas'); c.width=w; c.height=h;
   c.getContext('2d').drawImage(img,0,0,w,h);
-  var blob = await toBlob(c,'image/jpeg',0.92);
+  var qual = (document.getElementById('optRQ') ? parseInt(document.getElementById('optRQ').value)/100 : 0.9) || 0.9;
+  var blob = await toBlob(c,'image/jpeg',qual);
   showResults([{name:'resized_'+w+'x'+h+'.jpg', size:fmtSize(blob.size), url:URL.createObjectURL(blob)}]);
 }
 
@@ -934,7 +1445,7 @@ async function tCrop() {
   var y=parseInt(document.getElementById('optY').value)||0;
   var cw=parseInt(document.getElementById('optCW').value)||img.width-x;
   var ch=parseInt(document.getElementById('optCH').value)||img.height-y;
-  setP(60,'Cropping...');
+  setP(60,'Cropping '+cw+'\xd7'+ch+'...');
   var c = document.createElement('canvas'); c.width=cw; c.height=ch;
   c.getContext('2d').drawImage(img,x,y,cw,ch,0,0,cw,ch);
   var blob = await toBlob(c,'image/jpeg',0.92);
@@ -943,15 +1454,15 @@ async function tCrop() {
 
 async function tConvert(ext, mime) {
   var results = [];
+  var qual = document.getElementById('optQ') ? parseInt(document.getElementById('optQ').value)/100 : 0.92;
+  var bgColor = document.getElementById('optBg') ? document.getElementById('optBg').value : 'white';
   for (var i = 0; i < toolFiles.length; i++) {
     setP(Math.round(5+90*(i/toolFiles.length)),'Converting '+(i+1)+' of '+toolFiles.length+'...');
     var img = await loadImgEl(toolFiles[i]);
     var c = document.createElement('canvas'); c.width=img.width; c.height=img.height;
     var ctx = c.getContext('2d');
-    if (mime==='image/jpeg'||mime==='image/webp') { ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,c.width,c.height); }
+    if (mime==='image/jpeg'||mime==='image/webp') { ctx.fillStyle=bgColor; ctx.fillRect(0,0,c.width,c.height); }
     ctx.drawImage(img,0,0);
-    var qualEl = document.getElementById('optQ');
-    var qual = qualEl ? parseInt(qualEl.value)/100 : 0.92;
     var blob = await toBlob(c,mime,qual);
     var base = toolFiles[i].name.replace(/\.[^.]+$/,'');
     results.push({name:base+'.'+ext, size:fmtSize(blob.size), url:URL.createObjectURL(blob)});
@@ -963,16 +1474,37 @@ async function tWatermarkImg() {
   setP(20,'Loading image...');
   var img = await loadImgEl(toolFiles[0]);
   var c = document.createElement('canvas'); c.width=img.width; c.height=img.height;
-  var ctx = c.getContext('2d');
-  ctx.drawImage(img,0,0);
-  var text = (document.getElementById('optIMGWM').value||'© Freepdfconverterr').trim();
-  var color = document.getElementById('optWMC').value||'white';
+  var ctx = c.getContext('2d'); ctx.drawImage(img,0,0);
+  var text    = (document.getElementById('optIMGWM').value||'\xa9 Freepdfconverterr').trim();
+  var color   = document.getElementById('optWMC').value||'white';
   var opacity = parseInt(document.getElementById('optWMO').value)/100 || 0.5;
-  var fs = Math.max(20, Math.round(img.width*0.05));
+  var wpos    = document.getElementById('optWMPos') ? document.getElementById('optWMPos').value : 'center';
+  var fsSetting = parseInt(document.getElementById('optWMFS') ? document.getElementById('optWMFS').value : '0') || 0;
+  var fs = fsSetting > 0 ? fsSetting : Math.max(16, Math.round(img.width*0.045));
   ctx.save(); ctx.globalAlpha=opacity; ctx.fillStyle=color;
-  ctx.font='bold '+fs+'px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.translate(img.width/2,img.height/2); ctx.rotate(-Math.PI/6);
-  ctx.fillText(text,0,0); ctx.restore();
+  ctx.font='bold '+fs+'px sans-serif'; ctx.textBaseline='middle';
+  var tw = ctx.measureText(text).width;
+  var pad = Math.round(img.width*0.03);
+  if (wpos==='center') {
+    ctx.textAlign='center'; ctx.translate(img.width/2,img.height/2); ctx.rotate(-Math.PI/6); ctx.fillText(text,0,0);
+  } else if (wpos==='tile') {
+    ctx.textAlign='left';
+    var stepX=tw+img.width*0.25, stepY=fs*3;
+    for (var ty=-img.height;ty<img.height*2;ty+=stepY) {
+      for (var tx=-img.width;tx<img.width*2;tx+=stepX) {
+        ctx.save(); ctx.translate(tx,ty); ctx.rotate(-Math.PI/8); ctx.fillText(text,0,0); ctx.restore();
+      }
+    }
+  } else {
+    ctx.textAlign='left';
+    var wx, wy;
+    if (wpos==='bottom-right') { wx=img.width-tw-pad; wy=img.height-pad; }
+    else if (wpos==='bottom-left') { wx=pad; wy=img.height-pad; }
+    else if (wpos==='top-right') { wx=img.width-tw-pad; wy=pad+fs/2; }
+    else { wx=pad; wy=pad+fs/2; }
+    ctx.fillText(text,wx,wy);
+  }
+  ctx.restore();
   var blob = await toBlob(c,'image/jpeg',0.92);
   showResults([{name:'watermarked.jpg', size:fmtSize(blob.size), url:URL.createObjectURL(blob)}]);
 }
@@ -997,28 +1529,36 @@ async function tGrayscale() {
 async function tFlip() {
   setP(20,'Loading image...');
   var img = await loadImgEl(toolFiles[0]);
-  var dir = document.getElementById('optFlip').value;
+  var dir  = document.getElementById('optFlip').value;
+  var fmt  = document.getElementById('optFlipFmt') ? document.getElementById('optFlipFmt').value : 'jpeg';
+  var mime = fmt==='png'?'image/png':'image/jpeg';
+  var ext  = fmt==='png'?'png':'jpg';
   var c = document.createElement('canvas'); c.width=img.width; c.height=img.height;
   var ctx = c.getContext('2d');
-  if (dir==='h') { ctx.translate(c.width,0); ctx.scale(-1,1); }
-  else { ctx.translate(0,c.height); ctx.scale(1,-1); }
+  if (dir==='h'||dir==='both') { ctx.translate(c.width,0); ctx.scale(-1,1); }
+  if (dir==='v'||dir==='both') { ctx.translate(0,c.height); ctx.scale(1,-1); }
   ctx.drawImage(img,0,0);
-  var blob = await toBlob(c,'image/jpeg',0.92);
-  showResults([{name:'flipped.jpg', size:fmtSize(blob.size), url:URL.createObjectURL(blob)}]);
+  var blob = await toBlob(c,mime,0.92);
+  showResults([{name:'flipped.'+ext, size:fmtSize(blob.size), url:URL.createObjectURL(blob)}]);
 }
 
 async function tRotateImg() {
   setP(20,'Loading image...');
   var img = await loadImgEl(toolFiles[0]);
-  var angle = parseInt(document.getElementById('optRotI').value)||90;
-  var rad = angle*Math.PI/180; var swap = angle===90||angle===270;
-  var c = document.createElement('canvas');
-  c.width=swap?img.height:img.width; c.height=swap?img.width:img.height;
+  var customVal = document.getElementById('optRotCustom') ? document.getElementById('optRotCustom').value.trim() : '';
+  var angle = (customVal !== '') ? parseInt(customVal)||0 : parseInt(document.getElementById('optRotI').value)||90;
+  var bg    = document.getElementById('optRotBg') ? document.getElementById('optRotBg').value : 'white';
+  var rad = angle*Math.PI/180;
+  var sinA=Math.abs(Math.sin(rad)), cosA=Math.abs(Math.cos(rad));
+  var nw=Math.round(img.width*cosA+img.height*sinA), nh=Math.round(img.width*sinA+img.height*cosA);
+  var c = document.createElement('canvas'); c.width=nw; c.height=nh;
   var ctx = c.getContext('2d');
-  ctx.translate(c.width/2,c.height/2); ctx.rotate(rad);
+  if (bg!=='transparent') { ctx.fillStyle=bg; ctx.fillRect(0,0,nw,nh); }
+  ctx.translate(nw/2,nh/2); ctx.rotate(rad);
   ctx.drawImage(img,-img.width/2,-img.height/2);
-  var blob = await toBlob(c,'image/jpeg',0.92);
-  showResults([{name:'rotated.jpg', size:fmtSize(blob.size), url:URL.createObjectURL(blob)}]);
+  var usePng = bg==='transparent';
+  var blob = await toBlob(c, usePng?'image/png':'image/jpeg', 0.92);
+  showResults([{name:'rotated.'+(usePng?'png':'jpg'), size:fmtSize(blob.size), url:URL.createObjectURL(blob)}]);
 }
 
 async function tBrightness() {
@@ -1026,15 +1566,28 @@ async function tBrightness() {
   var img = await loadImgEl(toolFiles[0]);
   var c = document.createElement('canvas'); c.width=img.width; c.height=img.height;
   var ctx = c.getContext('2d'); ctx.drawImage(img,0,0);
-  var b=parseInt(document.getElementById('optB').value)||0;
-  var con=parseInt(document.getElementById('optC').value)||0;
+  var b  = parseInt(document.getElementById('optB').value)||0;
+  var con= parseInt(document.getElementById('optC').value)||0;
+  var sat= parseInt(document.getElementById('optSat') ? document.getElementById('optSat').value : '0')||0;
+  var hue= parseInt(document.getElementById('optHue') ? document.getElementById('optHue').value : '0')||0;
   setP(60,'Adjusting...');
   var id=ctx.getImageData(0,0,c.width,c.height);
   var factor=(259*(con+255))/(255*(259-con));
+  function hue2rgb(p,q,t){if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<0.5)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;}
   for (var i=0;i<id.data.length;i+=4){
-    id.data[i]=Math.min(255,Math.max(0,factor*(id.data[i]-128)+128+b));
-    id.data[i+1]=Math.min(255,Math.max(0,factor*(id.data[i+1]-128)+128+b));
-    id.data[i+2]=Math.min(255,Math.max(0,factor*(id.data[i+2]-128)+128+b));
+    var r=id.data[i],g=id.data[i+1],b2=id.data[i+2];
+    r=Math.min(255,Math.max(0,factor*(r-128)+128+b));
+    g=Math.min(255,Math.max(0,factor*(g-128)+128+b));
+    b2=Math.min(255,Math.max(0,factor*(b2-128)+128+b));
+    if (sat!==0||hue!==0) {
+      var mx=Math.max(r,g,b2)/255,mn=Math.min(r,g,b2)/255;
+      var l=(mx+mn)/2,s2=0,h2=0;
+      if(mx!==mn){s2=l<0.5?(mx-mn)/(mx+mn):(mx-mn)/(2-mx-mn);var d=mx-mn;h2=mx===r/255?(g/255-b2/255)/d+(g<b2?6:0):mx===g/255?(b2/255-r/255)/d+2:(r/255-g/255)/d+4;h2/=6;}
+      if(sat!==0)s2=Math.max(0,Math.min(1,s2*(1+sat/100)));
+      if(hue!==0)h2=(h2+hue/360+1)%1;
+      if(s2===0){r=g=b2=l*255;}else{var q2=l<0.5?l*(1+s2):l+s2-l*s2,p2=2*l-q2;r=hue2rgb(p2,q2,h2+1/3)*255;g=hue2rgb(p2,q2,h2)*255;b2=hue2rgb(p2,q2,h2-1/3)*255;}
+    }
+    id.data[i]=Math.round(r); id.data[i+1]=Math.round(g); id.data[i+2]=Math.round(b2);
   }
   ctx.putImageData(id,0,0);
   var blob = await toBlob(c,'image/jpeg',0.92);
@@ -1096,6 +1649,38 @@ async function tImgToPDF() {
   setP(90,'Saving...'); var bytes = await doc.save();
   showResults([{name:'image.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
 }
+
+// ═══ DYNAMIC OPTION UI HELPERS ═══
+function toggleSplitMode(val) {
+  var r=document.getElementById('splitRangeOpts');
+  var e=document.getElementById('splitEveryOpts');
+  var rm=document.getElementById('splitRemoveOpts');
+  if(r) r.style.display = val==='range' ? '' : 'none';
+  if(e) e.style.display = val==='every' ? '' : 'none';
+  if(rm) rm.style.display= val==='remove'? '' : 'none';
+}
+function applyResizePreset(val) {
+  if (!val) return;
+  var parts = val.split('x');
+  var w = document.getElementById('optW'); var h = document.getElementById('optH');
+  if (w) w.value = parts[0];
+  if (h) h.value = parts[1];
+}
+function applySquareCrop(val) {
+  if (!val) return;
+  toast('Enter your image dimensions above to set crop coordinates.','info');
+}
+document.addEventListener('change', function(e) {
+  if (!e.target) return;
+  if (e.target.id==='optRotScope') {
+    var d=document.getElementById('rotCustomPages');
+    if(d) d.style.display = e.target.value==='custom' ? '' : 'none';
+  }
+  if (e.target.id==='optPDFPages') {
+    var d2=document.getElementById('pdfPageRange');
+    if(d2) d2.style.display = e.target.value==='range' ? '' : 'none';
+  }
+});
 
 // ═══ AUTH ═══
 function openAuth(tab) { switchTab(tab); document.getElementById('authOv').classList.add('active'); document.body.style.overflow='hidden'; }
@@ -1204,7 +1789,40 @@ async function submitRep() {
   btn.disabled=false; btn.textContent='Submit Report';
 }
 
-// ═══ TOAST ═══
+// ═══ SHARE TOOL ═══
+var _shareUrl = '';
+var _shareText = '';
+function shareTool(e, toolId, toolName) {
+  e.stopPropagation();
+  var url = 'https://freepdfconverterr.github.io/#'+toolId;
+  var text = 'Use this free '+toolName+' tool — no signup, no upload, 100% private!';
+  _shareUrl = url; _shareText = text;
+  document.getElementById('shareUrlInput').value = url;
+  document.getElementById('shareSubTxt').textContent = 'Share "'+toolName+'" with friends!';
+  document.getElementById('shareWhatsApp').href = 'https://wa.me/?text='+encodeURIComponent(text+' '+url);
+  document.getElementById('shareTwitter').href  = 'https://twitter.com/intent/tweet?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url);
+  document.getElementById('shareFacebook').href = 'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url);
+  document.getElementById('shareLinkedIn').href = 'https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(url);
+  document.getElementById('shareEmail').href    = 'mailto:?subject='+encodeURIComponent('Free '+toolName+' Tool')+'&body='+encodeURIComponent(text+'\n\n'+url);
+  document.getElementById('shareOv').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeShare() { document.getElementById('shareOv').classList.remove('active'); document.body.style.overflow=''; }
+function copyShareUrl() {
+  var inp = document.getElementById('shareUrlInput');
+  inp.select(); inp.setSelectionRange(0,9999);
+  try { document.execCommand('copy'); toast('🔗 Link copied to clipboard!','ok'); }
+  catch(e) { navigator.clipboard.writeText(_shareUrl).then(function(){ toast('🔗 Link copied!','ok'); }); }
+}
+function nativeShare() {
+  if (navigator.share) {
+    navigator.share({title:'Freepdfconverterr — Free Tools', text:_shareText, url:_shareUrl})
+      .then(function(){ closeShare(); })
+      .catch(function(){});
+  } else { copyShareUrl(); }
+}
+document.getElementById('shareOv').addEventListener('click', function(e){ if(e.target===this) closeShare(); });
+
 function toast(msg, type) {
   type=type||'info';
   var icons={ok:'✅',err:'❌',info:'ℹ️'};
@@ -1223,6 +1841,15 @@ if ('serviceWorker' in navigator) {
   .then(function(){ console.log('PWA Ready!'); })
   .catch(function(e){ console.log('SW Error:',e); });
 }
+// Open tool from URL hash (for shared links)
+(function(){
+  var hash = window.location.hash.replace('#','');
+  if (hash && TOOLS.find(function(t){ return t.id===hash; })) {
+    window.addEventListener('load', function(){
+      setTimeout(function(){ openTool(hash); }, 600);
+    });
+  }
+})();
 </script>
 </body>
 </html>
