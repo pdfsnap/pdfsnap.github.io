@@ -5,7 +5,6 @@ const CACHE_NAME = 'pdfsnap-v9';
 const ASSETS = [
   '/',
   '/index.html',
-  '/app.apk',
   '/blog.html',
   '/blog-1.html',
   '/blog-2.html',
@@ -14,6 +13,44 @@ const ASSETS = [
   '/blog-5.html',
   '/blog-6.html',
   '/blog-7.html',
+  '/blog-8.html',
+  '/blog-9.html',
+  '/blog-10.html',
+  '/blog-11.html',
+  '/blog-12.html',
+  '/blog-13.html',
+  '/blog-14.html',
+  '/blog-15.html',
+  '/blog-16.html',
+  '/blog-17.html',
+  '/blog-18.html',
+  '/blog-19.html',
+  '/blog-20.html',
+  '/blog-21.html',
+  '/blog-22.html',
+  '/blog-23.html',
+  '/blog-24.html',
+  '/blog-25.html',
+  '/blog-26.html',
+  '/blog-27.html',
+  '/blog-28.html',
+  '/blog-29.html',
+  '/blog-30.html',
+  '/blog-31.html',
+  '/blog-32.html',
+  '/blog-33.html',
+  '/blog-34.html',
+  '/blog-35.html',
+  '/blog-36.html',
+  '/blog-37.html',
+  '/blog-38.html',
+  '/blog-39.html',
+  '/blog-40.html',
+  '/blog-41.html',
+  '/blog-42.html',
+  '/blog-43.html',
+  '/blog-44.html',
+  '/blog-45.html',
   '/about.html',
   '/contact.html',
   '/privacy-policy.html',
@@ -67,7 +104,7 @@ self.addEventListener('fetch', function(event) {
         }
         return networkResponse;
       }).catch(function() {
-        return caches.match('/index.html');
+        return new Response('Not found', { status: 404 });
       });
     })
   );
