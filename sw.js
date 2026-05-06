@@ -1,7 +1,7 @@
 // PDFSnap Service Worker
 // Version 4.0
 
-const CACHE_NAME = 'pdfsnap-v9';
+const CACHE_NAME = 'pdfsnap-v10';
 const ASSETS = [
   '/',
   '/index.html',
@@ -51,6 +51,9 @@ const ASSETS = [
   '/blog-43.html',
   '/blog-44.html',
   '/blog-45.html',
+  '/blog-46.html',
+  '/blog-47.html',
+  '/blog-48.html',
   '/about.html',
   '/contact.html',
   '/privacy-policy.html',
