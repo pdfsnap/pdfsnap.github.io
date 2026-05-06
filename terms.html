@@ -60,9 +60,21 @@ h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700}
 .card ul{color:var(--mut);font-size:.9rem;line-height:1.8;margin-bottom:.9rem;padding-left:1.4rem}
 .card ul li{margin-bottom:.3rem}
 .card a{color:var(--acc)}
+
+/* ── DARK MODE ── */
+body.dark{--bg:#12100E;--sur:#1C1916;--card:#1C1916;--bdr:#2E2520;--txt:#F0E8E0;--mut:#9B8B82;--acc-light:#2A1A10}
+body.dark nav{background:rgba(18,16,14,.97)}
+#darkToggle{background:none;border:1.5px solid var(--bdr);border-radius:99px;padding:.28rem .65rem;font-size:.78rem;cursor:pointer;color:var(--txt);transition:all .2s;font-weight:600;margin-left:.5rem}
+#darkToggle:hover{background:var(--acc-light);border-color:var(--acc)}
+#backTop{position:fixed;bottom:1.4rem;right:1.4rem;z-index:999;background:var(--acc);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(255,77,0,.35);opacity:0;pointer-events:none;transition:opacity .3s,transform .2s}
+#backTop.show{opacity:1;pointer-events:all}
+#backTop:hover{transform:translateY(-3px)}
 </style>
 </head>
 <body>
+<!-- Adsterra Native Banner -->
+<script async="async" data-cfasync="false" src="https://pl29357406.profitablecpmratenetwork.com/07b60688d237b4ad6b32287403f18786/invoke.js"></script>
+<div id="container-07b60688d237b4ad6b32287403f18786"></div>
 <nav>
   <a class="logo" href="index.html">PDF<span>Snap</span></a>
   <div class="nav-links">
@@ -153,5 +165,23 @@ h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700}
     <div style="color:var(--mut);font-size:.76rem;margin-top:.55rem;opacity:.85;line-height:1.8">📧 <a href="mailto:pdfsnap.tools@gmail.com" style="color:var(--mut);text-decoration:none">pdfsnap.tools@gmail.com</a> &nbsp;|&nbsp; 📍 Patlion, Paonta Sahib, Sirmaur, H.P., India — 173025</div>
   </div>
 </footer>
+<script>
+(function(){
+  var saved=localStorage.getItem('pdfsnap-theme');
+  if(saved==='dark') document.body.classList.add('dark');
+  window.toggleDark=function(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('pdfsnap-theme',document.body.classList.contains('dark')?'dark':'light');
+    document.getElementById('darkToggle').textContent=document.body.classList.contains('dark')?'☀️ Light':'🌙 Dark';
+  };
+})();
+window.addEventListener('scroll',function(){
+  var b=document.getElementById('backTop');
+  if(b){window.scrollY>400?b.classList.add('show'):b.classList.remove('show');}
+});
+</script>
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<!-- Adsterra Social Bar -->
+<script src="https://pl29357407.profitablecpmratenetwork.com/34/ff/cd/34ffcdb5c7bb232bdb1a400f0a7b4703.js"></script>
 </body>
 </html>

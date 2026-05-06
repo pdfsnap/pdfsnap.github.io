@@ -1,1 +1,2 @@
 google.com, pub-7352879981287034, DIRECT, f08c47fec0942fa0
+adsterra.com, 5768503, DIRECT

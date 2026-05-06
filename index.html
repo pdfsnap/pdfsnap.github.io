@@ -349,9 +349,25 @@ footer{background:var(--sur);border-top:1px solid var(--bdr);padding:2.5rem 2rem
   .trust-strip{gap:1rem}
   .features-grid{grid-template-columns:1fr 1fr}
 }
+
+/* ── DARK MODE ── */
+body.dark{--bg:#12100E;--sur:#1C1916;--card:#1C1916;--bdr:#2E2520;--txt:#F0E8E0;--mut:#9B8B82;--acc-light:#2A1A10;--shadow:0 2px 16px rgba(0,0,0,0.3);--shadow-hover:0 8px 32px rgba(255,77,0,0.2)}
+body.dark nav{background:rgba(18,16,14,.97)}
+body.dark .side-menu{background:#1C1916}
+body.dark .modal{background:#1C1916;border:1px solid #2E2520}
+body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0E8E0;border-color:#2E2520}
+#darkToggle{background:none;border:1.5px solid var(--bdr);border-radius:99px;padding:.3rem .75rem;font-size:.82rem;cursor:pointer;color:var(--txt);transition:all .2s;font-weight:600}
+#darkToggle:hover{background:var(--acc-light);border-color:var(--acc)}
+/* ── BACK TO TOP ── */
+#backTop{position:fixed;bottom:1.4rem;right:1.4rem;z-index:999;background:var(--acc);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(255,77,0,.35);opacity:0;pointer-events:none;transition:opacity .3s,transform .2s}
+#backTop.show{opacity:1;pointer-events:all}
+#backTop:hover{transform:translateY(-3px)}
 </style>
 </head>
 <body>
+<!-- Adsterra Native Banner -->
+<script async="async" data-cfasync="false" src="https://pl29357406.profitablecpmratenetwork.com/07b60688d237b4ad6b32287403f18786/invoke.js"></script>
+<div id="container-07b60688d237b4ad6b32287403f18786"></div>
 <div class="toast-wrap" id="toastWrap"></div>
 
 <!-- ADBLOCK OVERLAY -->
@@ -421,6 +437,7 @@ footer{background:var(--sur);border-top:1px solid var(--bdr);padding:2.5rem 2rem
     <div class="logo" onclick="showMain()">PDF<span>Snap</span></div>
   </div>
   <div class="nav-r">
+    <button id="darkToggle" onclick="toggleDark()">🌙 Dark</button>
     <a href="blog.html" style="color:var(--mut);text-decoration:none;font-size:.84rem;font-weight:600;display:none" id="navBlogLink">📝 Blog</a>
     <span class="nav-badge">✅ 100% Free</span>
     <button class="btn-login" onclick="openAuth('login')">Log In</button>
@@ -467,7 +484,11 @@ footer{background:var(--sur);border-top:1px solid var(--bdr);padding:2.5rem 2rem
     <div class="trust-item"><span>💸</span><span>Always free, always</span></div>
   </div>
 
-  <div class="ad-banner">📢 Advertisement — Helps us keep everything free!</div>
+  <!-- Adsterra Mid-Content Ad 1 -->
+  <div style="max-width:728px;margin:1.2rem auto;text-align:center;">
+    <script async="async" data-cfasync="false" src="https://pl29357406.profitablecpmratenetwork.com/07b60688d237b4ad6b32287403f18786/invoke.js"></script>
+    <div id="container-07b60688d237b4ad6b32287403f18786-mid1"></div>
+  </div>
 
   <!-- BLOG BANNER -->
   <div style="background:linear-gradient(135deg,#FFF0EA,#FFF8F4);border:1.5px solid #F0E4DC;border-radius:18px;padding:1.5rem 2rem;margin:1.5rem auto;max-width:860px;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;box-shadow:0 2px 16px rgba(255,77,0,0.07)">
@@ -556,7 +577,11 @@ footer{background:var(--sur);border-top:1px solid var(--bdr);padding:2.5rem 2rem
     </div>
   </section>
 
-  <div class="ad-banner">📢 Advertisement — Helps keep PDFSnap free for everyone</div>
+  <!-- Adsterra Mid-Content Ad 2 -->
+  <div style="max-width:728px;margin:1.2rem auto;text-align:center;">
+    <script async="async" data-cfasync="false" src="https://pl29357406.profitablecpmratenetwork.com/07b60688d237b4ad6b32287403f18786/invoke.js"></script>
+    <div id="container-07b60688d237b4ad6b32287403f18786-mid2"></div>
+  </div>
 </div>
 
 <!-- PROFILE SECTION -->
@@ -744,7 +769,7 @@ footer{background:var(--sur);border-top:1px solid var(--bdr);padding:2.5rem 2rem
       <div style="background:#fff;border:1.5px solid #F0E4DC;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(255,77,0,0.05)" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
         <details>
           <summary itemprop="name" style="padding:1.1rem 1.4rem;cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:700;color:#1A1218;list-style:none;display:flex;justify-content:space-between;align-items:center">Is PDFSnap really 100% free? <span style="color:#FF4D00;font-size:1.1rem">＋</span></summary>
-          <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer"><div itemprop="text" style="padding:.2rem 1.4rem 1.1rem;font-size:.87rem;color:#7B6B64;line-height:1.75">Yes — completely free, forever. All 35+ tools work with no file size limits enforced by us, no watermarks on output, and no account required. We are supported by non-intrusive Google AdSense ads, which is what keeps the lights on while the tools stay free for everyone.</div></div>
+          <div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer"><div itemprop="text" style="padding:.2rem 1.4rem 1.1rem;font-size:.87rem;color:#7B6B64;line-height:1.75">Yes — completely free, forever. All 35+ tools work with no file size limits enforced by us, no watermarks on output, and no account required. We are supported by non-intrusive ads (Google AdSense + Adsterra), which is what keeps the lights on while the tools stay free for everyone.</div></div>
         </details>
       </div>
 
@@ -788,7 +813,7 @@ footer{background:var(--sur);border-top:1px solid var(--bdr);padding:2.5rem 2rem
       <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;font-weight:800;color:#1A1218;margin-bottom:1rem;line-height:1.4">PDF tools should not cost $20/month</h2>
       <p style="color:#7B6B64;font-size:.9rem;line-height:1.85;margin-bottom:.9rem">The PDF format has existed since 1993 — over 30 years. Modern browsers in 2026 are powerful enough to compress, merge, split, and convert PDFs entirely on-device, with no server needed. Yet companies like Adobe charge $20–30/month for these same operations.</p>
       <p style="color:#7B6B64;font-size:.9rem;line-height:1.85;margin-bottom:.9rem">PDFSnap was built by <strong style="color:#1A1218">Mohammad Armaan</strong>, a developer based in Himachal Pradesh, India, who got tired of watching friends and students pay for tools that their browser could already handle for free. Every tool on this site is built with open-source libraries — PDF.js, pdf-lib, and the Canvas API.</p>
-      <p style="color:#7B6B64;font-size:.9rem;line-height:1.85;margin:0">We are a small, independent project supported by Google AdSense ads. That's it. No venture capital, no subscriptions, no user data sold. Just free tools, for everyone.</p>
+      <p style="color:#7B6B64;font-size:.9rem;line-height:1.85;margin:0">We are a small, independent project supported by Google AdSense and Adsterra ads. That's it. No venture capital, no subscriptions, no user data sold. Just free tools, for everyone.</p>
     </div>
   </section>
 
@@ -2187,5 +2212,28 @@ if (window.innerWidth > 640) { var nb = document.getElementById('navBlogLink'); 
   }
 })();
 </script>
+
+<script>
+// Dark Mode
+(function(){
+  var saved = localStorage.getItem('pdfsnap-theme');
+  if(saved==='dark') document.body.classList.add('dark');
+  function toggle(){
+    document.body.classList.toggle('dark');
+    localStorage.setItem('pdfsnap-theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    document.getElementById('darkToggle').textContent = document.body.classList.contains('dark') ? '☀️ Light' : '🌙 Dark';
+  }
+  window.toggleDark = toggle;
+})();
+// Back to top
+window.addEventListener('scroll', function(){
+  var btn = document.getElementById('backTop');
+  if(window.scrollY > 400){ btn.classList.add('show'); } else { btn.classList.remove('show'); }
+});
+</script>
+
+<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<!-- Adsterra Social Bar -->
+<script src="https://pl29357407.profitablecpmratenetwork.com/34/ff/cd/34ffcdb5c7bb232bdb1a400f0a7b4703.js"></script>
 </body>
 </html>
