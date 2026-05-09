@@ -1381,3 +1381,5 @@ function toast(msg, type) {
   document.getElementById('toastWrap').appendChild(el);
   setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },4000);
 }
+ensurePdfLibs(function(){ console.log('PDF libs ready'); });
+ensureQrLib(function(){ console.log('QR lib ready'); });
