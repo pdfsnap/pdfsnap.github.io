@@ -2,7 +2,7 @@
 // Only caches essential shell assets at install.
 // All other pages cache lazily on first visit.
 
-const CACHE_NAME = 'pdfsnap-v11';
+const CACHE_NAME = 'pdfsnap-v12';
 
 // Only cache the critical shell — not all 54 blog posts
 const SHELL_ASSETS = [
