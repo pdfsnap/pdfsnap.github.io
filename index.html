@@ -162,6 +162,7 @@ h1 em::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:3px;
 .badge-hot{background:rgba(255,77,0,.12);color:var(--acc)}
 .badge-free{background:var(--ok-light);color:var(--ok)}
 .badge-new{background:rgba(77,143,255,.12);color:var(--bl)}
+.badge-pro{background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(59,130,246,.15));color:#8B5CF6;border:1px solid rgba(139,92,246,.3)}
 .tool-foot{display:flex;align-items:center;justify-content:space-between;padding-top:.55rem;border-top:1px solid var(--bdr)}
 .tool-cat{font-size:.7rem;color:var(--mut);font-weight:500}
 .tool-actions{display:flex;gap:.3rem;align-items:center}
@@ -424,6 +425,12 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
     <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('watermarkpdf'),300)"><span class="sl-icon">💧</span> Watermark PDF</a>
     <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('pagenumbers'),300)"><span class="sl-icon">🔢</span> Page Numbers</a>
     <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('unlockpdf'),300)"><span class="sl-icon">🔓</span> Unlock PDF</a>
+    <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('protectpdf'),300)"><span class="sl-icon">🔐</span> Protect PDF <span style="font-size:.6rem;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(59,130,246,.2));color:#8B5CF6;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">PRO FREE</span></a>
+    <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('pdfmeta'),300)"><span class="sl-icon">🏷️</span> Metadata Editor <span style="font-size:.6rem;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(59,130,246,.2));color:#8B5CF6;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">PRO FREE</span></a>
+    <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('pdfsign'),300)"><span class="sl-icon">✍️</span> Sign PDF <span style="font-size:.6rem;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(59,130,246,.2));color:#8B5CF6;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">PRO FREE</span></a>
+    <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('organizer'),300)"><span class="sl-icon">🧩</span> Page Organizer <span style="font-size:.6rem;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(59,130,246,.2));color:#8B5CF6;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">PRO FREE</span></a>
+    <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('pdfocr'),300)"><span class="sl-icon">🔍</span> OCR Extract Text <span style="font-size:.6rem;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(59,130,246,.2));color:#8B5CF6;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">PRO FREE</span></a>
+    <a class="side-link" onclick="closeSideMenu();setTimeout(()=>openTool('aisum'),300)"><span class="sl-icon">🤖</span> AI Summarizer <span style="font-size:.6rem;background:linear-gradient(135deg,rgba(139,92,246,.2),rgba(59,130,246,.2));color:#8B5CF6;border-radius:99px;padding:1px 6px;font-weight:700;margin-left:4px">PRO FREE</span></a>
   </div>
   <div class="side-divider"></div>
   <div class="side-section">
@@ -470,7 +477,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 <div id="mainWrap">
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-eyebrow">⚡ 35+ Free Tools · No Upload · Instant Results</div>
+    <div class="hero-eyebrow">⚡ 40+ Free Tools · No Upload · Instant Results</div>
     <h1>Every PDF & Image tool<br/>you'll actually <em>need</em></h1>
     <p class="hero-sub">We built the tools <strong>we</strong> were always searching for. Fast, private, and free — your files never leave your device.</p>
     <div class="hero-btns">
@@ -482,7 +489,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
       <input type="text" id="searchInput" placeholder="Search tools… e.g. merge, compress, QR code" oninput="searchTools(this.value)" autocomplete="off"/>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num" id="toolCount">35+</div><div class="stat-label">Free Tools</div></div>
+      <div class="stat"><div class="stat-num" id="toolCount">40+</div><div class="stat-label">Free Tools</div></div>
       <div class="stat"><div class="stat-num">0</div><div class="stat-label">Server Uploads</div></div>
       <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Browser-Based</div></div>
     </div>
@@ -494,6 +501,24 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
     <div class="trust-item"><span>⚡</span><span>Instant, no waiting</span></div>
     <div class="trust-item"><span>🚫</span><span>No sign-up required</span></div>
     <div class="trust-item"><span>💸</span><span>Always free, always</span></div>
+  </div>
+
+  <!-- 💎 PREMIUM FREE BANNER -->
+  <div style="max-width:860px;margin:1.2rem auto;padding:0 1rem">
+    <div style="background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(59,130,246,.08));border:1.5px solid rgba(139,92,246,.25);border-radius:16px;padding:1.1rem 1.4rem;display:flex;flex-wrap:wrap;align-items:center;gap:.8rem">
+      <div style="flex:1;min-width:220px">
+        <div style="font-size:.7rem;font-weight:800;letter-spacing:.1em;color:#8B5CF6;text-transform:uppercase;margin-bottom:.25rem">💎 Premium Features — Free</div>
+        <div style="font-size:.85rem;color:var(--txt);font-weight:500">Tools other sites charge <s style="color:var(--mut)">$5–15/month</s> for — <strong style="color:#8B5CF6">100% free here</strong></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:.45rem">
+        <span onclick="openTool('protectpdf')" style="cursor:pointer;background:rgba(139,92,246,.1);color:#8B5CF6;border:1px solid rgba(139,92,246,.25);border-radius:99px;padding:.28rem .75rem;font-size:.76rem;font-weight:600;white-space:nowrap" title="Free on PDFSnap">🔐 Protect PDF</span>
+        <span onclick="openTool('pdfsign')" style="cursor:pointer;background:rgba(139,92,246,.1);color:#8B5CF6;border:1px solid rgba(139,92,246,.25);border-radius:99px;padding:.28rem .75rem;font-size:.76rem;font-weight:600;white-space:nowrap" title="Free on PDFSnap">✍️ Sign PDF</span>
+        <span onclick="openTool('pdfocr')" style="cursor:pointer;background:rgba(139,92,246,.1);color:#8B5CF6;border:1px solid rgba(139,92,246,.25);border-radius:99px;padding:.28rem .75rem;font-size:.76rem;font-weight:600;white-space:nowrap" title="Free on PDFSnap">🔍 OCR / Extract Text</span>
+        <span onclick="openTool('organizer')" style="cursor:pointer;background:rgba(139,92,246,.1);color:#8B5CF6;border:1px solid rgba(139,92,246,.25);border-radius:99px;padding:.28rem .75rem;font-size:.76rem;font-weight:600;white-space:nowrap" title="Free on PDFSnap">🧩 Page Organizer</span>
+        <span onclick="openTool('pdfmeta')" style="cursor:pointer;background:rgba(139,92,246,.1);color:#8B5CF6;border:1px solid rgba(139,92,246,.25);border-radius:99px;padding:.28rem .75rem;font-size:.76rem;font-weight:600;white-space:nowrap" title="Free on PDFSnap">🏷️ Metadata Editor</span>
+        <span onclick="openTool('aisum')" style="cursor:pointer;background:rgba(139,92,246,.1);color:#8B5CF6;border:1px solid rgba(139,92,246,.25);border-radius:99px;padding:.28rem .75rem;font-size:.76rem;font-weight:600;white-space:nowrap" title="Free on PDFSnap">🤖 AI Summarizer</span>
+      </div>
+    </div>
   </div>
 
   <!-- Adsterra Mid-Content Ad 1 -->
@@ -517,7 +542,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
     <button class="scat-btn active" onclick="filterTools('all',this)" id="tabAll">🔥 All Tools <span class="scat-count" id="cnt-all">35</span></button>
     <button class="scat-btn" onclick="filterTools('pdf-org',this)">📂 PDF Organize <span class="scat-count" id="cnt-pdf-org">8</span></button>
     <button class="scat-btn" onclick="filterTools('pdf-conv',this)">🔄 PDF Convert <span class="scat-count" id="cnt-pdf-conv">6</span></button>
-    <button class="scat-btn" onclick="filterTools('pdf-sec',this)">🔒 PDF Security <span class="scat-count" id="cnt-pdf-sec">1</span></button>
+    <button class="scat-btn" onclick="filterTools('pdf-sec',this)">🔒 PDF Security <span class="scat-count" id="cnt-pdf-sec">4</span></button>
     <button class="scat-btn" onclick="filterTools('img-edit',this)">✏️ Image Edit <span class="scat-count" id="cnt-img-edit">11</span></button>
     <button class="scat-btn" onclick="filterTools('img-conv',this)">🔁 Image Convert <span class="scat-count" id="cnt-img-conv">5</span></button>
     <button class="scat-btn" onclick="filterTools('utility',this)">🛠️ Utilities <span class="scat-count" id="cnt-utility">4</span></button>

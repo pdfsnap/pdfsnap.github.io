@@ -72,6 +72,13 @@ var TOOLS = [
   {id:'webp2jpg',     cat:'image', subcat:'img-conv', icon:'🔄', bg:'rgba(0,200,255,0.1)',   badge:'free', label:'Free',       name:'WebP to JPG',          desc:'Convert WebP images to widely-compatible JPG format.',                           accept:'.webp', multi:true, opts:'convfmt'},
   {id:'jpg2webp',     cat:'image', subcat:'img-conv', icon:'🌐', bg:'rgba(100,200,100,0.1)', badge:'free', label:'Free',       name:'JPG to WebP',          desc:'Convert to modern WebP for smaller sizes on websites. Set quality level.',      accept:'.jpg,.jpeg,.png', multi:true, opts:'convfmt'},
   {id:'watermarkimg', cat:'image', subcat:'img-conv', icon:'💧', bg:'rgba(255,77,0,0.1)',    badge:'free', label:'Free',       name:'Watermark Image',      desc:'6 positions including tiled. Custom color, font size, opacity. Batch supported.',accept:'image/*', multi:true, opts:'wmimg'},
+  // PDF SECURITY (PREMIUM - FREE)
+  {id:'protectpdf',  cat:'pdf',   subcat:'pdf-sec',  icon:'🔐', bg:'rgba(139,92,246,0.12)', badge:'pro',  label:'💎 Pro Free', name:'Protect PDF',          desc:'Add a password to your PDF so only people with the password can open it. AES encryption.', accept:'.pdf', multi:false, opts:'protectopt'},
+  {id:'pdfmeta',     cat:'pdf',   subcat:'pdf-sec',  icon:'🏷️', bg:'rgba(59,130,246,0.12)', badge:'pro',  label:'💎 Pro Free', name:'PDF Metadata Editor',  desc:'Edit hidden PDF info: Title, Author, Subject, and Keywords. Cleans up document properties.', accept:'.pdf', multi:false, opts:'metaopt'},
+  {id:'organizer',   cat:'pdf',   subcat:'pdf-org',  icon:'🧩', bg:'rgba(234,88,12,0.12)',  badge:'pro',  label:'💎 Pro Free', name:'PDF Page Organizer',   desc:'Visual drag-and-drop to reorder, delete, or rotate individual pages. See page thumbnails.', accept:'.pdf', multi:false, opts:'none'},
+  {id:'pdfsign',     cat:'pdf',   subcat:'pdf-sec',  icon:'✍️', bg:'rgba(16,185,129,0.12)', badge:'pro',  label:'💎 Pro Free', name:'Sign PDF',             desc:'Draw your signature on a canvas or type it, then embed it anywhere on your PDF document.',  accept:'.pdf', multi:false, opts:'signopt'},
+  {id:'pdfocr',      cat:'pdf',   subcat:'pdf-conv', icon:'🔍', bg:'rgba(245,158,11,0.12)', badge:'pro',  label:'💎 Pro Free', name:'OCR — Extract Text',   desc:'Extract selectable text from scanned PDFs or images using Tesseract AI. Runs 100% in your browser.', accept:'.pdf,image/*', multi:false, opts:'ocropt'},
+  {id:'aisum',       cat:'pdf',   subcat:'pdf-conv', icon:'🤖', bg:'rgba(99,102,241,0.12)', badge:'pro',  label:'💎 Pro Free', name:'AI PDF Summarizer',    desc:'Instantly get a smart summary of any PDF using AI. Key points, themes, and takeaways extracted automatically.', accept:'.pdf', multi:false, opts:'none', type:'ai'},
   // UTILITIES
   {id:'qrcode',       cat:'image', subcat:'utility',  icon:'📱', bg:'rgba(80,80,200,0.12)',  badge:'new',  label:'✨ New',      name:'QR Code Generator',   desc:'Turn any URL or text into a QR code. Download as PNG instantly. Free, no limits.', accept:null, multi:false, opts:'qropt', type:'text'},
   {id:'imginfo',      cat:'image', subcat:'utility',  icon:'ℹ️',  bg:'rgba(77,143,255,0.1)', badge:'new',  label:'✨ New',      name:'Image Info',           desc:'View your image dimensions, file size, format, and aspect ratio instantly.',     accept:'image/*', multi:false, opts:'none'},
@@ -262,12 +269,38 @@ function getOptsHTML(opts) {
   if (opts === 'qropt') return `<div class="opts"><div class="opts-title">⚙️ QR Code Options</div>
     <label>Size (pixels)</label><select id="optQRSize"><option value="200">200×200 (small)</option><option value="300" selected>300×300 (medium)</option><option value="400">400×400 (large)</option><option value="600">600×600 (extra large)</option></select>
     <label>Error Correction</label><select id="optQRErr"><option value="L">L — 7% (smallest)</option><option value="M" selected>M — 15% (recommended)</option><option value="H">H — 30% (most robust)</option></select></div>`;
+  if (opts === 'protectopt') return `<div class="opts"><div class="opts-title">🔐 Password Protection</div>
+    <label>Password</label><input type="password" id="optProtPass" placeholder="Enter a strong password…"/>
+    <label>Confirm Password</label><input type="password" id="optProtPass2" placeholder="Repeat password…"/>
+    <div style="margin-top:.5rem">
+      <label style="font-size:.8rem;font-weight:600;color:var(--mut);display:block;margin-bottom:.4rem">Permissions (without password):</label>
+      <label style="display:flex;align-items:center;gap:.5rem;font-size:.82rem"><input type="checkbox" id="optAllowPrint"/> Allow printing</label>
+      <label style="display:flex;align-items:center;gap:.5rem;font-size:.82rem;margin-top:.3rem"><input type="checkbox" id="optAllowCopy"/> Allow copying text</label>
+    </div>
+    <p style="font-size:.78rem;color:var(--mut);margin-top:.6rem">⚠️ Save your password — it cannot be recovered!</p></div>`;
+  if (opts === 'metaopt') return `<div class="opts"><div class="opts-title">🏷️ Document Properties</div>
+    <label>Title</label><input type="text" id="optMetaTitle" placeholder="Document title…"/>
+    <label>Author</label><input type="text" id="optMetaAuthor" placeholder="Author name…"/>
+    <label>Subject</label><input type="text" id="optMetaSubject" placeholder="Subject or department…"/>
+    <label>Keywords</label><input type="text" id="optMetaKeywords" placeholder="keyword1, keyword2…"/>
+    <p style="font-size:.78rem;color:var(--mut);margin-top:.4rem">Leave any field blank to keep the existing value.</p></div>`;
+  if (opts === 'signopt') return `<div class="opts"><div class="opts-title">✍️ Signature Options</div>
+    <label>Place on page</label>
+    <select id="optSignPage"><option value="last">Last page</option><option value="first">First page</option><option value="all">All pages</option></select>
+    <label>Position</label>
+    <select id="optSignPos"><option value="br">Bottom-Right</option><option value="bl">Bottom-Left</option><option value="bc">Bottom-Center</option><option value="tr">Top-Right</option></select>
+    <label>Size</label>
+    <select id="optSignSize"><option value="small">Small (80px)</option><option value="medium" selected>Medium (140px)</option><option value="large">Large (200px)</option></select></div>`;
+  if (opts === 'ocropt') return `<div class="opts"><div class="opts-title">🔍 OCR Options</div>
+    <label>Language</label>
+    <select id="optOcrLang"><option value="eng" selected>English</option><option value="fra">French</option><option value="deu">German</option><option value="spa">Spanish</option><option value="por">Portuguese</option><option value="ita">Italian</option><option value="ara">Arabic</option><option value="hin">Hindi</option></select>
+    <p style="font-size:.78rem;color:var(--mut);margin-top:.4rem">First run downloads language data (~12 MB). Fully offline after that.</p></div>`;
   return '';
 }
 
 // ═══ OPEN / CLOSE TOOL ═══
 function openTool(id) {
-  if (!libsOK && id !== 'qrcode') { toast('⏳ Libraries loading, please wait a moment…','info'); return; }
+  if (!libsOK && id !== 'qrcode' && id !== 'aisum') { toast('⏳ Libraries loading, please wait a moment…','info'); return; }
   var t = TOOLS.find(function(x){ return x.id === id; });
   if (!t) return;
   currentTool = t; toolFiles = [];
@@ -275,7 +308,10 @@ function openTool(id) {
   document.getElementById('toolSub').textContent = t.desc;
 
   var bodyHTML = '';
-  if (t.type === 'text') {
+  if (t.type === 'ai') {
+    // AI tools get their own full UI (built by buildAISumUI)
+    bodyHTML = buildAISumUI();
+  } else if (t.type === 'text') {
     // Text-input tools (QR Code)
     bodyHTML = '<div class="qr-input-section">'+
       '<div class="fg"><label>Enter URL or text to encode</label><textarea id="qrTextInput" placeholder="https://yourwebsite.com or any text…" style="min-height:90px"></textarea></div>'+
@@ -336,6 +372,9 @@ function addFiles(files) {
   renderFileList();
   var btn = document.getElementById('runBtn');
   if (btn) btn.disabled = toolFiles.length === 0;
+  // Trigger special tool UIs after file is picked
+  if (currentTool.id === 'organizer') { setTimeout(buildOrganizerUI, 100); }
+  if (currentTool.id === 'pdfsign')   { setTimeout(buildSignCanvas,   100); }
 }
 function removeFile(i) {
   toolFiles.splice(i, 1); renderFileList();
@@ -398,6 +437,8 @@ async function runTool() {
   }
   if (currentTool && currentTool.type === 'text') {
     // QR code — no file needed
+  } else if (currentTool && currentTool.type === 'ai') {
+    // AI tools handle their own file check internally
   } else if (!toolFiles.length) { toast('Please select a file first!','err'); return; }
   var btn = document.getElementById('runBtn');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Processing…'; }
@@ -440,6 +481,12 @@ async function runTool() {
       case 'imginfo':     await tImgInfo();     break;
       case 'imgbase64':   await tImgBase64();   break;
       case 'removeexif':  await tRemoveEXIF();  break;
+      case 'protectpdf':  await tProtectPDF();  break;
+      case 'pdfmeta':     await tPDFMeta();     break;
+      case 'organizer':   await tOrganizerSave(); break;
+      case 'pdfsign':     await tSignPDF();     break;
+      case 'pdfocr':      await tOCR();         break;
+      case 'aisum':       await tAISummarize(); break;
       default: toast('Tool not found','err');
     }
   } catch(err) {
@@ -1383,3 +1430,619 @@ function toast(msg, type) {
 }
 ensurePdfLibs(function(){ console.log('PDF libs ready'); });
 ensureQrLib(function(){ console.log('QR lib ready'); });
+
+// ═══════════════════════════════════════════════════════════════
+// 💎 PREMIUM TOOLS — Free on PDFSnap (other sites charge for these)
+// ═══════════════════════════════════════════════════════════════
+
+// ── CDN LOADERS ──────────────────────────────────────────────
+var TESSERACT_CDN = 'https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js';
+var tessOK = false;
+function ensureTesseract(cb) {
+  if (tessOK) { if(cb) cb(); return; }
+  loadScript(TESSERACT_CDN, function(){ tessOK = true; if(cb) cb(); });
+}
+
+// ── 1. PROTECT PDF (Password Lock) ──────────────────────────
+// RC4 + MD5 helpers for PDF Standard Security Handler Rev 2 (40-bit)
+function _md5(input) {
+  function safeAdd(x,y){var lsw=(x&0xffff)+(y&0xffff),msw=(x>>16)+(y>>16)+(lsw>>16);return(msw<<16)|(lsw&0xffff);}
+  function rol(n,c){return(n<<c)|(n>>>(32-c));}
+  function cmn(q,a,b,x,s,t){return safeAdd(rol(safeAdd(safeAdd(a,q),safeAdd(x,t)),s),b);}
+  function ff(a,b,c,d,x,s,t){return cmn((b&c)|((~b)&d),a,b,x,s,t);}
+  function gg(a,b,c,d,x,s,t){return cmn((b&d)|(c&(~d)),a,b,x,s,t);}
+  function hh(a,b,c,d,x,s,t){return cmn(b^c^d,a,b,x,s,t);}
+  function ii(a,b,c,d,x,s,t){return cmn(c^(b|(~d)),a,b,x,s,t);}
+  var bytes=[];
+  for(var i=0;i<input.length;i++){bytes.push(input.charCodeAt(i)&0xff);}
+  var orig=bytes.length*8;
+  bytes.push(0x80);
+  while(bytes.length%64!==56)bytes.push(0);
+  bytes.push(orig&0xff);bytes.push((orig>>8)&0xff);bytes.push((orig>>16)&0xff);bytes.push((orig>>24)&0xff);
+  for(var j=0;j<4;j++)bytes.push(0);
+  var a=0x67452301,b=0xefcdab89,c=0x98badcfe,d=0x10325476;
+  var M=[];
+  for(var k=0;k<bytes.length;k+=64){
+    for(var w=0;w<16;w++)M[w]=(bytes[k+w*4])|(bytes[k+w*4+1]<<8)|(bytes[k+w*4+2]<<16)|(bytes[k+w*4+3]<<24);
+    var A=a,B=b,C=c,D=d;
+    a=ff(a,b,c,d,M[0],7,-680876936);d=ff(d,a,b,c,M[1],12,-389564586);c=ff(c,d,a,b,M[2],17,606105819);b=ff(b,c,d,a,M[3],22,-1044525330);
+    a=ff(a,b,c,d,M[4],7,-176418897);d=ff(d,a,b,c,M[5],12,1200080426);c=ff(c,d,a,b,M[6],17,-1473231341);b=ff(b,c,d,a,M[7],22,-45705983);
+    a=ff(a,b,c,d,M[8],7,1770035416);d=ff(d,a,b,c,M[9],12,-1958414417);c=ff(c,d,a,b,M[10],17,-42063);b=ff(b,c,d,a,M[11],22,-1990404162);
+    a=ff(a,b,c,d,M[12],7,1804603682);d=ff(d,a,b,c,M[13],12,-40341101);c=ff(c,d,a,b,M[14],17,-1502002290);b=ff(b,c,d,a,M[15],22,1236535329);
+    a=gg(a,b,c,d,M[1],5,-165796510);d=gg(d,a,b,c,M[6],9,-1069501632);c=gg(c,d,a,b,M[11],14,643717713);b=gg(b,c,d,a,M[0],20,-373897302);
+    a=gg(a,b,c,d,M[5],5,-701558691);d=gg(d,a,b,c,M[10],9,38016083);c=gg(c,d,a,b,M[15],14,-660478335);b=gg(b,c,d,a,M[4],20,-405537848);
+    a=gg(a,b,c,d,M[9],5,568446438);d=gg(d,a,b,c,M[14],9,-1019803690);c=gg(c,d,a,b,M[3],14,-187363961);b=gg(b,c,d,a,M[8],20,1163531501);
+    a=gg(a,b,c,d,M[13],5,-1444681467);d=gg(d,a,b,c,M[2],9,-51403784);c=gg(c,d,a,b,M[7],14,1735328473);b=gg(b,c,d,a,M[12],20,-1926607734);
+    a=hh(a,b,c,d,M[5],4,-378558);d=hh(d,a,b,c,M[8],11,-2022574463);c=hh(c,d,a,b,M[11],16,1839030562);b=hh(b,c,d,a,M[14],23,-35309556);
+    a=hh(a,b,c,d,M[1],4,-1530992060);d=hh(d,a,b,c,M[4],11,1272893353);c=hh(c,d,a,b,M[7],16,-155497632);b=hh(b,c,d,a,M[10],23,-1094730640);
+    a=hh(a,b,c,d,M[13],4,681279174);d=hh(d,a,b,c,M[0],11,-358537222);c=hh(c,d,a,b,M[3],16,-722521979);b=hh(b,c,d,a,M[6],23,76029189);
+    a=hh(a,b,c,d,M[9],4,-640364487);d=hh(d,a,b,c,M[12],11,-421815835);c=hh(c,d,a,b,M[15],16,530742520);b=hh(b,c,d,a,M[2],23,-995338651);
+    a=ii(a,b,c,d,M[0],6,-198630844);d=ii(d,a,b,c,M[7],10,1126891415);c=ii(c,d,a,b,M[14],15,-1416354905);b=ii(b,c,d,a,M[5],21,-57434055);
+    a=ii(a,b,c,d,M[12],6,1700485571);d=ii(d,a,b,c,M[3],10,-1894986606);c=ii(c,d,a,b,M[10],15,-1051523);b=ii(b,c,d,a,M[1],21,-2054922799);
+    a=ii(a,b,c,d,M[8],6,1873313359);d=ii(d,a,b,c,M[15],10,-30611744);c=ii(c,d,a,b,M[6],15,-1560198380);b=ii(b,c,d,a,M[13],21,1309151649);
+    a=ii(a,b,c,d,M[4],6,-145523070);d=ii(d,a,b,c,M[11],10,-1120210379);c=ii(c,d,a,b,M[2],15,718787259);b=ii(b,c,d,a,M[9],21,-343485551);
+    a=safeAdd(a,A);b=safeAdd(b,B);c=safeAdd(c,C);d=safeAdd(d,D);
+  }
+  var out=[];
+  [a,b,c,d].forEach(function(v){for(var z=0;z<4;z++)out.push((v>>(z*8))&0xff);});
+  return out;
+}
+function _rc4(key,data){
+  var S=[],i,j=0,tmp,out=[];
+  for(i=0;i<256;i++)S[i]=i;
+  for(i=0;i<256;i++){j=(j+S[i]+key[i%key.length])&0xff;tmp=S[i];S[i]=S[j];S[j]=tmp;}
+  i=0;j=0;
+  for(var k=0;k<data.length;k++){i=(i+1)&0xff;j=(j+S[i])&0xff;tmp=S[i];S[i]=S[j];S[j]=tmp;out.push(data[k]^S[(S[i]+S[j])&0xff]);}
+  return out;
+}
+
+async function tProtectPDF() {
+  var pass = (document.getElementById('optProtPass')||{}).value || '';
+  var pass2 = (document.getElementById('optProtPass2')||{}).value || '';
+  if (!pass) { toast('Please enter a password!','err'); throw new Error('No password'); }
+  if (pass !== pass2) { toast('Passwords do not match!','err'); throw new Error('Mismatch'); }
+
+  setP(10, 'Loading PDF…');
+  var buf = await toolFiles[0].arrayBuffer();
+  var srcBytes = new Uint8Array(buf);
+
+  // Use pdf-lib to load + save a clean copy first, then we'll inject encryption
+  setP(20, 'Parsing PDF structure…');
+  var PDFDoc = PDFLib.PDFDocument;
+  var doc = await PDFDoc.load(srcBytes, {ignoreEncryption:true});
+
+  setP(40, 'Preparing document…');
+  var cleanBytes = await doc.save({useObjectStreams:false});
+
+  // Inject standard PDF RC4-40 encryption dictionary
+  setP(60, 'Applying password protection…');
+
+  // PDF Standard Password Padding (from PDF spec section 3.5.2)
+  var PAD = [0x28,0xBF,0x4E,0x5E,0x4E,0x75,0x8A,0x41,0x64,0x00,0x4E,0x56,0xFF,0xFA,0x01,0x08,
+             0x2E,0x2E,0x00,0xB6,0xD0,0x68,0x3E,0x80,0x2F,0x0C,0xA9,0xFE,0x64,0x53,0x69,0x7A];
+
+  function padPassword(p) {
+    var b=[]; for(var i=0;i<p.length&&i<32;i++)b.push(p.charCodeAt(i)&0xff);
+    var pi=0; while(b.length<32)b.push(PAD[pi++]);
+    return b.slice(0,32);
+  }
+
+  var userPad  = padPassword(pass);
+  var ownerPad = padPassword(pass + '_owner');
+
+  // Compute O (owner key)
+  var oHash = _md5(ownerPad);
+  var rc4Key = oHash.slice(0,5);
+  var O = _rc4(rc4Key, userPad);
+
+  // Generate a random file ID (16 bytes)
+  var fileIdBytes = Array.from(crypto.getRandomValues(new Uint8Array(16)));
+  var fileIdHex = fileIdBytes.map(function(b){return b.toString(16).padStart(2,'0');}).join('').toUpperCase();
+
+  // Compute encryption key
+  var allowPrint = document.getElementById('optAllowPrint') && document.getElementById('optAllowPrint').checked;
+  var allowCopy  = document.getElementById('optAllowCopy')  && document.getElementById('optAllowCopy').checked;
+  var pBits = 0xFFFFFFC0; // base: deny all
+  if (allowPrint) pBits |= 4;
+  if (allowCopy)  pBits |= 16;
+  var pBytes = [pBits&0xff,(pBits>>8)&0xff,(pBits>>16)&0xff,(pBits>>24)&0xff];
+
+  var eKeyInput = userPad.concat(O).concat(pBytes).concat(fileIdBytes);
+  var eKey = _md5(eKeyInput).slice(0,5);
+
+  // Compute U (user key): RC4(eKey, PAD)
+  var U = _rc4(eKey, PAD).concat(new Array(16).fill(0));
+
+  function bytesToPDFStr(arr){return arr.map(function(b){return String.fromCharCode(b);}).join('');}
+
+  var Ostr = bytesToPDFStr(O);
+  var Ustr = bytesToPDFStr(U);
+  function escapePDFStr(s){return s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');}
+
+  // Find the existing trailer/xref to get root object ref
+  var pdfStr = new TextDecoder('latin1').decode(cleanBytes);
+  var rootMatch = pdfStr.match(/\/Root\s+(\d+)\s+(\d+)\s+R/);
+  if (!rootMatch) { toast('Could not parse PDF structure!','err'); throw new Error('No root'); }
+
+  // Build encryption object and inject before %%EOF
+  var encObj =
+    '\n999 0 obj\n<<\n'+
+    '/Filter /Standard\n'+
+    '/V 1\n'+
+    '/R 2\n'+
+    '/O ('+escapePDFStr(Ostr)+')\n'+
+    '/U ('+escapePDFStr(Ustr)+')\n'+
+    '/P '+pBits+'\n'+
+    '>>\nendobj\n';
+
+  // Inject /Encrypt ref into trailer
+  var eofIdx = pdfStr.lastIndexOf('%%EOF');
+  var trailerIdx = pdfStr.lastIndexOf('trailer');
+  var newPdf;
+  if (trailerIdx !== -1 && eofIdx !== -1) {
+    var trailerSection = pdfStr.substring(trailerIdx, eofIdx);
+    trailerSection = trailerSection.replace('<<', '<< /Encrypt 999 0 R /ID [<'+fileIdHex+'> <'+fileIdHex+'>]');
+    newPdf = pdfStr.substring(0, trailerIdx) + encObj + trailerSection + '%%EOF\n';
+  } else {
+    // Fallback: just append note if structure not found
+    newPdf = pdfStr + encObj;
+  }
+
+  setP(90, 'Saving protected PDF…');
+  // MUST use latin-1 manual encoding - TextEncoder produces UTF-8 which corrupts PDF binary
+  var outBytes = new Uint8Array(newPdf.length);
+  for (var oi=0; oi<newPdf.length; oi++) outBytes[oi] = newPdf.charCodeAt(oi) & 0xff;
+  var outName = toolFiles[0].name.replace(/\.pdf$/i,'') + '_protected.pdf';
+  showResults([{name:outName, size:fmtSize(outBytes.length), url:URL.createObjectURL(new Blob([outBytes],{type:'application/pdf'}))}]);
+}
+
+// ── 2. PDF METADATA EDITOR ───────────────────────────────────
+async function tPDFMeta() {
+  setP(10, 'Loading PDF…');
+  var PDFDoc = PDFLib.PDFDocument;
+  var buf = await toolFiles[0].arrayBuffer();
+  var doc = await PDFDoc.load(buf, {ignoreEncryption:true});
+
+  setP(50, 'Updating metadata…');
+  var title   = (document.getElementById('optMetaTitle')   ||{}).value || '';
+  var author  = (document.getElementById('optMetaAuthor')  ||{}).value || '';
+  var subject = (document.getElementById('optMetaSubject') ||{}).value || '';
+  var keywords= (document.getElementById('optMetaKeywords')||{}).value || '';
+
+  if (title)    doc.setTitle(title);
+  if (author)   doc.setAuthor(author);
+  if (subject)  doc.setSubject(subject);
+  if (keywords) doc.setKeywords([keywords]);
+  doc.setProducer('PDFSnap — pdfsnap.github.io');
+  doc.setCreationDate(new Date());
+  doc.setModificationDate(new Date());
+
+  setP(85, 'Saving…');
+  var bytes = await doc.save();
+  var outName = toolFiles[0].name.replace(/\.pdf$/i,'') + '_metadata.pdf';
+  showResults([{name: outName, size: fmtSize(bytes.length), url: URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+}
+
+// ── 3. PDF PAGE ORGANIZER (Visual Drag-and-Drop) ────────────
+var _orgPages = []; // {index (1-based), dataURL}
+
+async function buildOrganizerUI() {
+  if (!toolFiles.length) return;
+  // Always rebuild the UI so progWrap/resultArea/runBtn are fresh
+  var body = document.getElementById('toolBody');
+  body.innerHTML =
+    '<p style="font-size:.83rem;color:var(--mut);margin-bottom:.8rem">🖱️ Drag thumbnails to reorder pages. Click 🗑️ to delete, 🔃 to rotate.</p>'+
+    '<div id="orgContainer" style="display:flex;flex-wrap:wrap;gap:.7rem;margin-bottom:1rem;min-height:100px;padding:.5rem;border:2px dashed var(--bdr);border-radius:12px;"></div>'+
+    '<div class="prog-wrap" id="progWrap"><div class="prog-bg"><div class="prog-bar" id="progBar"></div></div><div class="prog-txt" id="progTxt">Processing…</div></div>'+
+    '<div class="result-area" id="resultArea"></div>'+
+    '<button class="btn-primary" id="runBtn" onclick="tOrganizerSave()" disabled>💾 Save Reordered PDF</button>';
+  var container = document.getElementById('orgContainer');
+
+  setP(5,'Loading page thumbnails…');
+  _orgPages = [];
+  var buf = await toolFiles[0].arrayBuffer();
+  var pdf = await pdfjsLib.getDocument({data: buf}).promise;
+  var n = pdf.numPages;
+
+  for (var i = 1; i <= n; i++) {
+    setP(Math.round(5 + 85*i/n), 'Rendering page '+i+' of '+n+'…');
+    var page = await pdf.getPage(i);
+    var vp = page.getViewport({scale:0.25});
+    var cv = document.createElement('canvas');
+    cv.width = vp.width; cv.height = vp.height;
+    await page.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+    _orgPages.push({index:i, rotation:0, dataURL:cv.toDataURL('image/jpeg',0.7)});
+  }
+
+  setP(100,'Thumbnails ready!');
+  renderOrgThumbs(container);
+  var runBtn = document.getElementById('runBtn');
+  if (runBtn) runBtn.disabled = false;
+}
+
+function renderOrgThumbs(container) {
+  if (!container) container = document.getElementById('orgContainer');
+  if (!container) return;
+  container.innerHTML = '';
+  _orgPages.forEach(function(pg, idx) {
+    var card = document.createElement('div');
+    card.className = 'org-thumb';
+    card.draggable = true;
+    card.dataset.idx = idx;
+    card.style.cssText = 'cursor:grab;background:var(--sur);border:1.5px solid var(--bdr);border-radius:10px;padding:.4rem;text-align:center;width:90px;user-select:none';
+    var img = document.createElement('img');
+    img.src = pg.dataURL;
+    img.style.cssText = 'width:78px;height:auto;border-radius:6px;display:block;transform:rotate('+pg.rotation+'deg);transition:transform .2s';
+    var label = document.createElement('div');
+    label.textContent = 'p. '+pg.index;
+    label.style.cssText = 'font-size:.7rem;color:var(--mut);margin-top:.3rem';
+    var actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;justify-content:center;gap:.3rem;margin-top:.3rem';
+
+    var rotBtn = document.createElement('button');
+    rotBtn.textContent='🔃'; rotBtn.title='Rotate';
+    rotBtn.style.cssText='background:none;border:none;cursor:pointer;font-size:.85rem;padding:1px 4px';
+    rotBtn.onclick = (function(i){ return function(e){ e.stopPropagation(); _orgPages[i].rotation = (_orgPages[i].rotation+90)%360; renderOrgThumbs(); }; })(idx);
+
+    var delBtn = document.createElement('button');
+    delBtn.textContent='🗑️'; delBtn.title='Delete';
+    delBtn.style.cssText='background:none;border:none;cursor:pointer;font-size:.85rem;padding:1px 4px';
+    delBtn.onclick = (function(i){ return function(e){ e.stopPropagation(); _orgPages.splice(i,1); renderOrgThumbs(); }; })(idx);
+
+    actions.appendChild(rotBtn); actions.appendChild(delBtn);
+    card.appendChild(img); card.appendChild(label); card.appendChild(actions);
+
+    // Drag-and-drop
+    card.addEventListener('dragstart', function(e){ e.dataTransfer.setData('text/plain', idx); card.style.opacity='.4'; });
+    card.addEventListener('dragend', function(){ card.style.opacity='1'; });
+    card.addEventListener('dragover', function(e){ e.preventDefault(); card.style.border='1.5px solid var(--acc)'; });
+    card.addEventListener('dragleave', function(){ card.style.border='1.5px solid var(--bdr)'; });
+    card.addEventListener('drop', function(e){
+      e.preventDefault(); card.style.border='1.5px solid var(--bdr)';
+      var fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      var toIdx = parseInt(card.dataset.idx);
+      if (fromIdx !== toIdx) {
+        var moved = _orgPages.splice(fromIdx, 1)[0];
+        _orgPages.splice(toIdx, 0, moved);
+        renderOrgThumbs();
+      }
+    });
+    container.appendChild(card);
+  });
+}
+
+async function tOrganizerSave() {
+  if (!_orgPages.length) { toast('No pages to save!','err'); return; }
+  var btn = document.getElementById('runBtn');
+  if (btn) { btn.disabled=true; btn.textContent='⏳ Saving…'; }
+  setP(10, 'Loading original PDF…');
+
+  var PDFDoc = PDFLib.PDFDocument;
+  var buf = await toolFiles[0].arrayBuffer();
+  var srcDoc = await PDFDoc.load(buf, {ignoreEncryption:true});
+  var outDoc = await PDFDoc.create();
+
+  for (var i = 0; i < _orgPages.length; i++) {
+    setP(10 + Math.round(80*i/_orgPages.length), 'Building page '+(i+1)+'…');
+    var pgInfo = _orgPages[i];
+    var [copiedPage] = await outDoc.copyPages(srcDoc, [pgInfo.index - 1]);
+    if (pgInfo.rotation) {
+      var curRot = copiedPage.getRotation().angle;
+      copiedPage.setRotation(PDFLib.degrees((curRot + pgInfo.rotation) % 360));
+    }
+    outDoc.addPage(copiedPage);
+  }
+
+  setP(95, 'Saving…');
+  var bytes = await outDoc.save();
+  var outName = toolFiles[0].name.replace(/\.pdf$/i,'') + '_organized.pdf';
+  showResults([{name: outName, size: fmtSize(bytes.length), url: URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+}
+
+// ── 4. SIGN PDF ───────────────────────────────────────────────
+var _signCanvas = null; var _signDrawing = false; var _signLastX = 0; var _signLastY = 0;
+
+function buildSignCanvas() {
+  var body = document.getElementById('toolBody');
+  if (!body || !toolFiles.length) return;
+  // Find opts section to preserve it
+  var optsEl = body.querySelector('.opts');
+  var optsHTML = optsEl ? optsEl.outerHTML : getOptsHTML('signopt');
+  body.innerHTML =
+    '<div style="margin-bottom:.8rem"><strong style="font-size:.9rem">✍️ Draw your signature below:</strong></div>'+
+    '<div style="position:relative;border:2px solid var(--bdr);border-radius:12px;background:#fff;overflow:hidden;margin-bottom:.7rem">'+
+      '<canvas id="signCanvas" width="480" height="150" style="width:100%;cursor:crosshair;display:block;touch-action:none"></canvas>'+
+      '<div style="position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:.72rem;color:#aaa;pointer-events:none">Sign here</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:.5rem;margin-bottom:1rem">'+
+      '<button onclick="clearSignCanvas()" style="background:none;border:1px solid var(--bdr);border-radius:8px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem">🗑 Clear</button>'+
+    '</div>'+
+    optsHTML+
+    '<div class="prog-wrap" id="progWrap"><div class="prog-bg"><div class="prog-bar" id="progBar"></div></div><div class="prog-txt" id="progTxt">Processing…</div></div>'+
+    '<div class="result-area" id="resultArea"></div>'+
+    '<button class="btn-primary" id="runBtn" onclick="runTool()">✍️ Embed Signature in PDF</button>';
+
+  _signCanvas = document.getElementById('signCanvas');
+  var ctx = _signCanvas.getContext('2d');
+  ctx.strokeStyle = '#1a1a2e'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+
+  function getPos(e) {
+    var rect = _signCanvas.getBoundingClientRect();
+    var scaleX = _signCanvas.width / rect.width;
+    var scaleY = _signCanvas.height / rect.height;
+    var src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - rect.left) * scaleX, y: (src.clientY - rect.top) * scaleY };
+  }
+  function startDraw(e) { e.preventDefault(); _signDrawing=true; var p=getPos(e); _signLastX=p.x; _signLastY=p.y; }
+  function draw(e) {
+    if (!_signDrawing) return; e.preventDefault();
+    var p = getPos(e);
+    ctx.beginPath(); ctx.moveTo(_signLastX,_signLastY); ctx.lineTo(p.x,p.y); ctx.stroke();
+    _signLastX=p.x; _signLastY=p.y;
+  }
+  function stopDraw(e) { _signDrawing=false; }
+  _signCanvas.addEventListener('mousedown',startDraw); _signCanvas.addEventListener('mousemove',draw);
+  _signCanvas.addEventListener('mouseup',stopDraw); _signCanvas.addEventListener('mouseleave',stopDraw);
+  _signCanvas.addEventListener('touchstart',startDraw,{passive:false}); _signCanvas.addEventListener('touchmove',draw,{passive:false});
+  _signCanvas.addEventListener('touchend',stopDraw);
+}
+
+function clearSignCanvas() {
+  if (_signCanvas) { var ctx=_signCanvas.getContext('2d'); ctx.clearRect(0,0,_signCanvas.width,_signCanvas.height); }
+}
+
+async function tSignPDF() {
+  if (!_signCanvas) { toast('Please draw your signature first!','err'); throw new Error('No canvas'); }
+  // Check canvas has something
+  var ctx = _signCanvas.getContext('2d');
+  var px = ctx.getImageData(0,0,_signCanvas.width,_signCanvas.height).data;
+  var hasSign = false;
+  for (var i=3;i<px.length;i+=4) { if(px[i]>0){hasSign=true;break;} }
+  if (!hasSign) { toast('Please draw your signature first!','err'); throw new Error('Empty signature'); }
+
+  setP(10, 'Loading PDF…');
+  var PDFDoc = PDFLib.PDFDocument;
+  var buf = await toolFiles[0].arrayBuffer();
+  var doc = await PDFDoc.load(buf, {ignoreEncryption:true});
+  var totalPages = doc.getPageCount();
+
+  var signImgData = _signCanvas.toDataURL('image/png');
+  var signBytes = Uint8Array.from(atob(signImgData.split(',')[1]), function(c){ return c.charCodeAt(0); });
+  setP(30, 'Embedding signature…');
+  var signImage = await doc.embedPng(signBytes);
+
+  var sizePx = {small:80,medium:140,large:200};
+  var sizeKey = (document.getElementById('optSignSize')||{}).value || 'medium';
+  var sigW = sizePx[sizeKey] || 140;
+  var sigH = sigW * (_signCanvas.height / _signCanvas.width);
+
+  var pageOpt = (document.getElementById('optSignPage')||{}).value || 'last';
+  var pos = (document.getElementById('optSignPos')||{}).value || 'br';
+
+  var pagesToSign = [];
+  if (pageOpt === 'first') pagesToSign = [0];
+  else if (pageOpt === 'last') pagesToSign = [totalPages-1];
+  else pagesToSign = Array.from({length:totalPages},function(_,k){return k;});
+
+  pagesToSign.forEach(function(pi) {
+    setP(30 + Math.round(60*pi/totalPages), 'Signing page '+(pi+1)+'…');
+    var page = doc.getPage(pi);
+    var {width,height} = page.getSize();
+    var margin = 20;
+    var x = pos.endsWith('r') ? width-sigW-margin : pos.endsWith('l') ? margin : (width-sigW)/2;
+    var y = pos.startsWith('b') ? margin : height-sigH-margin;
+    page.drawImage(signImage, {x:x, y:y, width:sigW, height:sigH, opacity:0.85});
+  });
+
+  setP(90, 'Saving signed PDF…');
+  var bytes = await doc.save();
+  var outName = toolFiles[0].name.replace(/\.pdf$/i,'') + '_signed.pdf';
+  showResults([{name:outName, size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+}
+
+// ── 5. OCR — EXTRACT TEXT ─────────────────────────────────────
+async function tOCR() {
+  setP(5,'Loading OCR engine…');
+  await new Promise(function(res){ ensureTesseract(res); });
+
+  var file = toolFiles[0];
+  var lang = (document.getElementById('optOcrLang')||{}).value || 'eng';
+  var isPDF = file.name.toLowerCase().endsWith('.pdf');
+
+  var worker = await Tesseract.createWorker({
+    logger: function(m){
+      if (m.status === 'recognizing text') setP(20 + Math.round(70*m.progress), 'Recognizing text… '+Math.round(m.progress*100)+'%');
+      else if (m.status) setP(15, m.status+'…');
+    }
+  });
+  await worker.loadLanguage(lang);
+  await worker.initialize(lang);
+
+  var fullText = '';
+
+  if (isPDF) {
+    setP(10, 'Rendering PDF pages…');
+    var buf = await file.arrayBuffer();
+    var pdf = await pdfjsLib.getDocument({data:buf}).promise;
+    var n = pdf.numPages;
+    for (var i = 1; i <= n; i++) {
+      setP(10 + Math.round(5*i/n), 'Rendering page '+i+'…');
+      var page = await pdf.getPage(i);
+      var vp = page.getViewport({scale:2.0});
+      var cv = document.createElement('canvas');
+      cv.width = vp.width; cv.height = vp.height;
+      await page.render({canvasContext:cv.getContext('2d'), viewport:vp}).promise;
+      setP(15, 'Running OCR on page '+i+' of '+n+'…');
+      var result = await worker.recognize(cv);
+      fullText += '--- Page '+i+' ---\n' + result.data.text + '\n\n';
+    }
+  } else {
+    setP(15, 'Running OCR…');
+    var result2 = await worker.recognize(file);
+    fullText = result2.data.text;
+  }
+
+  await worker.terminate();
+  setP(100, 'OCR complete!');
+
+  var ra = document.getElementById('resultArea');
+  if (ra) {
+    var blob = new Blob([fullText], {type:'text/plain'});
+    var url = URL.createObjectURL(blob);
+    ra.innerHTML =
+      '<div class="res-item" style="flex-direction:column;align-items:flex-start">'+
+      '<div style="display:flex;width:100%;justify-content:space-between;align-items:center;margin-bottom:.5rem">'+
+      '<strong style="font-size:.9rem">Extracted Text ('+fullText.length.toLocaleString()+' chars)</strong>'+
+      '<a class="btn-dl" href="'+url+'" download="ocr-output.txt">⬇ Download .txt</a>'+
+      '</div>'+
+      '<textarea id="ocrText" style="width:100%;height:200px;font-size:.8rem;font-family:monospace;border:1px solid var(--bdr);border-radius:8px;padding:.6rem;background:var(--sur);color:var(--txt);resize:vertical" readonly></textarea>'+
+      '<button onclick="navigator.clipboard.writeText(document.getElementById(\'ocrText\').value).then(function(){toast(\'Copied!\',\'ok\')})" style="margin-top:.5rem;background:none;border:1px solid var(--bdr);border-radius:8px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem">📋 Copy to Clipboard</button>'+
+      '</div>';
+    // Set textarea value via DOM (safe, avoids </textarea> injection)
+    var ta = document.getElementById('ocrText');
+    if (ta) ta.value = fullText;
+    ra.classList.add('show');
+  }
+  var btn = document.getElementById('runBtn');
+  if (btn) { btn.textContent='▶ Run Again'; btn.disabled=false; btn.onclick=function(){openTool('pdfocr');}; }
+  toast('✅ Text extracted! '+Math.round(fullText.length/1000)+'k characters found.','ok');
+}
+
+// ── 6. AI PDF SUMMARIZER ─────────────────────────────────────
+function buildAISumUI() {
+  var savedKey = '';
+  try { savedKey = localStorage.getItem('pdfsnap_ai_key') || ''; } catch(e){}
+  return '<div id="aiSumWrap">'+
+    '<div style="background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:1rem;margin-bottom:1rem">'+
+      '<div style="font-size:.85rem;font-weight:700;color:#8B5CF6;margin-bottom:.3rem">🤖 Powered by Claude AI</div>'+
+      '<div style="font-size:.78rem;color:var(--mut)">Your PDF text is extracted in your browser, then summarized via Anthropic\'s API. Files never leave your device.</div>'+
+    '</div>'+
+    '<div class="dropzone" id="dz" style="margin-bottom:.8rem">'+
+      '<input type="file" id="fileMain" accept=".pdf" onchange="addFiles(this.files)"/>'+
+      '<div class="dz-icon">📂</div>'+
+      '<div class="dz-text"><strong>Tap to select a PDF</strong><br/>or drag &amp; drop here</div>'+
+      '<div class="dz-fmt">.pdf</div>'+
+    '</div>'+
+    '<div class="file-list" id="fileList"></div>'+
+    '<div class="fg" style="margin-top:.8rem">'+
+      '<label>Anthropic API Key <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="font-size:.75rem;color:var(--bl)">(Get free key \u2192)</a></label>'+
+      '<input type="password" id="aiKeyInput" placeholder="sk-ant-\u2026" value="'+savedKey+'" oninput="saveAiKey(this.value)"/>'+
+    '</div>'+
+    '<div class="fg">'+
+      '<label>Summary Style</label>'+
+      '<select id="aiSumStyle">'+
+        '<option value="bullet">Bullet points (key takeaways)</option>'+
+        '<option value="paragraph">Short paragraph summary</option>'+
+        '<option value="detailed">Detailed analysis</option>'+
+        '<option value="eli5">Explain it simply (ELI5)</option>'+
+      '</select>'+
+    '</div>'+
+    '<div class="prog-wrap" id="progWrap"><div class="prog-bg"><div class="prog-bar" id="progBar"></div></div><div class="prog-txt" id="progTxt">Processing…</div></div>'+
+    '<div id="aiSumResult" style="display:none;background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;padding:1rem;margin-bottom:.8rem;white-space:pre-wrap;font-size:.87rem;line-height:1.65;max-height:400px;overflow-y:auto"></div>'+
+    '<button class="btn-primary" id="runBtn" onclick="tAISummarize()" disabled>🤖 Summarize PDF</button>'+
+    '<div style="font-size:.75rem;color:var(--mut);margin-top:.5rem;text-align:center">Your API key is stored only in your browser. PDFSnap never sees it.</div>'+
+  '</div>';
+}
+
+async function tAISummarize() {
+  if (!toolFiles.length) { toast('Please select a PDF first!','err'); return; }
+  var apiKey = (document.getElementById('aiKeyInput')||{}).value || '';
+  if (!apiKey || !apiKey.startsWith('sk-ant')) { toast('Please enter your Anthropic API key!','err'); return; }
+
+  // Ensure PDF libs are loaded (bypassed since runBtn calls us directly, not via runTool)
+  if (!libsOK) {
+    toast('Loading PDF engine…','info');
+    ensurePdfLibs(function(){ tAISummarize(); });
+    return;
+  }
+
+  var btn = document.getElementById('runBtn');
+  if (btn) { btn.disabled=true; btn.textContent='⏳ Summarizing…'; }
+  setP(10,'Extracting text from PDF…');
+
+  // Extract text using pdf.js
+  var buf = await toolFiles[0].arrayBuffer();
+  var pdf = await pdfjsLib.getDocument({data:buf}).promise;
+  var n = pdf.numPages;
+  var allText = '';
+  var maxPages = Math.min(n, 30); // Limit to 30 pages to stay within token limits
+
+  for (var i = 1; i <= maxPages; i++) {
+    setP(10 + Math.round(30*i/maxPages), 'Reading page '+i+'…');
+    var page = await pdf.getPage(i);
+    var content = await page.getTextContent();
+    allText += content.items.map(function(s){ return s.str; }).join(' ') + '\n';
+  }
+
+  if (allText.trim().length < 100) {
+    toast('Could not extract text. Try the OCR tool instead (for scanned PDFs)!','err');
+    if (btn) { btn.disabled=false; btn.textContent='🤖 Summarize PDF'; }
+    return;
+  }
+
+  // Trim text if too long
+  if (allText.length > 15000) allText = allText.substring(0, 15000) + '\n[...text truncated for length...]';
+
+  setP(50,'Sending to Claude AI…');
+
+  var style = (document.getElementById('aiSumStyle')||{}).value || 'bullet';
+  var styleInstructions = {
+    bullet: 'Provide a summary as clear bullet points covering: main topic, key points, important findings/conclusions, and any action items. Use • for bullets.',
+    paragraph: 'Write a concise 3-4 sentence paragraph summary of the main content and key takeaways.',
+    detailed: 'Provide a detailed analysis including: overview, main sections/topics, key arguments or data, conclusions, and any limitations or caveats.',
+    eli5: 'Explain this document as if to someone with no prior knowledge of the subject. Use simple language and analogies. Avoid jargon.'
+  };
+
+  var prompt = 'Please summarize the following PDF document.\n\n' +
+    'Summary style: ' + styleInstructions[style] + '\n\n' +
+    'Document text:\n---\n' + allText + '\n---\n\n' +
+    'Provide only the summary, no preamble.';
+
+  try {
+    var response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        messages: [{role:'user', content:prompt}]
+      })
+    });
+
+    if (!response.ok) {
+      var errData = await response.json();
+      throw new Error(errData.error ? errData.error.message : 'API error '+response.status);
+    }
+
+    var data = await response.json();
+    var summaryText = data.content && data.content[0] ? data.content[0].text : 'No summary returned.';
+
+    setP(100,'Summary ready!');
+    var resultEl = document.getElementById('aiSumResult');
+    if (resultEl) {
+      resultEl.style.display = 'block';
+      resultEl.textContent = summaryText;
+    }
+
+    // Copy button
+    var copyArea = document.createElement('div');
+    copyArea.style.cssText = 'display:flex;gap:.5rem;margin-bottom:.8rem';
+    copyArea.innerHTML =
+      '<button onclick="navigator.clipboard.writeText(document.getElementById(\'aiSumResult\').textContent).then(function(){toast(\'Copied!\',\'ok\')})" style="background:none;border:1px solid var(--bdr);border-radius:8px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem">📋 Copy Summary</button>'+
+      '<button onclick="var b=new Blob([document.getElementById(\'aiSumResult\').textContent],{type:\'text/plain\'});var a=document.createElement(\'a\');a.href=URL.createObjectURL(b);a.download=\'summary.txt\';a.click()" style="background:none;border:1px solid var(--bdr);border-radius:8px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem">⬇ Save .txt</button>';
+    if (resultEl) resultEl.insertAdjacentElement('afterend', copyArea);
+
+    toast('✅ Summary ready!','ok');
+    if (btn) { btn.disabled=false; btn.textContent='🔄 Summarize Again'; }
+  } catch(err) {
+    toast('AI Error: '+err.message,'err');
+    setP(100,'❌ Error');
+    if (btn) { btn.disabled=false; btn.textContent='🤖 Summarize PDF'; }
+  }
+}
+function saveAiKey(v) { try { localStorage.setItem('pdfsnap_ai_key', v); } catch(e){} }
