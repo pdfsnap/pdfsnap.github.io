@@ -6,30 +6,45 @@ var libsOK = false; var qrLibOK = false;
 
 function loadScript(src, cb) {
   var s = document.createElement('script');
-  s.src = src; s.onload = cb;
-  s.onerror = function(){ console.warn('Failed: '+src); if(cb) cb(); };
+  s.src = src;
+  s.onload = function(){ if(cb) cb(null); };
+  s.onerror = function(){
+    console.error('Failed to load script: ' + src);
+    if(cb) cb(new Error('Script load failed: ' + src));
+  };
   document.head.appendChild(s);
 }
-// ── LAZY LOAD: heavy libs load only when user picks a tool ───────────────
-var _pdfLibsLoading = false;
+// ── LAZY LOAD: parallel loading + Promise queue ─────────────────────────
+var _pdfLibsCallbacks = null; // null=not started, []=loading, true=done
 function ensurePdfLibs(cb) {
   if (libsOK) { if(cb) cb(); return; }
-  if (_pdfLibsLoading) {
-    var t = setInterval(function(){ if(libsOK){ clearInterval(t); if(cb) cb(); } }, 80);
-    return;
+  if (_pdfLibsCallbacks === true) { if(cb) cb(); return; } // done
+  if (Array.isArray(_pdfLibsCallbacks)) { _pdfLibsCallbacks.push(cb); return; } // already loading
+  _pdfLibsCallbacks = cb ? [cb] : [];
+  // Load PDFLib and PDF.js in parallel
+  var done = 0;
+  function onBothLoaded() {
+    if (++done < 2) return;
+    if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WKR;
+    libsOK = true;
+    var cbs = _pdfLibsCallbacks;
+    _pdfLibsCallbacks = true;
+    cbs.forEach(function(fn){ if(fn) fn(); });
   }
-  _pdfLibsLoading = true;
-  loadScript(PDFLIB_CDN, function(){
-    loadScript(PDFJS_CDN, function(){
-      if (window.pdfjsLib) pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WKR;
-      libsOK = true;
-      if(cb) cb();
-    });
-  });
+  loadScript(PDFLIB_CDN, function(err){ if(!err) onBothLoaded(); else toast('Failed to load PDF library. Check connection.','err'); });
+  loadScript(PDFJS_CDN,  function(err){ if(!err) onBothLoaded(); else toast('Failed to load PDF.js. Check connection.','err'); });
 }
+var _qrCallbacks = null;
 function ensureQrLib(cb) {
   if (qrLibOK) { if(cb) cb(); return; }
-  loadScript(QRCODE_CDN, function(){ qrLibOK = true; if(cb) cb(); });
+  if (Array.isArray(_qrCallbacks)) { _qrCallbacks.push(cb); return; }
+  _qrCallbacks = cb ? [cb] : [];
+  loadScript(QRCODE_CDN, function(err){
+    qrLibOK = !err && !!window.QRCode;
+    var cbs = _qrCallbacks; _qrCallbacks = null;
+    if (qrLibOK) cbs.forEach(function(fn){ if(fn) fn(); });
+    else toast('Failed to load QR library.','err');
+  });
 }
 // Build grid immediately — no libs needed for the tool grid UI
 document.addEventListener('DOMContentLoaded', function(){ buildGrid(); updateNav(); });
@@ -300,7 +315,12 @@ function getOptsHTML(opts) {
 
 // ═══ OPEN / CLOSE TOOL ═══
 function openTool(id) {
-  if (!libsOK && id !== 'qrcode' && id !== 'aisum') { toast('⏳ Libraries loading, please wait a moment…','info'); return; }
+  var needsLibs = id !== 'qrcode' && id !== 'aisum';
+  if (needsLibs && !libsOK) {
+    toast('⏳ Loading PDF engine… opening tool automatically.','info');
+    ensurePdfLibs(function(){ openTool(id); });
+    return;
+  }
   var t = TOOLS.find(function(x){ return x.id === id; });
   if (!t) return;
   currentTool = t; toolFiles = [];
@@ -394,9 +414,10 @@ function renderFileList() {
   });
 }
 function fmtSize(b) {
-  if (b < 1024) return b+' B';
-  if (b < 1048576) return (b/1024).toFixed(1)+' KB';
-  return (b/1048576).toFixed(2)+' MB';
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  if (b < 1073741824) return (b / 1048576).toFixed(2) + ' MB';
+  return (b / 1073741824).toFixed(2) + ' GB';
 }
 
 // ═══ PROGRESS & RESULTS ═══
@@ -414,6 +435,11 @@ function showResults(items) {
     d.innerHTML = '<span class="res-icon">✅</span>'+
       '<div class="res-info"><div class="res-name">'+item.name+'</div><div class="res-size">'+item.size+'</div></div>'+
       (item.url ? '<a class="btn-dl" href="'+item.url+'" download="'+item.name+'">⬇ Download</a>' : '');
+    // Revoke blob URL after the download link is clicked to free memory
+    if (item.url) {
+      var dlLink = d.querySelector('.btn-dl');
+      if (dlLink) dlLink.addEventListener('click', function(){ setTimeout(function(){ URL.revokeObjectURL(item.url); }, 10000); }, {once:true});
+    }
     ra.appendChild(d);
   });
   ra.classList.add('show');
@@ -661,6 +687,7 @@ async function tPDF2JPG() {
     var blob = await new Promise(function(res){ canvas.toBlob(res, mime, qual); });
     results.push({name:'page-'+i+'.'+ext, size:fmtSize(blob.size), url:URL.createObjectURL(blob)});
   }
+  setP(100, 'Done!');
   showResults(results);
 }
 
@@ -729,7 +756,11 @@ async function tWatermarkPDF() {
     var include = applyTo==='all' || (applyTo==='first'&&idx===0) || (applyTo==='odd'&&idx%2===0) || (applyTo==='even'&&idx%2===1);
     if (!include) return;
     var {width,height} = page.getSize();
-    page.drawText(text, {x:width/2-size*text.length*0.28, y:height/2, size:size, color:rgb, opacity:opacity, rotate:PDFLib.degrees(angle)});
+    // Approximate text width: average glyph width ≈ 0.5 × fontSize for Helvetica
+    var approxTextW = size * text.length * 0.50;
+    var cx = (width  - approxTextW * Math.cos(rad) + (size * 0.5) * Math.sin(rad)) / 2;
+    var cy = (height - approxTextW * Math.sin(rad) - (size * 0.5) * Math.cos(rad)) / 2;
+    page.drawText(text, {x: cx, y: cy, size: size, color: rgb, opacity: opacity, rotate: PDFLib.degrees(angle)});
   });
   setP(90,'Saving…'); var bytes = await doc.save();
   showResults([{name:'watermarked.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
@@ -1038,7 +1069,7 @@ async function tRotateImg() {
 }
 
 async function tBrightness() {
-  var b  = parseInt(document.getElementById('optB').value)||0;
+  var bright = parseInt(document.getElementById('optB').value)||0;
   var con= parseInt(document.getElementById('optC').value)||0;
   var sat= parseInt(document.getElementById('optSat') ? document.getElementById('optSat').value : '0')||0;
   var hue= parseInt(document.getElementById('optHue') ? document.getElementById('optHue').value : '0')||0;
@@ -1053,9 +1084,9 @@ async function tBrightness() {
     var id=ctx.getImageData(0,0,c.width,c.height);
     for (var j=0;j<id.data.length;j+=4){
       var r=id.data[j],g=id.data[j+1],b2=id.data[j+2];
-      r=Math.min(255,Math.max(0,factor*(r-128)+128+b));
-      g=Math.min(255,Math.max(0,factor*(g-128)+128+b));
-      b2=Math.min(255,Math.max(0,factor*(b2-128)+128+b));
+      r=Math.min(255,Math.max(0,factor*(r-128)+128+bright));
+      g=Math.min(255,Math.max(0,factor*(g-128)+128+bright));
+      b2=Math.min(255,Math.max(0,factor*(b2-128)+128+bright));
       if (sat!==0||hue!==0) {
         var mx=Math.max(r,g,b2)/255,mn=Math.min(r,g,b2)/255;
         var l=(mx+mn)/2,s2=0,h2=0;
@@ -1121,7 +1152,19 @@ async function tImgToPDF() {
   for (var i = 0; i < toolFiles.length; i++) {
     setP(Math.round(10+80*(i/toolFiles.length)),'Adding image '+(i+1)+'…');
     var buf = await toolFiles[i].arrayBuffer();
-    var isPng = toolFiles[i].type==='image/png';
+    var mime = toolFiles[i].type || '';
+    var isPng  = mime === 'image/png';
+    var isJpeg = mime === 'image/jpeg' || mime === 'image/jpg';
+    // Convert non-JPG/PNG formats (WebP, GIF, BMP, etc.) to JPEG via canvas
+    if (!isPng && !isJpeg) {
+      var tmpImg = await loadImgEl(toolFiles[i]);
+      var tmpCv = document.createElement('canvas');
+      tmpCv.width = tmpImg.width; tmpCv.height = tmpImg.height;
+      tmpCv.getContext('2d').drawImage(tmpImg, 0, 0);
+      var tmpBlob = await toBlob(tmpCv, 'image/jpeg', 0.92);
+      buf = await tmpBlob.arrayBuffer();
+      isPng = false; isJpeg = true;
+    }
     var img = isPng ? await doc.embedPng(buf) : await doc.embedJpg(buf);
     var page = doc.addPage([img.width,img.height]);
     page.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
@@ -1245,9 +1288,16 @@ async function tImgBase64() {
   var ra = document.getElementById('resultArea');
   ra.innerHTML = '<div style="background:var(--ok-light);border:1.5px solid rgba(0,184,148,.25);border-radius:12px;padding:1rem">'+
     '<div style="font-family:\'Bricolage Grotesque\',sans-serif;font-weight:700;margin-bottom:.5rem">✅ Base64 String</div>'+
-    '<textarea readonly style="width:100%;height:120px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:.5rem;font-size:.72rem;font-family:monospace;resize:vertical;color:var(--txt)">'+b64+'</textarea>'+
-    '<button onclick="navigator.clipboard.writeText(\''+b64.replace(/'/g,"\\'")+'\')" style="margin-top:.5rem;background:var(--ok);color:#fff;border:none;border-radius:9px;padding:.42rem .92rem;font-weight:700;cursor:pointer;font-size:.8rem;">📋 Copy to Clipboard</button>'+
+    '<textarea id="b64Output" readonly style="width:100%;height:120px;background:var(--bg);border:1.5px solid var(--bdr);border-radius:8px;padding:.5rem;font-size:.72rem;font-family:monospace;resize:vertical;color:var(--txt)"></textarea>'+
+    '<button id="b64CopyBtn" style="margin-top:.5rem;background:var(--ok);color:#fff;border:none;border-radius:9px;padding:.42rem .92rem;font-weight:700;cursor:pointer;font-size:.8rem;">📋 Copy to Clipboard</button>'+
     '<div style="font-size:.72rem;color:var(--mut);margin-top:.5rem">Length: '+(b64.length).toLocaleString()+' characters (~'+fmtSize(b64.length)+')</div></div>';
+  // Set value and wire button safely — never embed data in onclick attributes
+  document.getElementById('b64Output').value = b64;
+  document.getElementById('b64CopyBtn').onclick = function(){
+    navigator.clipboard.writeText(b64).then(function(){ toast('📋 Copied!','ok'); }).catch(function(){
+      var ta = document.getElementById('b64Output'); ta.select(); document.execCommand('copy'); toast('📋 Copied!','ok');
+    });
+  };
   ra.classList.add('show'); setP(100,'Done!');
   toast('✅ Base64 ready! Click copy to use it.','ok');
   var btn=document.getElementById('runBtn');if(btn){btn.disabled=false;btn.textContent='▶ Convert Another';btn.onclick=function(){openTool('imgbase64');};}
@@ -1410,9 +1460,13 @@ function shareTool(e, toolId, toolName) {
 }
 function closeShare() { document.getElementById('shareOv').classList.remove('active'); document.body.style.overflow=''; }
 function copyShareUrl() {
-  var inp=document.getElementById('shareUrlInput'); inp.select(); inp.setSelectionRange(0,9999);
-  try { document.execCommand('copy'); toast('🔗 Link copied!','ok'); }
-  catch(e) { navigator.clipboard.writeText(_shareUrl).then(function(){ toast('🔗 Link copied!','ok'); }); }
+  navigator.clipboard.writeText(_shareUrl)
+    .then(function(){ toast('🔗 Link copied!','ok'); })
+    .catch(function(){
+      // Fallback for browsers without clipboard API
+      var inp=document.getElementById('shareUrlInput'); inp.select(); inp.setSelectionRange(0,9999);
+      try { document.execCommand('copy'); toast('🔗 Link copied!','ok'); } catch(e){}
+    });
 }
 function nativeShare() {
   if (navigator.share) { navigator.share({title:'PDFSnap', text:_shareText, url:_shareUrl}).then(function(){ closeShare(); }).catch(function(){}); }
@@ -1444,7 +1498,7 @@ function ensureTesseract(cb) {
 }
 
 // ── 1. PROTECT PDF (Password Lock) ──────────────────────────
-// RC4 + MD5 helpers for PDF Standard Security Handler Rev 2 (40-bit)
+// MD5 + RC4 helpers — accept byte arrays (not strings)
 function _md5(input) {
   function safeAdd(x,y){var lsw=(x&0xffff)+(y&0xffff),msw=(x>>16)+(y>>16)+(lsw>>16);return(msw<<16)|(lsw&0xffff);}
   function rol(n,c){return(n<<c)|(n>>>(32-c));}
@@ -1453,8 +1507,9 @@ function _md5(input) {
   function gg(a,b,c,d,x,s,t){return cmn((b&d)|(c&(~d)),a,b,x,s,t);}
   function hh(a,b,c,d,x,s,t){return cmn(b^c^d,a,b,x,s,t);}
   function ii(a,b,c,d,x,s,t){return cmn(c^(b|(~d)),a,b,x,s,t);}
-  var bytes=[];
-  for(var i=0;i<input.length;i++){bytes.push(input.charCodeAt(i)&0xff);}
+  // Accept both byte arrays and strings
+  var bytes = Array.isArray(input) ? input.slice() : [];
+  if (!Array.isArray(input)) { for(var i=0;i<input.length;i++) bytes.push(input.charCodeAt(i)&0xff); }
   var orig=bytes.length*8;
   bytes.push(0x80);
   while(bytes.length%64!==56)bytes.push(0);
@@ -1497,104 +1552,184 @@ function _rc4(key,data){
 }
 
 async function tProtectPDF() {
-  var pass = (document.getElementById('optProtPass')||{}).value || '';
+  var pass  = (document.getElementById('optProtPass') ||{}).value || '';
   var pass2 = (document.getElementById('optProtPass2')||{}).value || '';
-  if (!pass) { toast('Please enter a password!','err'); throw new Error('No password'); }
-  if (pass !== pass2) { toast('Passwords do not match!','err'); throw new Error('Mismatch'); }
+  if (!pass)           { toast('Please enter a password!','err');   throw new Error('No password'); }
+  if (pass !== pass2)  { toast('Passwords do not match!','err');    throw new Error('Mismatch'); }
 
+  // ── Step 1: load & normalise with pdf-lib ─────────────────
   setP(10, 'Loading PDF…');
   var buf = await toolFiles[0].arrayBuffer();
-  var srcBytes = new Uint8Array(buf);
-
-  // Use pdf-lib to load + save a clean copy first, then we'll inject encryption
-  setP(20, 'Parsing PDF structure…');
   var PDFDoc = PDFLib.PDFDocument;
-  var doc = await PDFDoc.load(srcBytes, {ignoreEncryption:true});
+  var doc = await PDFDoc.load(new Uint8Array(buf), {ignoreEncryption:true});
 
-  setP(40, 'Preparing document…');
+  setP(25, 'Generating clean copy…');
+  // useObjectStreams:false → traditional xref table + trailer (no xref streams)
   var cleanBytes = await doc.save({useObjectStreams:false});
 
-  // Inject standard PDF RC4-40 encryption dictionary
-  setP(60, 'Applying password protection…');
-
-  // PDF Standard Password Padding (from PDF spec section 3.5.2)
+  // ── Step 2: set up crypto ─────────────────────────────────
   var PAD = [0x28,0xBF,0x4E,0x5E,0x4E,0x75,0x8A,0x41,0x64,0x00,0x4E,0x56,0xFF,0xFA,0x01,0x08,
              0x2E,0x2E,0x00,0xB6,0xD0,0x68,0x3E,0x80,0x2F,0x0C,0xA9,0xFE,0x64,0x53,0x69,0x7A];
 
-  function padPassword(p) {
-    var b=[]; for(var i=0;i<p.length&&i<32;i++)b.push(p.charCodeAt(i)&0xff);
-    var pi=0; while(b.length<32)b.push(PAD[pi++]);
-    return b.slice(0,32);
+  function padPass(pw) {
+    var b = [];
+    for (var i = 0; i < 32; i++)
+      b.push(i < pw.length ? pw.charCodeAt(i) & 0xff : PAD[i - pw.length]);
+    return b;
   }
 
-  var userPad  = padPassword(pass);
-  var ownerPad = padPassword(pass + '_owner');
+  var userPad  = padPass(pass);
+  var ownerPad = padPass(pass + '_owner');
+  var O = _rc4(_md5(ownerPad).slice(0,5), userPad);   // _md5 now accepts arrays ✓
 
-  // Compute O (owner key)
-  var oHash = _md5(ownerPad);
-  var rc4Key = oHash.slice(0,5);
-  var O = _rc4(rc4Key, userPad);
+  var fileId    = Array.from(crypto.getRandomValues(new Uint8Array(16)));
+  var fileIdHex = fileId.map(function(b){return b.toString(16).padStart(2,'0');}).join('').toUpperCase();
 
-  // Generate a random file ID (16 bytes)
-  var fileIdBytes = Array.from(crypto.getRandomValues(new Uint8Array(16)));
-  var fileIdHex = fileIdBytes.map(function(b){return b.toString(16).padStart(2,'0');}).join('').toUpperCase();
+  var allowPrint = !!(document.getElementById('optAllowPrint') && document.getElementById('optAllowPrint').checked);
+  var allowCopy  = !!(document.getElementById('optAllowCopy')  && document.getElementById('optAllowCopy').checked);
+  var perm = -64; // 0xFFFFFFC0 as signed 32-bit integer
+  if (allowPrint) perm |= 4;
+  if (allowCopy)  perm |= 16;
+  var pBytes = [perm&0xff,(perm>>8)&0xff,(perm>>16)&0xff,(perm>>24)&0xff];
 
-  // Compute encryption key
-  var allowPrint = document.getElementById('optAllowPrint') && document.getElementById('optAllowPrint').checked;
-  var allowCopy  = document.getElementById('optAllowCopy')  && document.getElementById('optAllowCopy').checked;
-  var pBits = 0xFFFFFFC0; // base: deny all
-  if (allowPrint) pBits |= 4;
-  if (allowCopy)  pBits |= 16;
-  var pBytes = [pBits&0xff,(pBits>>8)&0xff,(pBits>>16)&0xff,(pBits>>24)&0xff];
+  var eKey = _md5(userPad.concat(O).concat(pBytes).concat(fileId)).slice(0,5);
+  var U    = _rc4(eKey, PAD.slice()).concat(new Array(16).fill(0)); // 32 bytes total
 
-  var eKeyInput = userPad.concat(O).concat(pBytes).concat(fileIdBytes);
-  var eKey = _md5(eKeyInput).slice(0,5);
+  // Per-object encryption key (RC4-40: keylen+5 = 10 bytes, capped at 16)
+  function objKey(num, gen) {
+    return _md5(eKey.concat([num&0xff,(num>>8)&0xff,(num>>16)&0xff, gen&0xff,(gen>>8)&0xff])).slice(0,10);
+  }
 
-  // Compute U (user key): RC4(eKey, PAD)
-  var U = _rc4(eKey, PAD).concat(new Array(16).fill(0));
+  // ── Step 3: parse objects & encrypt streams ───────────────
+  setP(45, 'Parsing PDF objects…');
 
-  function bytesToPDFStr(arr){return arr.map(function(b){return String.fromCharCode(b);}).join('');}
+  // Build latin-1 string from bytes (1 char = 1 byte, safe for binary PDF)
+  var pdfStr = '';
+  for (var ci = 0; ci < cleanBytes.length; ci++) pdfStr += String.fromCharCode(cleanBytes[ci]);
 
-  var Ostr = bytesToPDFStr(O);
-  var Ustr = bytesToPDFStr(U);
-  function escapePDFStr(s){return s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');}
+  // Find all indirect objects and their stream positions BEFORE we encrypt
+  var streamInfos = []; // [{num, gen, start, len}]
+  var maxObjNum   = 0;
+  var objRe = /(\d+)\s+(\d+)\s+obj\b/g;
+  var om;
+  while ((om = objRe.exec(pdfStr)) !== null) {
+    var num = parseInt(om[1]), gen = parseInt(om[2]);
+    if (num > maxObjNum) maxObjNum = num;
+    var objPos  = om.index;
+    var endObjI = pdfStr.indexOf('endobj', objPos);
+    if (endObjI === -1) continue;
+    var seg = pdfStr.substring(objPos, endObjI + 6);
 
-  // Find the existing trailer/xref to get root object ref
-  var pdfStr = new TextDecoder('latin1').decode(cleanBytes);
-  var rootMatch = pdfStr.match(/\/Root\s+(\d+)\s+(\d+)\s+R/);
-  if (!rootMatch) { toast('Could not parse PDF structure!','err'); throw new Error('No root'); }
+    // Look for /Length N (integer literal only — skip indirect refs like /Length 5 0 R)
+    var lenM = /\/Length\s+(\d+)(?!\s+\d+\s+R)/.exec(seg);
+    var stmM = /\bstream\r?\n/.exec(seg);
+    if (lenM && stmM && lenM.index < stmM.index) {
+      var dataLen = parseInt(lenM[1]);
+      if (dataLen > 0) {
+        streamInfos.push({
+          num: num, gen: gen,
+          start: objPos + stmM.index + stmM[0].length,
+          len:   dataLen
+        });
+      }
+    }
+  }
 
-  // Build encryption object and inject before %%EOF
-  var encObj =
-    '\n999 0 obj\n<<\n'+
-    '/Filter /Standard\n'+
-    '/V 1\n'+
-    '/R 2\n'+
-    '/O ('+escapePDFStr(Ostr)+')\n'+
-    '/U ('+escapePDFStr(Ustr)+')\n'+
-    '/P '+pBits+'\n'+
+  setP(60, 'Encrypting ' + streamInfos.length + ' content streams…');
+
+  // Mutable byte copy
+  var pdf = cleanBytes.slice();
+
+  // RC4-encrypt each stream in-place (RC4 is length-preserving → xref offsets stay valid)
+  for (var si = 0; si < streamInfos.length; si++) {
+    var info = streamInfos[si];
+    var key  = objKey(info.num, info.gen);
+    // Inline RC4 for speed (avoids building an output array then copying back)
+    var S2 = [], ii2 = 0, jj = 0, tmp2;
+    for (var ki = 0; ki < 256; ki++) S2[ki] = ki;
+    for (ki = 0; ki < 256; ki++) {
+      jj = (jj + S2[ki] + key[ki % key.length]) & 0xff;
+      tmp2 = S2[ki]; S2[ki] = S2[jj]; S2[jj] = tmp2;
+    }
+    ii2 = 0; jj = 0;
+    for (ki = 0; ki < info.len; ki++) {
+      ii2 = (ii2 + 1) & 0xff;
+      jj  = (jj  + S2[ii2]) & 0xff;
+      tmp2 = S2[ii2]; S2[ii2] = S2[jj]; S2[jj] = tmp2;
+      pdf[info.start + ki] ^= S2[(S2[ii2] + S2[jj]) & 0xff];
+    }
+  }
+
+  // ── Step 4: build /Encrypt object string ─────────────────
+  setP(78, 'Building encryption dictionary…');
+
+  function bToS(arr) { return arr.map(function(b){return String.fromCharCode(b);}).join(''); }
+  function escPDF(s) { return s.replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)'); }
+
+  var encObjNum = maxObjNum + 1;
+  var encDictStr = encObjNum + ' 0 obj\n<<\n' +
+    '/Filter /Standard\n/V 1\n/R 2\n' +
+    '/O (' + escPDF(bToS(O)) + ')\n' +
+    '/U (' + escPDF(bToS(U)) + ')\n' +
+    '/P '  + perm + '\n' +
     '>>\nendobj\n';
 
-  // Inject /Encrypt ref into trailer
-  var eofIdx = pdfStr.lastIndexOf('%%EOF');
-  var trailerIdx = pdfStr.lastIndexOf('trailer');
-  var newPdf;
-  if (trailerIdx !== -1 && eofIdx !== -1) {
-    var trailerSection = pdfStr.substring(trailerIdx, eofIdx);
-    trailerSection = trailerSection.replace('<<', '<< /Encrypt 999 0 R /ID [<'+fileIdHex+'> <'+fileIdHex+'>]');
-    newPdf = pdfStr.substring(0, trailerIdx) + encObj + trailerSection + '%%EOF\n';
-  } else {
-    // Fallback: just append note if structure not found
-    newPdf = pdfStr + encObj;
-  }
+  // ── Step 5: incremental update (append after %%EOF) ───────
+  setP(88, 'Appending incremental update…');
 
-  setP(90, 'Saving protected PDF…');
-  // MUST use latin-1 manual encoding - TextEncoder produces UTF-8 which corrupts PDF binary
-  var outBytes = new Uint8Array(newPdf.length);
-  for (var oi=0; oi<newPdf.length; oi++) outBytes[oi] = newPdf.charCodeAt(oi) & 0xff;
+  // Rebuild string from the (now-encrypted) byte array
+  var encStr = '';
+  for (var ci2 = 0; ci2 < pdf.length; ci2++) encStr += String.fromCharCode(pdf[ci2]);
+
+  // Trim to last %%EOF
+  var lastEof = encStr.lastIndexOf('%%EOF');
+  var baseStr  = encStr.substring(0, lastEof + 5); // keep '%%EOF'
+
+  // Extract /Root, /Info, /Size from existing trailer for the new trailer
+  var trailerArea = encStr.substring(encStr.lastIndexOf('trailer') !== -1 ? encStr.lastIndexOf('trailer') : 0);
+  var rootM2 = /\/Root\s+(\d+\s+\d+\s+R)/.exec(trailerArea);
+  var infoM2 = /\/Info\s+(\d+\s+\d+\s+R)/.exec(trailerArea);
+  var sizeM2 = /\/Size\s+(\d+)/.exec(trailerArea);
+  var prevM  = /startxref\s+(\d+)\s+%%EOF/.exec(encStr);
+
+  var rootRef  = rootM2 ? rootM2[1] : '1 0 R';
+  var newSize  = Math.max(encObjNum + 1, sizeM2 ? (parseInt(sizeM2[1]) + 1) : (encObjNum + 1));
+  var prevXref = prevM  ? prevM[1]  : '0';
+
+  // Byte offset of the new encrypt object = baseStr.length + 1 ('\n' separator)
+  var encObjOffset = baseStr.length + 1;
+
+  // Byte offset of the new xref section
+  var newXrefOffset = encObjOffset + encDictStr.length + 1; // +1 for '\n' after encDictStr
+
+  // xref entry: 10-digit offset, gen 00000, 'n', CRLF (20 bytes exactly per PDF spec)
+  var xrefLine = String(encObjOffset).padStart(10,'0') + ' 00000 n \r\n';
+  var newXrefSec = 'xref\n' + encObjNum + ' 1\n' + xrefLine;
+
+  var newTrailer =
+    'trailer\n<<\n' +
+    '/Size '    + newSize  + '\n' +
+    '/Root '    + rootRef  + '\n' +
+    (infoM2 ? '/Info ' + infoM2[1] + '\n' : '') +
+    '/Encrypt ' + encObjNum + ' 0 R\n' +
+    '/ID [<'    + fileIdHex + '> <' + fileIdHex + '>]\n' +
+    '/Prev '    + prevXref  + '\n' +
+    '>>\n';
+
+  var finalStr = baseStr + '\n' +
+                 encDictStr + '\n' +
+                 newXrefSec +
+                 newTrailer +
+                 'startxref\n' + newXrefOffset + '\n%%EOF\n';
+
+  setP(96, 'Saving protected PDF…');
+  var outBytes = new Uint8Array(finalStr.length);
+  for (var oi = 0; oi < finalStr.length; oi++) outBytes[oi] = finalStr.charCodeAt(oi) & 0xff;
+
   var outName = toolFiles[0].name.replace(/\.pdf$/i,'') + '_protected.pdf';
   showResults([{name:outName, size:fmtSize(outBytes.length), url:URL.createObjectURL(new Blob([outBytes],{type:'application/pdf'}))}]);
 }
+
 
 // ── 2. PDF METADATA EDITOR ───────────────────────────────────
 async function tPDFMeta() {
@@ -1849,14 +1984,13 @@ async function tOCR() {
   var lang = (document.getElementById('optOcrLang')||{}).value || 'eng';
   var isPDF = file.name.toLowerCase().endsWith('.pdf');
 
-  var worker = await Tesseract.createWorker({
+  // Tesseract.js v4+: createWorker(lang, oem, options)
+  var worker = await Tesseract.createWorker(lang, 1, {
     logger: function(m){
       if (m.status === 'recognizing text') setP(20 + Math.round(70*m.progress), 'Recognizing text… '+Math.round(m.progress*100)+'%');
       else if (m.status) setP(15, m.status+'…');
     }
   });
-  await worker.loadLanguage(lang);
-  await worker.initialize(lang);
 
   var fullText = '';
 
@@ -1980,8 +2114,11 @@ async function tAISummarize() {
     return;
   }
 
-  // Trim text if too long
-  if (allText.length > 15000) allText = allText.substring(0, 15000) + '\n[...text truncated for length...]';
+  // Trim text to ~12,000 chars (≈3,000 tokens) at a word boundary to avoid cutting mid-sentence
+  if (allText.length > 12000) {
+    var cutAt = allText.lastIndexOf(' ', 12000);
+    allText = allText.substring(0, cutAt > 0 ? cutAt : 12000) + '\n[...text truncated for length — summarising first portion...]';
+  }
 
   setP(50,'Sending to Claude AI…');
 
