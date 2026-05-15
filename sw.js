@@ -1,5 +1,5 @@
 // PDFSnap Service Worker v13 — Full blog cache support
-const CACHE_NAME = 'pdfsnap-v16';
+const CACHE_NAME = 'pdfsnap-v17';
 
 const SHELL_ASSETS = [
   '/',
