@@ -84,12 +84,12 @@ var TOOLS=[
 {id:'webp2jpg', cat:'image', subcat:'img-conv', icon:'🔄', bg:'rgba(0,200,255,0.1)', badge:'free', label:'Free', name:'WebP to JPG', desc:'Convert WebP images to widely-compatible JPG format.', accept:'.webp', multi:true, opts:'convfmt'},
 {id:'jpg2webp', cat:'image', subcat:'img-conv', icon:'🌐', bg:'rgba(100,200,100,0.1)', badge:'free', label:'Free', name:'JPG to WebP', desc:'Convert to modern WebP for smaller sizes on websites. Set quality level.', accept:'.jpg,.jpeg,.png', multi:true, opts:'convfmt'},
 {id:'watermarkimg', cat:'image', subcat:'img-conv', icon:'💧', bg:'rgba(255,77,0,0.1)', badge:'free', label:'Free', name:'Watermark Image', desc:'6 positions including tiled. Custom color, font size, opacity. Batch supported.',accept:'image/*', multi:true, opts:'wmimg'},
-{id:'protectpdf', cat:'pdf', subcat:'pdf-sec', icon:'🔐', bg:'rgba(139,92,246,0.12)', badge:'pro', label:'💎 Pro Free', name:'Protect PDF', desc:'Add a password to your PDF so only people with the password can open it. AES encryption.', accept:'.pdf', multi:false, opts:'protectopt'},
+{id:'protectpdf', cat:'pdf', subcat:'pdf-sec', icon:'🔐', bg:'rgba(139,92,246,0.12)', badge:'pro', label:'💎 Pro Free', name:'Protect PDF', desc:'Add a password to your PDF so only people with the password can open it. Uses standard PDF password encryption.', accept:'.pdf', multi:false, opts:'protectopt'},
 {id:'pdfmeta', cat:'pdf', subcat:'pdf-sec', icon:'🏷️', bg:'rgba(59,130,246,0.12)', badge:'pro', label:'💎 Pro Free', name:'PDF Metadata Editor', desc:'Edit hidden PDF info: Title, Author, Subject, and Keywords. Cleans up document properties.', accept:'.pdf', multi:false, opts:'metaopt'},
 {id:'organizer', cat:'pdf', subcat:'pdf-org', icon:'🧩', bg:'rgba(234,88,12,0.12)', badge:'pro', label:'💎 Pro Free', name:'PDF Page Organizer', desc:'Visual drag-and-drop to reorder, delete, or rotate individual pages. See page thumbnails.', accept:'.pdf', multi:false, opts:'none'},
 {id:'pdfsign', cat:'pdf', subcat:'pdf-sec', icon:'✍️', bg:'rgba(16,185,129,0.12)', badge:'pro', label:'💎 Pro Free', name:'Sign PDF', desc:'Draw your signature on a canvas or type it, then embed it anywhere on your PDF document.', accept:'.pdf', multi:false, opts:'signopt'},
 {id:'pdfocr', cat:'pdf', subcat:'pdf-conv', icon:'🔍', bg:'rgba(245,158,11,0.12)', badge:'pro', label:'💎 Pro Free', name:'OCR — Extract Text', desc:'Extract selectable text from scanned PDFs or images using Tesseract AI. Runs 100% in your browser.', accept:'.pdf,image/*', multi:false, opts:'ocropt'},
-{id:'aisum', cat:'pdf', subcat:'pdf-conv', icon:'🤖', bg:'rgba(99,102,241,0.12)', badge:'pro', label:'💎 Pro Free', name:'AI PDF Summarizer', desc:'Instantly get a smart summary of any PDF using AI. Key points, themes, and takeaways extracted automatically.', accept:'.pdf', multi:false, opts:'none', type:'ai'},
+{id:'aisum', cat:'pdf', subcat:'pdf-conv', icon:'🤖', bg:'rgba(99,102,241,0.12)', badge:'pro', label:'💎 Pro Free', name:'AI PDF Summarizer', desc:'Get a smart summary of any PDF using AI. Needs your own Anthropic API key, and the PDF text is sent to Anthropic.', accept:'.pdf', multi:false, opts:'none', type:'ai'},
 {id:'qrcode', cat:'image', subcat:'utility', icon:'📱', bg:'rgba(80,80,200,0.12)', badge:'new', label:'✨ New', name:'QR Code Generator', desc:'Turn any URL or text into a QR code. Download as PNG instantly. Free, no limits.', accept:null, multi:false, opts:'qropt', type:'text'},
 {id:'imginfo', cat:'image', subcat:'utility', icon:'ℹ️', bg:'rgba(77,143,255,0.1)', badge:'new', label:'✨ New', name:'Image Info', desc:'View your image dimensions, file size, format, and aspect ratio instantly.', accept:'image/*', multi:false, opts:'none'},
 {id:'imgbase64', cat:'image', subcat:'utility', icon:'🔤', bg:'rgba(0,184,148,0.1)', badge:'new', label:'✨ New', name:'Image to Base64', desc:'Convert any image to a Base64 string for embedding in HTML/CSS/JSON.', accept:'image/*', multi:false, opts:'none'},
@@ -109,8 +109,8 @@ if(blocked)document.getElementById('abOv').classList.add('show');
 try {document.body.removeChild(bait); }catch(e){}
 }, 200);
 }
-function dismissAb(){document.getElementById('abOv').classList.remove('show'); setTimeout(detectAB, 3000); }
-window.addEventListener('load', function(){setTimeout(detectAB, 1500); });
+function dismissAb(){var o=document.getElementById('abOv'); if(o)o.classList.remove('show'); }
+/* ad-blocker popup removed */
 function searchTools(q){
 q=q.toLowerCase().trim();
 var cards=document.querySelectorAll('.tool-card');
@@ -415,7 +415,7 @@ fl.innerHTML='';
 toolFiles.forEach(function(f, i){
 var d=document.createElement('div'); d.className='fi';
 d.innerHTML='<span class="fi-icon">'+(currentTool.cat==='pdf'?'📄':'🖼️')+'</span>'+
-'<div class="fi-info"><div class="fi-name">'+f.name+'</div><div class="fi-size">'+fmtSize(f.size)+'</div></div>'+
+'<div class="fi-info"><div class="fi-name">'+String(f.name).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];})+'</div><div class="fi-size">'+fmtSize(f.size)+'</div></div>'+
 '<span class="fi-rm" onclick="removeFile('+i+')">✕</span>';
 fl.appendChild(d);
 });
@@ -1911,7 +1911,7 @@ return '<div id="aiSumWrap">'+
 '<div class="prog-wrap" id="progWrap"><div class="prog-bg"><div class="prog-bar" id="progBar"></div></div><div class="prog-txt" id="progTxt">Processing…</div></div>'+
 '<div id="aiSumResult" style="display:none;background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;padding:1rem;margin-bottom:.8rem;white-space:pre-wrap;font-size:.87rem;line-height:1.65;max-height:400px;overflow-y:auto"></div>'+
 '<button class="btn-primary" id="runBtn" onclick="tAISummarize()" disabled>🤖 Summarize PDF</button>'+
-'<div style="font-size:.75rem;color:var(--mut);margin-top:.5rem;text-align:center">Your API key is stored only in your browser. PDFSnap never sees it.</div>'+
+'<div style="font-size:.75rem;color:var(--mut);margin-top:.5rem;text-align:center">Your API key is stored only in your browser. PDFSnap never sees it. The text from your PDF is sent to Anthropic to create the summary.</div>'+
 '</div>';
 }
 async function tAISummarize(){
