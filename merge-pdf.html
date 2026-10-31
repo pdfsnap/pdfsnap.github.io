@@ -378,7 +378,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 #backTop:hover{transform:translateY(-3px)}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "PDFSnap Merge PDF", "url": "https://pdfsnap.github.io/merge-pdf.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Combine multiple PDF files into one document in seconds. Free, no signup, no watermark, and your files never leave your device."}</script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is merging PDFs with PDFSnap really free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. There is no signup, no watermark on the output, and no paid tier. The site is supported by ads."}}, {"@type": "Question", "name": "Are my PDF files uploaded anywhere?", "acceptedAnswer": {"@type": "Answer", "text": "No. The merge runs in your browser, so the files stay on your device. You can even disconnect from the internet after the page loads."}}, {"@type": "Question", "name": "How do I change the order of the merged pages?", "acceptedAnswer": {"@type": "Answer", "text": "Pages are joined in the order you added the files. Choose “Files in upload order” or “Reverse order” in the options. To get a custom order, add the files one by one in the order you want."}}, {"@type": "Question", "name": "Is there a limit on file size or number of files?", "acceptedAnswer": {"@type": "Answer", "text": "PDFSnap does not set a limit. The practical limit is your device’s memory, so very large files may be slow on older phones."}}, {"@type": "Question", "name": "The merged PDF is too large. What can I do?", "acceptedAnswer": {"@type": "Answer", "text": "Set “After merging” to “Also compress after merging”, or run the result through the Compress PDF tool."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How do I change the order of the merged pages?", "acceptedAnswer": {"@type": "Answer", "text": "Pages are joined in the order you added the files. Choose “Files in upload order” or “Reverse order” in the options. For a custom order, add the files one by one in the order you want."}}, {"@type": "Question", "name": "The merged PDF is too large. What can I do?", "acceptedAnswer": {"@type": "Answer", "text": "Set “After merging” to “Also compress after merging”, or run the result through the Compress PDF tool."}}, {"@type": "Question", "name": "Is Merge PDF really free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. There is no signup, no watermark and no paid plan. The site is supported by ads."}}, {"@type": "Question", "name": "Is my data sent to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Your file is processed by code running in your browser. The page only downloads the open-source libraries it needs (for OCR, also the language data), never your file."}}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "PDFSnap", "item": "https://pdfsnap.github.io/"}, {"@type": "ListItem", "position": 2, "name": "Merge PDF", "item": "https://pdfsnap.github.io/merge-pdf.html"}]}</script>
 <style>
 .tp{max-width:760px;margin:0 auto;padding:1.4rem 1rem 0}
@@ -405,6 +405,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 .tool-embed .modal{max-width:100%;max-height:none;overflow:visible;margin:0 auto}
 .tool-embed .modal-close{display:none}
 .tool-embed #toolOv.active + #toolPlaceholder{display:none}
+@media(max-width:360px){.nav-badge{display:none}}
 #toolPlaceholder{background:var(--sur);border:1.5px solid var(--bdr);border-radius:20px;padding:1.8rem;text-align:center}
 </style>
 </head>
@@ -464,7 +465,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 <button aria-label="Open menu" class="ham-btn" id="hamBtn" onclick="toggleSideMenu()">
 <span></span><span></span><span></span>
 </button>
-<div class="logo" style="cursor:pointer" onclick="location.href='index.html'">PDF<span>Snap</span></div>
+<div class="logo" style="cursor:pointer" onclick="location.href='/'">PDF<span>Snap</span></div>
 </div>
 <div class="nav-r">
 <button id="darkToggle" onclick="toggleDark()">🌙 Dark</button>
@@ -485,9 +486,9 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 </nav>
 <div id="mainWrap">
 <main class="tp">
-<div class="crumbs"><a href="index.html">PDFSnap</a> › Merge PDF</div>
+<div class="crumbs"><a href="/">PDFSnap</a> › Merge PDF</div>
 <h1>Merge PDF files into one, free</h1>
-<p class="tp-intro">Select two or more PDFs, and PDFSnap joins them into a single file you can download right away. Everything happens inside your browser, so your documents are never uploaded to a server.</p>
+<p class="tp-intro">Select two or more PDFs and PDFSnap joins them into a single file you can download right away.</p>
 <div class="tool-embed">
 <!-- TOOL MODAL -->
 <div class="overlay" id="toolOv">
@@ -502,14 +503,15 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 <div id="toolPlaceholder"><button class="btn-primary" onclick="openTool('merge')">🗂️ Open Merge PDF</button></div>
 </div>
 <h2>How to use Merge PDF</h2>
-<ol class="steps"><li><strong>Add your PDFs</strong>Tap the upload box and pick the PDF files you want to combine. You can select several at once or use “Add More Files”.</li><li><strong>Choose your options</strong>Name the output file, pick the page order, and optionally compress the result after merging.</li><li><strong>Merge and download</strong>Press “Process Now”. When it finishes, tap Download to save the merged PDF.</li></ol>
+<ol class="steps"><li><strong>Add your PDFs</strong>Tap the upload box and pick the PDF files you want to combine. Select several at once or use “Add More Files”.</li><li><strong>Choose your options</strong>Name the output file, pick the page order, and optionally compress the result after merging.</li><li><strong>Merge and download</strong>Press “Process Now”. When it finishes, tap Download to save the merged PDF.</li></ol>
 <h2>Why use PDFSnap</h2>
-<ul class="why"><li>No upload: files are merged on your own device with the pdf-lib library, so private documents stay private.</li><li>No account, no watermark, and no page limits set by PDFSnap.</li><li>Works on phones, tablets and computers, in any modern browser.</li><li>Optional compression after merging helps when the combined file is too big to email.</li></ul>
+<ul class="why"><li>Choose normal or reverse file order before merging.</li><li>Optional compression right after merging helps when the combined file is too big to email.</li><li>Private by design: your files are processed in your browser and are not uploaded to a server.</li><li>Free, with no signup and no watermark on the result.</li></ul>
 <h2>Frequently asked questions</h2>
-<details><summary>Is merging PDFs with PDFSnap really free?</summary><p>Yes. There is no signup, no watermark on the output, and no paid tier. The site is supported by ads.</p></details><details><summary>Are my PDF files uploaded anywhere?</summary><p>No. The merge runs in your browser, so the files stay on your device. You can even disconnect from the internet after the page loads.</p></details><details><summary>How do I change the order of the merged pages?</summary><p>Pages are joined in the order you added the files. Choose “Files in upload order” or “Reverse order” in the options. To get a custom order, add the files one by one in the order you want.</p></details><details><summary>Is there a limit on file size or number of files?</summary><p>PDFSnap does not set a limit. The practical limit is your device’s memory, so very large files may be slow on older phones.</p></details><details><summary>The merged PDF is too large. What can I do?</summary><p>Set “After merging” to “Also compress after merging”, or run the result through the Compress PDF tool.</p></details>
+<details><summary>How do I change the order of the merged pages?</summary><p>Pages are joined in the order you added the files. Choose “Files in upload order” or “Reverse order” in the options. For a custom order, add the files one by one in the order you want.</p></details><details><summary>The merged PDF is too large. What can I do?</summary><p>Set “After merging” to “Also compress after merging”, or run the result through the Compress PDF tool.</p></details><details><summary>Is Merge PDF really free?</summary><p>Yes. There is no signup, no watermark and no paid plan. The site is supported by ads.</p></details><details><summary>Is my data sent to a server?</summary><p>No. Your file is processed by code running in your browser. The page only downloads the open-source libraries it needs (for OCR, also the language data), never your file.</p></details>
 <h2>More free tools</h2>
-<div class="rel"><a href="split-pdf-free.html">✂️ Split PDF</a><a href="compress-pdf-without-losing-quality.html">🗜️ Compress PDF</a><a href="rotate-pdf-pages-free.html">🔃 Rotate PDF pages</a><a href="jpg-to-pdf-free.html">🖼️ JPG to PDF</a></div>
-<p class="more">📖 <a href="merge-pdf-files-free.html">Read the full merge guide</a></p>
+<div class="rel"><a href="split-pdf.html">✂️ Split PDF</a><a href="compress-pdf.html">🗜️ Compress PDF</a><a href="pdf-page-organizer.html">🧩 PDF Page Organizer</a><a href="jpg-to-pdf.html">📑 Images to PDF</a></div>
+<p class="more">📖 <a href="merge-pdf-files-free.html">Read the full guide</a></p>
+<p class="more"><a href="/#tools">Browse all 40+ free tools →</a></p>
 </main>
 <div style="display:none" aria-hidden="true"><input id="searchInput"/><div id="toolsGrid"></div><div id="noResults"></div><span id="cnt-all"></span><span id="toolCount"></span></div>
 </div>
