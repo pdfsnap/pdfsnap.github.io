@@ -1,5 +1,6 @@
-// PDFSnap Service Worker v13 — Full blog cache support
-const CACHE_NAME = 'pdfsnap-v20';
+// PDFSnap Service Worker v14 — network-first, so new uploads show up straight away.
+// Offline still works: if the network fails, the last saved copy is used.
+const CACHE_NAME = 'pdfsnap-v21';
 
 const SHELL_ASSETS = [
   '/',
@@ -37,29 +38,46 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  if (event.request.method !== 'GET') return;
-  var url = event.request.url;
-  if (url.includes('googlesyndication') || url.includes('googletagmanager') ||
-      url.includes('profitablecpmratenetwork') || url.includes('adsbygoogle')) {
-    return;
-  }
-  event.respondWith(
-    caches.match(event.request).then(function(cached) {
-      if (cached) return cached;
-      return fetch(event.request).then(function(response) {
-        if (response && response.status === 200 && response.type === 'basic') {
+  var req = event.request;
+  if (req.method !== 'GET') return;
+  var url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;            // ads, analytics, CDN libraries: not ours to cache
+  if (url.pathname === '/sw.js') return;                       // always let the browser check for a new worker
+
+  var accept = req.headers.get('accept') || '';
+  var fresh = req.mode === 'navigate' || accept.includes('text/html') ||
+              /\.(js|json|xml|txt|css)$/.test(url.pathname);
+
+  if (fresh) {
+    // network first, saved copy only if offline
+    event.respondWith(
+      fetch(req).then(function(response) {
+        if (response && response.status === 200) {
           var clone = response.clone();
-          caches.open(CACHE_NAME).then(function(cache) {
-            cache.put(event.request, clone);
-          });
+          caches.open(CACHE_NAME).then(function(cache) { cache.put(req, clone); });
         }
         return response;
       }).catch(function() {
-        if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
-          return caches.match('/index.html');
-        }
-        return new Response('Offline', { status: 503 });
-      });
-    })
-  );
+        return caches.match(req).then(function(cached) {
+          if (cached) return cached;
+          if (accept.includes('text/html')) return caches.match('/index.html');
+          return new Response('Offline', { status: 503 });
+        });
+      })
+    );
+  } else {
+    // images, icons, fonts: saved copy first, refreshed in the background
+    event.respondWith(
+      caches.match(req).then(function(cached) {
+        var network = fetch(req).then(function(response) {
+          if (response && response.status === 200) {
+            var clone = response.clone();
+            caches.open(CACHE_NAME).then(function(cache) { cache.put(req, clone); });
+          }
+          return response;
+        }).catch(function() { return cached || new Response('Offline', { status: 503 }); });
+        return cached || network;
+      })
+    );
+  }
 });
