@@ -183,7 +183,24 @@ body.dark nav{background:rgba(18,16,14,.97)}
 #backTop.show{opacity:1;pointer-events:all}
 #backTop:hover{transform:translateY(-3px)}
 </style>
-<meta content="Mohammad Armaan" name="author"/></head>
+<meta content="Mohammad Armaan" name="author"/><style id="mobile-fix">
+@media(max-width:700px){
+nav{flex-wrap:wrap;gap:.4rem .8rem;padding:.7rem 1rem}
+.nav-links{flex-wrap:wrap;gap:.35rem 1rem;max-width:100%}
+.nav-badge{display:none}
+table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere}
+img,video,iframe,svg{max-width:100%;height:auto}
+h1,h2,h3,p,li,a{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal;min-width:5.5rem}
+.use-case-grid{grid-template-columns:1fr!important}
+.blog-grid{grid-template-columns:minmax(0,1fr)!important}
+[class*="grid"]>*{min-width:0}
+}
+.blog-hero{overflow:hidden}
+body{overflow-x:clip}
+</style>
+</head>
 <body>
 <nav>
 <a class="logo" href="index.html">PDF<span>Snap</span></a>
@@ -252,7 +269,7 @@ Frequently Asked Questions</a></li>
 <div class="faq-item"><div class="faq-q">Why do my downloaded images keep saving as WebP?</div><div class="faq-a">Websites serve WebP by default to all modern browsers because it loads faster. When you right-click and save you get the WebP version. Convert it to JPG using any of the methods above.</div></div>
 <div class="faq-item"><div class="faq-q">Can I convert WebP to PNG instead of JPG?</div><div class="faq-a">Yes — if your WebP has a transparent background, convert to PNG to preserve transparency. JPG does not support transparency and fills transparent areas with white.</div></div>
 <div class="faq-item"><div class="faq-q">Does Windows 11 support WebP natively?</div><div class="faq-a">Yes — Windows 11 supports WebP in Photos app, Paint, and File Explorer thumbnails. However many third-party applications still do not support WebP, so conversion is often still needed.</div></div>
-<div class="cta-section"><h2>🔄 Convert Images for Free</h2><p>JPG to PNG, PNG to JPG, compress, crop, resize — all free, all in your browser.</p><a class="btn-cta" href="index.html">🚀 Try Free Image Tools →</a></div>
+<div class="cta-section"><h2>🔄 Convert Images for Free</h2><p>JPG to PNG, PNG to JPG, compress, crop, resize — all free, all in your browser.</p><a class="btn-cta" href="webp-to-jpg.html">🚀 Try Free Image Tools →</a></div>
 <div style="margin-top:3rem">
 <h2 style="border-top:none;padding-top:0;margin-top:0">
 <h2 id="use-cases">Everyday Situations That Need WebP Conversion</h2>

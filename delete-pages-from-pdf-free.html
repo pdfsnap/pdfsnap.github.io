@@ -192,7 +192,24 @@ body.dark nav{background:rgba(18,16,14,.97)}
 #backTop.show{opacity:1;pointer-events:all}
 #backTop:hover{transform:translateY(-3px)}
 </style>
-<meta content="Mohammad Armaan" name="author"/></head>
+<meta content="Mohammad Armaan" name="author"/><style id="mobile-fix">
+@media(max-width:700px){
+nav{flex-wrap:wrap;gap:.4rem .8rem;padding:.7rem 1rem}
+.nav-links{flex-wrap:wrap;gap:.35rem 1rem;max-width:100%}
+.nav-badge{display:none}
+table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere}
+img,video,iframe,svg{max-width:100%;height:auto}
+h1,h2,h3,p,li,a{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal;min-width:5.5rem}
+.use-case-grid{grid-template-columns:1fr!important}
+.blog-grid{grid-template-columns:minmax(0,1fr)!important}
+[class*="grid"]>*{min-width:0}
+}
+.blog-hero{overflow:hidden}
+body{overflow-x:clip}
+</style>
+</head>
 <body>
 <nav>
 <a class="logo" href="index.html">PDF<span>Snap</span></a>
@@ -276,7 +293,7 @@ body.dark nav{background:rgba(18,16,14,.97)}
 <div class="faq-item"><div class="faq-q">Can I delete pages from a scanned PDF?</div><div class="faq-a">Yes — scanned PDFs are just image-based PDFs. Page deletion works the same way regardless of whether the PDF contains text or scanned images. The blank pages common in scanned documents can be deleted just like any other page.</div></div>
 <div class="faq-item"><div class="faq-q">Is there a limit to how many pages I can delete?</div><div class="faq-a">No practical limit exists for any of the methods described. You can delete a single page or hundreds of pages from a document. The only constraint is that at least one page must remain in the PDF — you cannot create an empty PDF by deleting all pages.</div></div>
 <div class="faq-item"><div class="faq-q">Can I undo page deletion after saving?</div><div class="faq-a">No — once you save the new PDF with pages removed, there is no undo. The only way to restore deleted pages is to go back to your original PDF file. Always keep the original before making any modifications to a PDF.</div></div>
-<div class="cta-section"><h2>📄 Work With PDFs for Free</h2><p>Split, merge, compress, rotate, watermark PDFs — all free, all in your browser, no uploads.</p><a class="btn-cta" href="index.html">🚀 Try Free PDF Tools →</a></div>
+<div class="cta-section"><h2>📄 Work With PDFs for Free</h2><p>Split, merge, compress, rotate, watermark PDFs — all free, all in your browser, no uploads.</p><a class="btn-cta" href="delete-pdf-pages.html">🚀 Try Free PDF Tools →</a></div>
 <div style="margin-top:3rem">
 <h2 style="border-top:none;padding-top:0;margin-top:0">📚 Related Articles</h2>
 <div class="related-grid">

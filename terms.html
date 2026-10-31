@@ -115,6 +115,23 @@ body.dark nav{background:rgba(18,16,14,.97)}
   ]
 }
 </script>
+<style id="mobile-fix">
+@media(max-width:700px){
+nav{flex-wrap:wrap;gap:.4rem .8rem;padding:.7rem 1rem}
+.nav-links{flex-wrap:wrap;gap:.35rem 1rem;max-width:100%}
+.nav-badge{display:none}
+table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere}
+img,video,iframe,svg{max-width:100%;height:auto}
+h1,h2,h3,p,li,a{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal;min-width:5.5rem}
+.use-case-grid{grid-template-columns:1fr!important}
+.blog-grid{grid-template-columns:minmax(0,1fr)!important}
+[class*="grid"]>*{min-width:0}
+}
+.blog-hero{overflow:hidden}
+body{overflow-x:clip}
+</style>
 </head>
 <body>
 <nav>

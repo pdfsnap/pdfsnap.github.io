@@ -183,7 +183,24 @@ body.dark nav{background:rgba(18,16,14,.97)}
 #backTop.show{opacity:1;pointer-events:all}
 #backTop:hover{transform:translateY(-3px)}
 </style>
-<meta content="Mohammad Armaan" name="author"/></head>
+<meta content="Mohammad Armaan" name="author"/><style id="mobile-fix">
+@media(max-width:700px){
+nav{flex-wrap:wrap;gap:.4rem .8rem;padding:.7rem 1rem}
+.nav-links{flex-wrap:wrap;gap:.35rem 1rem;max-width:100%}
+.nav-badge{display:none}
+table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere}
+img,video,iframe,svg{max-width:100%;height:auto}
+h1,h2,h3,p,li,a{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal;min-width:5.5rem}
+.use-case-grid{grid-template-columns:1fr!important}
+.blog-grid{grid-template-columns:minmax(0,1fr)!important}
+[class*="grid"]>*{min-width:0}
+}
+.blog-hero{overflow:hidden}
+body{overflow-x:clip}
+</style>
+</head>
 <body>
 <nav>
 <a class="logo" href="index.html">PDF<span>Snap</span></a>
@@ -250,7 +267,7 @@ body.dark nav{background:rgba(18,16,14,.97)}
 <div class="faq-item"><div class="faq-q">Can I sign a PDF on Android for free?</div><div class="faq-a">Yes — Adobe Acrobat Reader (free app) for Android has a built-in Fill and Sign feature. Tap the pencil icon, tap Sign, draw or type your signature, and place it on the document. Completely free.</div></div>
 <div class="faq-item"><div class="faq-q">Is typing my name as a signature legally valid?</div><div class="faq-a">In most cases yes. A typed name in a signature font is considered a valid electronic signature under most e-signature laws including India's IT Act. For high-value contracts, a drawn signature is more defensible if ever challenged.</div></div>
 <div class="faq-item"><div class="faq-q">How do I sign a PDF on just a phone?</div><div class="faq-a">On iPhone: open PDF in Files → tap Share → Markup → add signature. On Android: open in Adobe Acrobat Reader free → Fill and Sign → Sign. Both are completely free.</div></div>
-<div class="cta-section"><h2>✍️ Work With PDFs for Free</h2><p>Compress, merge, split, rotate, and convert PDFs — all free, all in your browser.</p><a class="btn-cta" href="index.html">🚀 Try Free PDF Tools →</a></div>
+<div class="cta-section"><h2>✍️ Work With PDFs for Free</h2><p>Compress, merge, split, rotate, and convert PDFs — all free, all in your browser.</p><a class="btn-cta" href="sign-pdf.html">🚀 Try Free PDF Tools →</a></div>
 <div style="margin-top:3rem">
 <h2 style="border-top:none;padding-top:0;margin-top:0">
 <h2 id="best-practices">Best Practices for PDF Signing Workflows</h2>

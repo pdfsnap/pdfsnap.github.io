@@ -194,7 +194,24 @@ body.dark nav{background:rgba(18,16,14,.97)}
 #backTop.show{opacity:1;pointer-events:all}
 #backTop:hover{transform:translateY(-3px)}
 </style>
-<meta content="Mohammad Armaan" name="author"/></head>
+<meta content="Mohammad Armaan" name="author"/><style id="mobile-fix">
+@media(max-width:700px){
+nav{flex-wrap:wrap;gap:.4rem .8rem;padding:.7rem 1rem}
+.nav-links{flex-wrap:wrap;gap:.35rem 1rem;max-width:100%}
+.nav-badge{display:none}
+table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere}
+img,video,iframe,svg{max-width:100%;height:auto}
+h1,h2,h3,p,li,a{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal;min-width:5.5rem}
+.use-case-grid{grid-template-columns:1fr!important}
+.blog-grid{grid-template-columns:minmax(0,1fr)!important}
+[class*="grid"]>*{min-width:0}
+}
+.blog-hero{overflow:hidden}
+body{overflow-x:clip}
+</style>
+</head>
 <body>
 <nav>
 <a class="logo" href="index.html">PDF<span>Snap</span></a>
@@ -297,7 +314,7 @@ body.dark nav{background:rgba(18,16,14,.97)}
 <div class="faq-item"><div class="faq-q">Can I add page numbers to a password-protected PDF?</div><div class="faq-a">No — password-protected PDFs cannot be modified without removing the password first. Remove the password protection, add page numbers, then re-apply password protection if needed.</div></div>
 <div class="faq-item"><div class="faq-q">What is the standard page number position for professional documents?</div><div class="faq-a">Bottom center is the most universally accepted position for business reports, academic papers, and general professional documents. Bottom right is standard for legal documents. Top right or top outer edge is used in book publishing. When in doubt, bottom center is always safe.</div></div>
 <div class="faq-item"><div class="faq-q">Can I use Roman numerals for page numbers?</div><div class="faq-a">Yes — tools like iLovePDF support Roman numeral formatting (i, ii, iii, iv). This is commonly used for front matter sections — table of contents, preface, acknowledgments — before the main document content starts numbering from page 1.</div></div>
-<div class="cta-section"><h2>📄 Work With PDFs for Free</h2><p>Compress, merge, split, rotate, watermark PDFs — all free, all in your browser.</p><a class="btn-cta" href="index.html">🚀 Try Free PDF Tools →</a></div>
+<div class="cta-section"><h2>📄 Work With PDFs for Free</h2><p>Compress, merge, split, rotate, watermark PDFs — all free, all in your browser.</p><a class="btn-cta" href="add-page-numbers-pdf.html">🚀 Try Free PDF Tools →</a></div>
 <div style="margin-top:3rem">
 <h2 style="border-top:none;padding-top:0;margin-top:0">📚 Related Articles</h2>
 <div class="related-grid">

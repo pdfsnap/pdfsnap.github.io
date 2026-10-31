@@ -197,7 +197,24 @@ body.dark nav{background:rgba(22,16,14,.97)}
 #backTop{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--acc);color:#fff;border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.1rem;display:none;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(255,77,0,.4);transition:all .2s;z-index:90}#backTop:hover{transform:scale(1.1)}
 @media(max-width:600px){.article-wrap{padding:1.5rem 1rem 4rem}.stat-row{grid-template-columns:1fr 1fr}.use-case-grid,.related-grid{grid-template-columns:1fr}.nav-links a:not(:last-child){display:none}}
 </style>
-<meta content="Mohammad Armaan" name="author"/></head>
+<meta content="Mohammad Armaan" name="author"/><style id="mobile-fix">
+@media(max-width:700px){
+nav{flex-wrap:wrap;gap:.4rem .8rem;padding:.7rem 1rem}
+.nav-links{flex-wrap:wrap;gap:.35rem 1rem;max-width:100%}
+.nav-badge{display:none}
+table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere}
+img,video,iframe,svg{max-width:100%;height:auto}
+h1,h2,h3,p,li,a{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal;min-width:5.5rem}
+.use-case-grid{grid-template-columns:1fr!important}
+.blog-grid{grid-template-columns:minmax(0,1fr)!important}
+[class*="grid"]>*{min-width:0}
+}
+.blog-hero{overflow:hidden}
+body{overflow-x:clip}
+</style>
+</head>
 <body>
 <nav>
 <a class="logo" href="index.html">PDF<span>Snap</span></a>

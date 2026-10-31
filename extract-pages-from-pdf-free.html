@@ -193,7 +193,24 @@ body.dark nav{background:rgba(18,16,14,.97)}
 #backTop.show{opacity:1;pointer-events:all}
 #backTop:hover{transform:translateY(-3px)}
 </style>
-<meta content="Mohammad Armaan" name="author"/></head>
+<meta content="Mohammad Armaan" name="author"/><style id="mobile-fix">
+@media(max-width:700px){
+nav{flex-wrap:wrap;gap:.4rem .8rem;padding:.7rem 1rem}
+.nav-links{flex-wrap:wrap;gap:.35rem 1rem;max-width:100%}
+.nav-badge{display:none}
+table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere}
+img,video,iframe,svg{max-width:100%;height:auto}
+h1,h2,h3,p,li,a{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal;min-width:5.5rem}
+.use-case-grid{grid-template-columns:1fr!important}
+.blog-grid{grid-template-columns:minmax(0,1fr)!important}
+[class*="grid"]>*{min-width:0}
+}
+.blog-hero{overflow:hidden}
+body{overflow-x:clip}
+</style>
+</head>
 <body>
 <nav>
 <a class="logo" href="index.html">PDF<span>Snap</span></a>
@@ -316,7 +333,7 @@ body.dark nav{background:rgba(18,16,14,.97)}
 <div class="fi"><div class="fq">Can I extract pages from a password-protected PDF?</div><div class="fa">You need to know the open password first. Once you've unlocked the PDF (entered the password to open it), most tools will allow you to extract pages — though some protected PDFs also have permissions restrictions that prevent page extraction. If the tool reports a permissions error, you may need the owner password or to use Adobe Acrobat Pro.</div></div>
 <div class="fi"><div class="fq">I need to extract every page into separate individual PDFs. Is there a free way?</div><div class="fa">Yes — PDF24's Split PDF tool has a "Split each page" option that outputs every page as its own PDF file, bundled into a ZIP download. iLovePDF also has this option. PDFSnap's Split tool supports custom ranges which you can use to extract pages one at a time.</div></div>
 <div class="fi"><div class="fq">How do I extract a page from a PDF on my phone without any app?</div><div class="fa">Use the browser print trick on Android (Chrome → Print → Save as PDF → specify page range) or open the PDF in Safari on iPhone and use the Share → Print → pinch-to-expand workflow. Both produce a new PDF with just the specified pages and require no apps beyond the browser already on your phone.</div></div>
-<div class="cta"><h2>✂️ Split &amp; Extract PDFs Instantly</h2><p>Use PDFSnap's free Split PDF tool — processes entirely in your browser, no upload, no account, no limits.</p><a class="btn" href="index.html">🚀 Try Split PDF Free →</a></div>
+<div class="cta"><h2>✂️ Split &amp; Extract PDFs Instantly</h2><p>Use PDFSnap's free Split PDF tool — processes entirely in your browser, no upload, no account, no limits.</p><a class="btn" href="extract-pdf-pages.html">🚀 Try Split PDF Free →</a></div>
 <div style="margin-top:3rem">
 <h2 style="border-top:none;padding-top:0;margin-top:0">📚 Related Articles</h2>
 <div class="rg">

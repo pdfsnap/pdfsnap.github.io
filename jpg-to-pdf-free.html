@@ -228,7 +228,24 @@ body.dark nav{background:rgba(18,16,14,.97)}
 #backTop.show{opacity:1;pointer-events:all}
 #backTop:hover{transform:translateY(-3px)}
 </style>
-<meta content="Mohammad Armaan" name="author"/></head>
+<meta content="Mohammad Armaan" name="author"/><style id="mobile-fix">
+@media(max-width:700px){
+nav{flex-wrap:wrap;gap:.4rem .8rem;padding:.7rem 1rem}
+.nav-links{flex-wrap:wrap;gap:.35rem 1rem;max-width:100%}
+.nav-badge{display:none}
+table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+pre,code{white-space:pre-wrap;overflow-wrap:anywhere}
+img,video,iframe,svg{max-width:100%;height:auto}
+h1,h2,h3,p,li,a{overflow-wrap:anywhere}
+td,th{overflow-wrap:normal;word-break:normal;min-width:5.5rem}
+.use-case-grid{grid-template-columns:1fr!important}
+.blog-grid{grid-template-columns:minmax(0,1fr)!important}
+[class*="grid"]>*{min-width:0}
+}
+.blog-hero{overflow:hidden}
+body{overflow-x:clip}
+</style>
+</head>
 <body>
 <nav>
 <a class="logo" href="index.html">PDF<span>Snap</span></a>
@@ -483,7 +500,7 @@ body.dark nav{background:rgba(18,16,14,.97)}
 <div class="cta-section">
 <h2>Ready to Convert Your Images? 🖼️➜📄</h2>
 <p>Turn any JPG, PNG, or WebP photo into a professional PDF in seconds.<br/>No signup · No watermark · No upload · 100% free forever</p>
-<a class="btn-cta" href="index.html">🚀 Convert JPG to PDF for Free →</a>
+<a class="btn-cta" href="jpg-to-pdf.html">🚀 Convert JPG to PDF for Free →</a>
 </div>
 <div class="related-posts">
 <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:1rem">📚 Related Articles</div>
