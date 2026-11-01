@@ -405,6 +405,8 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 .tool-embed .modal{max-width:100%;max-height:none;overflow:visible;margin:0 auto}
 .tool-embed .modal-close{display:none}
 .tool-embed #toolOv.active + #toolPlaceholder{display:none}
+.ask-strip{display:flex;align-items:center;gap:.5rem;background:var(--acc-light);border:1.5px solid var(--bdr);border-radius:12px;padding:.6rem .9rem;margin:0 0 1rem;color:var(--txt);text-decoration:none;font-size:.9rem;font-weight:600}
+.ask-strip:hover{border-color:var(--acc)}
 @media(max-width:360px){.nav-badge{display:none}}
 #toolPlaceholder{background:var(--sur);border:1.5px solid var(--bdr);border-radius:20px;padding:1.8rem;text-align:center}
 </style>
@@ -489,6 +491,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 <div class="crumbs"><a href="/">PDFSnap</a> › Compress PDF</div>
 <h1>Compress a PDF to a smaller size, free</h1>
 <p class="tp-intro">Make a PDF small enough to email or upload by choosing how much quality you are willing to trade for size.</p>
+<a class="ask-strip" href="ask-pdfsnap.html"><span aria-hidden="true">✨</span> Need several steps at once? Just type what you want →</a>
 <div class="tool-embed">
 <!-- TOOL MODAL -->
 <div class="overlay" id="toolOv">
