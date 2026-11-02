@@ -411,6 +411,51 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
   ]
 }
 </script>
+<style>
+.chat{background:var(--sur);border:1.5px solid var(--bdr);border-radius:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;height:74vh;height:74dvh;min-height:460px;max-height:720px;overflow:hidden}
+.chat.drop{border-color:var(--acc);box-shadow:0 0 0 4px var(--acc-light)}
+.chat-head{display:flex;justify-content:space-between;align-items:center;padding:.65rem 1rem;border-bottom:1.5px solid var(--bdr)}
+.chat-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:800}
+.newchat{background:none;border:1.5px solid var(--bdr);color:var(--mut);border-radius:20px;padding:.3rem .85rem;cursor:pointer;font:inherit;font-size:.82rem}
+.newchat:hover{border-color:var(--acc);color:var(--acc)}
+.chat-log{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.8rem;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.m{display:flex;gap:.55rem;align-items:flex-start}.m.user{justify-content:flex-end}
+.av{width:30px;height:30px;border-radius:50%;background:var(--acc-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9rem}
+.m .b{padding:.7rem .9rem;border-radius:18px;line-height:1.5;font-size:.95rem;max-width:88%;overflow-wrap:anywhere}
+.m.bot .b{background:var(--bg);border:1.5px solid var(--bdr);border-bottom-left-radius:6px}
+.m.user .b{background:var(--acc);color:#fff;border-bottom-right-radius:6px}
+.m .b ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.m .b li{margin:.15rem 0}.m .b a{color:var(--acc);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.65rem}
+.ask-chip{background:var(--sur);border:1.5px solid var(--bdr);color:var(--txt);border-radius:99px;padding:.4rem .8rem;font:inherit;font-size:.85rem;cursor:pointer;text-align:left}
+.ask-chip:hover{border-color:var(--acc);color:var(--acc)}.ask-chip:disabled{opacity:.6;cursor:default}
+.ufiles{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.3rem}
+.ufile{background:rgba(255,255,255,.2);border-radius:10px;padding:.25rem .6rem;font-size:.82rem;overflow-wrap:anywhere}
+.work{display:flex;gap:.7rem;align-items:flex-start}.wplan{font-size:.88rem;color:var(--mut);margin-bottom:.3rem}.wprog{font-weight:600}
+.dots{display:inline-flex;gap:3px;padding-top:.55rem}.dots i{width:7px;height:7px;border-radius:50%;background:var(--acc);animation:askb 1s infinite ease-in-out}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes askb{0%,80%,100%{transform:scale(.6);opacity:.5}40%{transform:scale(1);opacity:1}}
+.rcs{display:flex;flex-direction:column;gap:.5rem;margin:.6rem 0}
+.rc{display:flex;align-items:center;gap:.6rem;background:var(--sur);border:1.5px solid var(--bdr);border-radius:14px;padding:.55rem .7rem}
+.rn{flex:1;min-width:0;display:flex;flex-direction:column;overflow-wrap:anywhere}.rn small{color:var(--mut)}
+.dl{background:var(--acc);color:#fff!important;text-decoration:none;border-radius:99px;padding:.4rem .9rem;font-size:.85rem;font-weight:700;white-space:nowrap}
+.notes{font-size:.85rem;color:var(--mut)}.unsup{margin-top:.5rem;font-size:.9rem}.hint{margin-top:.6rem;font-size:.82rem;color:var(--mut)}
+.chat-foot{padding:.6rem .8rem .5rem;border-top:1.5px solid var(--bdr)}
+.tray{display:flex;gap:.4rem;overflow-x:auto;padding-bottom:.5rem}
+.tf{display:inline-flex;align-items:center;gap:.35rem;background:var(--acc-light);border:1.5px solid var(--bdr);border-radius:12px;padding:.3rem .3rem .3rem .6rem;font-size:.82rem;white-space:nowrap}
+.tn{max-width:140px;overflow:hidden;text-overflow:ellipsis}.tf small{color:var(--mut)}
+.tx{background:none;border:0;color:var(--mut);font-size:1.1rem;line-height:1;cursor:pointer;padding:.1rem .4rem}
+.composer{display:flex;align-items:flex-end;gap:.5rem;background:var(--bg);border:1.5px solid var(--bdr);border-radius:26px;padding:.35rem}
+.composer:focus-within{border-color:var(--acc)}
+.icon-btn,.send{flex-shrink:0;width:40px;height:40px;border-radius:50%;border:0;font-size:1.4rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.icon-btn{background:var(--acc-light);color:var(--acc);font-weight:700}.send{background:var(--acc);color:#fff;font-weight:700}.send:disabled{opacity:.5;cursor:default}
+.composer textarea{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--txt);font:inherit;font-size:1rem;resize:none;padding:.55rem .2rem;max-height:130px;line-height:1.35}
+.privacy{font-size:.75rem;color:var(--mut);text-align:center;margin:.45rem 0 0}
+.ask-home{max-width:780px;margin:1.6rem auto 2rem;padding:0 1rem;scroll-margin-top:84px}
+.ask-home h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.35rem}
+.ask-home .ask-sub{color:var(--mut);line-height:1.6;margin-bottom:1rem;font-size:.95rem}
+.ask-home .chat{height:min(560px,78vh);height:min(560px,78dvh);min-height:420px}
+.ask-home .ask-more{margin-top:.7rem;font-size:.88rem;text-align:center}.ask-home .ask-more a{color:var(--acc);font-weight:600}
+</style>
 <style id="narrow-fix">@media(max-width:360px){.nav-badge{display:none}}</style>
 </head>
 <body>
@@ -510,7 +555,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 <p class="hero-sub">We built the tools <strong>we</strong> were always searching for. Fast, private, and free — your files never leave your device.</p>
 <div class="hero-btns">
 <a class="btn-cta" href="#tools">🚀 Start Using Free Tools</a>
-<a class="btn-cta" style="background:transparent;color:var(--acc);border:2px solid var(--acc);box-shadow:none" href="ask-pdfsnap.html">✨ Just type what you want</a>
+<a class="btn-cta" style="background:transparent;color:var(--acc);border:2px solid var(--acc);box-shadow:none" href="#ask">✨ Just type what you want</a>
 </div>
 <div class="search-wrap">
 <span class="search-icon">🔍</span>
@@ -522,6 +567,26 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Browser-Based</div></div>
 </div>
 </section>
+<section class="ask-home" id="ask" aria-label="Ask PDFSnap">
+<h2>✨ Just type what you want</h2>
+<p class="ask-sub">Attach your PDFs or images and tell PDFSnap what to do: merge, split, compress to a size, convert. It all happens on your device.</p>
+<section class="chat" id="chatCard" aria-label="Ask PDFSnap chat">
+<div class="chat-head"><div class="chat-title"><span aria-hidden="true">✨</span> Ask PDFSnap</div><button type="button" id="newChat" class="newchat">New chat</button></div>
+<div class="chat-log" id="chatLog" role="log" aria-live="polite" aria-relevant="additions"></div>
+<div class="chat-foot">
+<div id="tray" class="tray" style="display:none"></div>
+<div class="composer">
+<button type="button" id="attachBtn" class="icon-btn" aria-label="Attach PDF or image files">+</button>
+<input type="file" id="fileIn" multiple accept=".pdf,application/pdf,image/*" hidden>
+<textarea id="msg" rows="1" placeholder="Type what you want…" aria-label="Your request"></textarea>
+<button type="button" id="sendBtn" class="send" aria-label="Send">↑</button>
+</div>
+<p class="privacy">🔒 Your files are processed on your device and never uploaded.</p>
+</div>
+</section>
+<p class="ask-more"><a href="ask-pdfsnap.html">Open the full-page version →</a></p>
+</section>
+
 <!-- TRUST STRIP -->
 <div class="trust-strip">
 <div class="trust-item"><span>🔒</span><span>Files never leave your device</span></div>
@@ -1018,5 +1083,1124 @@ window.addEventListener('scroll', function(){
 </script>
 <button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
+<script>
+/* PDFSnap "Ask" — turns a plain-English request into a list of steps.
+   Pure functions: no DOM, no network, nothing leaves the device. */
+(function (root) {
+  'use strict';
+
+  function AskError(msg) { this.message = msg; this.isAsk = true; }
+  AskError.prototype = Object.create(Error.prototype);
+
+  // ---------------------------------------------------------------- page lists
+  var RC = '\\s*(?:-|–|—|to|through|thru|till|until)\\s*(?:pages?\\s*)?';
+  var LC = '\\s*(?:,|&|and|plus)\\s*(?:pages?\\s*)?';
+  var ITEM = '\\d{1,4}(?:' + RC + '(?:\\d{1,4}|end|last))?';
+  var LIST = ITEM + '(?:' + LC + ITEM + ')*';
+
+  function parseItems(s) {
+    var items = [];
+    s.split(new RegExp(LC)).forEach(function (p) {
+      p = p.trim(); if (!p) return;
+      var m = new RegExp('^(\\d+)(?:' + RC + '(\\d+|end|last))?$').exec(p);
+      if (m) items.push({ a: +m[1], b: m[2] === undefined ? null : (/^\d+$/.test(m[2]) ? +m[2] : 'end') });
+    });
+    return items;
+  }
+
+  function parsePages(c) {
+    var m, r;
+    function ret(spec) { return { spec: spec, a: m.index, b: m.index + m[0].length }; }
+    if ((m = /\b(odd|even)(?:[\s-]numbered)?\s+pages?\b/.exec(c))) return ret({ kind: m[1] });
+    if ((m = /\bfirst\s+(\d{1,4})\s+pages?\b/.exec(c))) return ret({ kind: 'first', n: +m[1] });
+    if ((m = /\blast\s+(\d{1,4})\s+pages?\b/.exec(c))) return ret({ kind: 'last', n: +m[1] });
+    if ((m = /\b(?:first|front|cover|title)\s+page\b|\bcover\b/.exec(c))) return ret({ kind: 'first', n: 1 });
+    if ((m = /\b(?:last|final|back)\s+page\b/.exec(c))) return ret({ kind: 'last', n: 1 });
+    if ((m = /\bpages?\s*(\d{1,4})\s*(?:onwards?|and\s+(?:after|beyond|later|above|on)|to\s+(?:the\s+)?end|(?:till|until)\s+(?:the\s+)?end)\b/.exec(c)))
+      return ret({ kind: 'list', items: [{ a: +m[1], b: 'end' }] });
+    if ((m = /\b(?:all|every|each)\s+(?:the\s+)?pages?\b/.exec(c))) return ret({ kind: 'all' });
+    r = new RegExp('\\b(?:pages?|pgs?)\\s*(?:no\\.?|numbers?|#)?\\s*(?:from\\s+|:)?\\s*(' + LIST + ')');
+    if ((m = r.exec(c))) { var it = parseItems(m[1]); if (it.length) return ret({ kind: 'list', items: it }); }
+    if ((m = /\b(\d{1,4})\s*(?:-|–|—|to|through|thru)\s*(\d{1,4})\b(?!\s*(?:kb|mb|k\b|m\b|px|%|x\b|dpi|°|deg|\d))/.exec(c)))
+      return ret({ kind: 'list', items: [{ a: +m[1], b: +m[2] }] });
+    if ((m = /\b(?:all|every|each)\s+(?:the\s+)?pages?\b/.exec(c))) return ret({ kind: 'all' });
+    return null;
+  }
+
+  function resolvePages(spec, total) {
+    var set = {}, i;
+    function chk(n) {
+      if (n < 1 || n > total) throw new AskError('That PDF has only ' + total + ' page' + (total === 1 ? '' : 's') + ', so I can’t use page ' + n + '.');
+      return n;
+    }
+    function add(n) { set[n] = true; }
+    switch (spec.kind) {
+      case 'all': for (i = 1; i <= total; i++) add(i); break;
+      case 'odd': for (i = 1; i <= total; i += 2) add(i); break;
+      case 'even': for (i = 2; i <= total; i += 2) add(i); break;
+      case 'first': for (i = 1; i <= Math.min(spec.n, total); i++) add(i); break;
+      case 'last': for (i = Math.max(1, total - spec.n + 1); i <= total; i++) add(i); break;
+      case 'list':
+        spec.items.forEach(function (it) {
+          var a = it.a, b = it.b === null ? it.a : (it.b === 'end' ? total : it.b);
+          if (a > b) { var t = a; a = b; b = t; }
+          chk(a); chk(b);
+          for (var k = a; k <= b; k++) add(k);
+        });
+        break;
+    }
+    return Object.keys(set).map(Number).sort(function (x, y) { return x - y; });
+  }
+
+  function describePages(spec) {
+    switch (spec.kind) {
+      case 'all': return 'all pages';
+      case 'odd': return 'odd pages';
+      case 'even': return 'even pages';
+      case 'first': return spec.n === 1 ? 'the first page' : 'the first ' + spec.n + ' pages';
+      case 'last': return spec.n === 1 ? 'the last page' : 'the last ' + spec.n + ' pages';
+      default:
+        return 'page' + (spec.items.length > 1 || spec.items[0].b !== null ? 's ' : ' ') + spec.items.map(function (it) {
+          return it.b === null ? it.a : it.a + '–' + it.b;
+        }).join(', ');
+    }
+  }
+
+  // ------------------------------------------------------------------ values
+  function parseSize(c) {
+    var m = /(?:\b(?:under|below|less\s+than|smaller\s+than|within|max(?:imum)?(?:\s+of|\s+size)?|at\s+most|up\s*to|not\s+(?:more|bigger|larger|greater|over|above)\s+than|no\s+(?:more|bigger|larger|greater)\s+than|to|around|about|approx(?:imately)?|lower\s+than|beneath)|<=?|≤)\s*(\d+(?:[.,]\d+)?)\s*(kb|kilobytes?|mb|megabytes?|k|m)\b/.exec(c);
+    if (!m) m = /(\d+(?:[.,]\d+)?)\s*(kb|kilobytes?|mb|megabytes?|k|m)\s*(?:or\s+(?:less|smaller|under|below)|max(?:imum)?|limit)/.exec(c);
+    if (!m) return null;
+    var n = parseFloat(m[1].replace(',', '.')), u = m[2].charAt(0);
+    return Math.round(n * (u === 'm' ? 1048576 : 1024));
+  }
+
+  function parseLevel(c) {
+    if (/\b(?:best|high|good|great|keep(?:ing)?(?:\s+the)?|same|original|maintain)\s+quality\b|\bwithout\s+(?:losing|loss|reducing)\b|\blossless\b|\blight(?:ly)?\b|\bslight(?:ly)?\b|\bgentle\b|\bminimal\b|\breadable\b|\blegible\b/.test(c)) return 'low';
+    if (/\b(?:max(?:imum)?|extreme|strong(?:est)?|high(?:est)?|heavy|heavily|smallest|tiny|as\s+(?:small|much)\s+as\s+possible|aggressive)\b/.test(c)) return 'high';
+    return null;
+  }
+
+  function parseAngle(c) {
+    if (/\bupside[\s-]?down\b|\bhalf[\s-]?turn\b|\bturn(?:ed)?\s+around\b/.test(c)) return 180;
+    var m = /(?:^|[^\d.])(90|180|270)(?!\d)/.exec(c);
+    var ccw = /\b(?:anti|counter)[\s-]?clock\s?wise\b|\banticlockwise\b|\bccw\b|\b(?:to\s+the\s+)?left(?:wards?)?\b/.test(c);
+    var cw = /\bclock\s?wise\b|\bcw\b|\b(?:to\s+the\s+)?right(?:wards?)?\b/.test(c);
+    var a;
+    if (m) a = +m[1]; else if (ccw || cw) a = 90; else return null;
+    if (ccw) a = (360 - a) % 360;
+    return a;
+  }
+
+  function parseFmt(c) {
+    var m = /\b(jpe?g|png|webp)\b/.exec(c);
+    if (!m) return null;
+    return m[1] === 'png' ? 'png' : m[1] === 'webp' ? 'webp' : 'jpeg';
+  }
+
+  function parseDims(c) {
+    var m, o = {};
+    if ((m = /(\d{2,5})\s*(?:x|×|by|\*)\s*(\d{2,5})/.exec(c))) { o.w = +m[1]; o.h = +m[2]; if (/\b(?:exact(?:ly)?|stretch|force)\b/.test(c)) o.exact = true; return o; }
+    if ((m = /\bwidth\s*(?:of|to|=|:|is)?\s*(\d{2,5})\b|\b(\d{2,5})\s*(?:px|pixels?)?\s*wide\b/.exec(c))) o.w = +(m[1] || m[2]);
+    if ((m = /\bheight\s*(?:of|to|=|:|is)?\s*(\d{2,5})\b|\b(\d{2,5})\s*(?:px|pixels?)?\s*(?:tall|high)\b/.exec(c))) o.h = +(m[1] || m[2]);
+    if (o.w || o.h) return o;
+    if ((m = /(\d{1,3})\s*%/.exec(c))) { o.pct = +m[1]; return o; }
+    if (/\bhalf\b/.test(c)) { o.pct = 50; return o; }
+    if (/\bquarter\b/.test(c)) { o.pct = 25; return o; }
+    if (/\b(?:double|twice)\b/.test(c)) { o.pct = 200; return o; }
+    if ((m = /(\d{2,5})\s*(?:px|pixels?)\b/.exec(c))) { o.max = +m[1]; return o; }
+    return null;
+  }
+
+  function parseSplit(c) {
+    var m;
+    if ((m = /\bevery\s+(\d{1,3})\s+pages?\b/.exec(c)) ||
+        (m = /\binto\s+(\d{1,3})[\s-]*pages?(?:\s+(?:parts?|chunks?|files?|pdfs?|pieces?|sections?))?\b/.exec(c)) ||
+        (m = /\b(\d{1,3})[\s-]+pages?\s+(?:each|per\s+(?:file|part|pdf)|chunks?|parts?|pieces?|at\s+a\s+time)\b/.exec(c)))
+      return { mode: 'every', n: Math.max(1, +m[1]) };
+    if (/\b(?:each|every|single|individual|separate|all)\s+pages?\b|\bpage\s+by\s+page\b|\bone\s+page\s+per\b|\bpages?\s+(?:separately|individually)\b|\binto\s+(?:single|individual|separate)\s+pages\b|\bone\s+(?:pdf|file)\s+per\s+page\b/.test(c))
+      return { mode: 'each' };
+    if ((m = /\binto\s+(\d{1,2})\s+(?:equal\s+)?(?:parts?|files?|pdfs?|pieces?|sections?|halves)\b/.exec(c))) return { mode: 'parts', k: Math.max(2, +m[1]) };
+    if (/\bin\s+half\b|\binto\s+(?:two|2)\s+halves\b/.test(c)) return { mode: 'parts', k: 2 };
+    if ((m = /\b(at|after|before)\s+page\s*(\d{1,4})\b/.exec(c))) return { mode: 'at', page: +m[2], side: m[1] };
+    var p = parsePages(c);
+    if (p && p.spec.kind !== 'all') return { mode: 'extract', spec: p.spec };
+    return null;
+  }
+
+  function blank(c, p) { return p ? c.slice(0, p.a) + new Array(p.b - p.a + 1).join(' ') + c.slice(p.b) : c; }
+
+  // ---------------------------------------------------------- step parsers
+  var STEP_PARSE = {
+    merge: function () { return {}; },
+    split: function (c) { var s = parseSplit(c); return s ? { split: s } : {}; },
+    extract: function (c) { var p = parsePages(c); return p ? { spec: p.spec } : {}; },
+    'delete': function (c) { var p = parsePages(c); return p ? { spec: p.spec } : {}; },
+    rotate: function (c) {
+      var p = parsePages(c), o = {};
+      var ang = parseAngle(blank(c, p));
+      if (p && p.spec.kind !== 'all') o.spec = p.spec;
+      if (ang !== null) o.angle = ang;
+      return o;
+    },
+    reverse: function () { return {}; },
+    numbers: function (c) {
+      var o = { vpos: 'bottom', hpos: 'center', fmt: 'n', start: null, skip: 0 }, m;
+      if ((m = /\b(top|bottom)\b/.exec(c))) o.vpos = m[1];
+      if ((m = /\b(left|right|cent(?:er|re)|middle)\b/.exec(c))) o.hpos = /left/.test(m[1]) ? 'left' : /right/.test(m[1]) ? 'right' : 'center';
+      if (/\b\d+\s+of\s+\d+\b|\bx\s+of\s+y\b|\b1\s+of\s+n\b|\bof\s+(?:the\s+)?total\b/.test(c)) o.fmt = 'of';
+      if ((m = /\bstart(?:ing)?\s+(?:from|at|with|number|on)?\s*(\d{1,4})\b/.exec(c))) o.start = +m[1];
+      if ((m = /\bskip(?:ping)?\s+(?:the\s+)?(?:first|cover|title)(?:\s+(\d{1,3}))?/.exec(c))) o.skip = m[1] ? +m[1] : 1;
+      else if (/\b(?:except|excluding|without)\s+(?:the\s+)?(?:first|cover|title)\s+page\b/.test(c)) o.skip = 1;
+      return o;
+    },
+    compress: function (c) { return { target: parseSize(c), level: parseLevel(c) }; },
+    grayscale: function () { return {}; },
+    toimg: function (c) {
+      var o = { fmt: parseFmt(c) || 'jpeg', scale: /\b(?:high|hd|best)\s+(?:res|resolution|quality)\b|\b300\s*dpi\b/.test(c) ? 3 : 2 };
+      var p = parsePages(c); if (p && p.spec.kind !== 'all') o.spec = p.spec;
+      return o;
+    },
+    topdf: function (c) { return { separate: /\b(?:each|separately|individually|one\s+pdf\s+per|their\s+own)\b/.test(c) }; },
+    resize: function (c) { var d = parseDims(c); return d ? { dims: d } : {}; },
+    flip: function (c) { return { dir: /\bboth\b/.test(c) ? 'hv' : /\bvertical(?:ly)?\b|\bupside\b|\btop\s*(?:to|and)\s*bottom\b/.test(c) ? 'v' : 'h' }; },
+    watermark: function (c, o) {
+      var m = /"([^"]{1,60})"|'([^']{1,60})'/.exec(o);
+      var text = m ? (m[1] || m[2]) : null;
+      if (!text) {
+        var lo = c.search(/\b(?:with|saying|reading|says|text|word|words|as)\s*:?\s+/);
+        if (lo >= 0) {
+          var rest = o.slice(lo).replace(/^\s*(?:with|saying|reading|says|text|word|words|as)\s*:?\s+(?:the\s+)?(?:text\s+|word\s+|words\s+)?/i, '');
+          rest = rest.split(/\s+(?:and\s+then|then|and\s+(?:compress|merge|split|rotate|add|convert))\b/i)[0].replace(/[.!?,;]+$/, '').trim();
+          if (rest && rest.length <= 40 && !/^(?:it|them|this|these|all|each|every|my|the|a|an)$/i.test(rest)) text = rest;
+        }
+      }
+      return text ? { text: text } : {};
+    }
+  };
+
+  function missingOf(s) {
+    switch (s.id) {
+      case 'extract': case 'delete': return s.spec ? null : 'pages';
+      case 'split': return s.split ? null : 'split';
+      case 'rotate': return s.angle != null ? null : 'angle';
+      case 'resize': return s.dims ? null : 'dims';
+      case 'watermark': return s.text ? null : 'text';
+    }
+    return null;
+  }
+
+  // ----------------------------------------------------------------- verbs
+  var UNSUP = {
+    protect: { label: 'password-protecting a PDF', link: 'protect-pdf.html', tool: 'Protect PDF' },
+    unlock: { label: 'unlocking a PDF', link: 'unlock-pdf.html', tool: 'Unlock PDF' },
+    ocr: { label: 'reading text from scans (OCR)', link: 'pdf-ocr.html', tool: 'OCR – Extract Text' },
+    sign: { label: 'signing a PDF', link: 'sign-pdf.html', tool: 'Sign PDF' },
+    summarize: { label: 'summarizing', link: null, tool: null },
+    qr: { label: 'making a QR code', link: 'qr-code-generator.html', tool: 'QR Code Generator' },
+    crop: { label: 'cropping', link: 'crop-image.html', tool: 'Crop Image' },
+    exif: { label: 'editing photo or PDF metadata', link: 'remove-image-exif.html', tool: 'Remove Image EXIF' },
+    blur: { label: 'blurring', link: 'blur-image.html', tool: 'Blur Image' },
+    sharpen: { label: 'sharpening', link: 'sharpen-image.html', tool: 'Sharpen Image' },
+    brightness: { label: 'brightness and contrast', link: 'image-brightness-contrast.html', tool: 'Brightness & Contrast' },
+    border: { label: 'adding a border', link: 'add-border-to-image.html', tool: 'Add Border to Image' },
+    invert: { label: 'inverting colours', link: 'invert-image-colors.html', tool: 'Invert Image Colors' },
+    base64: { label: 'Base64 conversion', link: 'image-to-base64.html', tool: 'Image to Base64' },
+    reorder: { label: 'rearranging pages', link: 'pdf-page-organizer.html', tool: 'PDF Page Organizer' },
+    edit: { label: 'editing text inside a PDF', link: null, tool: null },
+    translate: { label: 'translating', link: null, tool: null },
+    removenumbers: { label: 'removing page numbers', link: null, tool: null },
+    rmwatermark: { label: 'removing watermarks', link: null, tool: null },
+    nobg: { label: 'removing backgrounds', link: null, tool: null },
+    office: { label: 'converting to or from Word, Excel or PowerPoint', link: null, tool: null }
+  };
+
+  var VERBS = [
+    ['protect', /\bpassword[\s-]?protect(?:ed|ing)?\b|\bencrypt(?:ed|ing)?\b|\b(?:add|set|put|apply)\s+(?:a\s+)?password\b|\block\s+(?:it|them|this|the)\b|\bprotect\b/],
+    ['unlock', /\bunlock(?:ing)?\b|\bdecrypt\b|\bremove\s+(?:the\s+)?(?:password|restrictions?|protection|security)\b/],
+    ['ocr', /\bocr\b|\bsearchable\b|\b(?:extract|get|copy|read)\s+(?:the\s+)?text\b|\btext\s+from\b|\brecogni[sz]e\s+text\b/],
+    ['sign', /\b(?:sign|signature|esign|e-sign)\b/],
+    ['summarize', /\bsummari[sz]e\b|\bsummary\b|\btl;?dr\b/],
+    ['qr', /\bqr\b/],
+    ['crop', /\bcrop(?:ping)?\b/],
+    ['exif', /\bexif\b|\bmetadata\b|\bgps\b/],
+    ['blur', /\bblur(?:ring)?\b|\bpixelate\b/],
+    ['sharpen', /\bsharpen\b/],
+    ['brightness', /\bbright(?:en|ness|er)\b|\bcontrast\b|\bsaturat\w+\b/],
+    ['border', /\bborder\b/],
+    ['invert', /\binvert\b|\bnegative\b/],
+    ['base64', /\bbase\s?64\b/],
+    ['reorder', /\b(?:reorder|re-order|rearrange|re-arrange|shuffle|move\s+page|swap\s+pages?)\b/],
+    ['edit', /\b(?:remove|delete|erase)\s+(?:the\s+|that\s+|some\s+)?(?:text|words?|annotations?|comments?|highlights?|signature)\b|\b(?:edit|annotate|highlight|fill(?:\s+in)?|type\s+(?:on|into)|add\s+(?:some\s+)?text|redact|black\s*out)\b/],
+    ['translate', /\btranslat\w+\b/],
+    ['rmwatermark', /\b(?:remove|delete|erase|get\s+rid\s+of|clean)\s+(?:the\s+|that\s+|this\s+|a\s+)?watermarks?\b/],
+    ['removenumbers', /\bremove\s+(?:the\s+)?page\s+numbers?\b/],
+    ['nobg', /\bremove\s+(?:the\s+)?background\b|\bbackground\s+remov\w+\b/],
+    ['office', /\b(?:to|into|from)\s+(?:ms\s+)?(?:word|docx?|excel|xlsx?|powerpoint|pptx?|ppt|txt|html|epub)\b/],
+
+    ['numbers', /\bpage\s+numbers?\b|\bnumber(?:ing)?\s+(?:the\s+|all\s+|my\s+|these\s+|every\s+|each\s+)?pages?\b|\bpaginat\w+\b|\badd\s+numbers\b/],
+    ['toimg', /\b(?:to|into|as)\s+(?:an?\s+|some\s+)?(?:high[\s-]quality\s+)?(?:jpe?gs?|pngs?|webps?|images?|pictures?|photos?)\b/],
+    ['topdf', /\b(?:to|into|as|in)\s+(?:an?\s+|one\s+|single\s+|1\s+)*(?:single\s+|one\s+)?pdf\b|\b(?:make|create|build|generate|produce)\s+(?:me\s+)?(?:an?\s+|one\s+)?pdf\b(?!\s+(?:smaller|lighter|bigger|larger|shorter))|\bpdf\s+(?:out\s+of|from)\s+(?:\w+\s+){0,2}?(?:images?|photos?|pictures?|jpe?gs?|pngs?|scans?)\b/],
+    ['grayscale', /\bgr[ae]y[\s-]?scale\b|\bblack\s*(?:and|&|n|-)\s*white\b|\bb\s?&\s?w\b|\bmonochrome\b|\bdesaturat\w+\b|\bgr[ae]y\b/],
+    ['compress', /\bcompress\w*\b|\bshrink\b|\bsmaller\b|\breduc(?:e|ing)\s+(?:the\s+|its\s+|their\s+)?(?:file\s+)?size\b|\bminimi[sz]e\b|\bdownsize\b|\b(?:lower|less)\s+(?:the\s+)?size\b|\blighter\b/],
+    ['rotate', /\brotat\w*\b|\bspin\b|\b(?:turn|flip)\s+(?:\w+\s+){0,3}?(?:upside[\s-]?down|sideways|clock\s?wise|anti[\s-]?clock\s?wise|counter[\s-]?clock\s?wise)\b/],
+    ['rotatemod', /\bupside[\s-]?down\b|\bsideways\b/],
+    ['reverse', /\breverse\b|\bbackwards?\b|\b(?:last|end)\s+to\s+(?:the\s+)?(?:first|beginning|start)\b|\bflip\s+(?:the\s+)?(?:page\s+)?order\b/],
+    ['merge', /\b(?:merge|merging|combine|combining|join|joining|concatenate|stitch)\b|\b(?:put|stick|glue|bring)\s+(?:\w+\s+){0,2}?together\b/],
+    ['split', /\b(?:split|splitting|separate|divide|slice)\b|\bbreak\s+(?:it\s+)?(?:up|apart|into)\b/],
+    ['extract', /\bextract(?:ing)?\b|\b(?:keep|retain|take|pull\s+out|grab|select|get|save)\s+(?:only\s+|just\s+)?(?:the\s+)?(?:first|last|front|cover|pages?|odd|even)\b|\bonly\s+(?:keep\s+)?(?:the\s+)?pages?\b/],
+    ['delete', /\b(?:delete|deleting|remove|removing|drop|discard|erase|get\s+rid\s+of|trim\s+off|take\s+out|cut\s+out)\b(?!\s+(?:the\s+|that\s+|this\s+|all\s+)?(?:exif|metadata|gps|location|geotag|watermark|password|background|text|words?|annotations?|comments?|signature))/],
+    ['resize', /\bresiz\w+\b|\brescale\b|\bscale\b|\bdimensions?\b|\bwidth\b|\bheight\b|\b\d{2,5}\s*(?:x|×|by)\s*\d{2,5}\b|\b\d{2,5}\s*px\b|\bhalf\s+(?:the\s+)?size\b/],
+    ['flip', /\bmirror\b|\bflip\b/],
+    ['watermark', /\bwatermark\w*\b|\bstamp\b/]
+  ];
+
+  function findVerbs(t) {
+    var hits = [];
+    VERBS.forEach(function (v) {
+      var re = new RegExp(v[1].source, 'g'), m;
+      while ((m = re.exec(t))) {
+        var a = m.index, b = a + m[0].length;
+        if (m[0].length === 0) { re.lastIndex++; continue; }
+        if (hits.some(function (h) { return a < h.b && b > h.a; })) continue;
+        hits.push({ id: v[0], a: a, b: b });
+      }
+    });
+    hits.sort(function (x, y) { return x.a - y.a; });
+    return hits;
+  }
+
+  // ------------------------------------------------------------------ parse
+  function parse(orig) {
+    var o = ' ' + String(orig || '').replace(/[“”]/g, '"').replace(/[‘’]/g, "'") + ' ';
+    var t = o.toLowerCase();
+    var out = { steps: [], unsupported: [], intent: null };
+    var tr = t.trim();
+    if (!tr) { out.intent = 'empty'; return out; }
+    if (/^(?:hi+|hello|hey+|hola|namaste|yo|good\s+(?:morning|afternoon|evening))\b[\s!.,]*$/.test(tr)) { out.intent = 'greet'; return out; }
+    if (/^(?:thanks?|thank\s*you|thx|ty|great|awesome|cool|nice|perfect|ok(?:ay)?|got\s+it)\b[\s!.,a-z]{0,20}$/.test(tr) && !/\b(?:merge|split|compress|rotate)\b/.test(tr)) { out.intent = 'thanks'; return out; }
+
+    var hits = findVerbs(t);
+    var hasRot = hits.some(function (h) { return h.id === 'rotate'; });
+    hits = hits.filter(function (h) { return !(h.id === 'rotatemod' && hasRot); });
+    hits.forEach(function (h) { if (h.id === 'rotatemod') h.id = 'rotate'; });
+    var MERGEABLE = { resize: 1, rotate: 1, compress: 1, grayscale: 1, flip: 1 };
+    hits = hits.filter(function (h, i) { return !(i > 0 && MERGEABLE[h.id] && hits[i - 1].id === h.id); });
+    for (var k = 0; k < hits.length; k++) {
+      var h = hits[k];
+      if (UNSUP[h.id]) { if (out.unsupported.indexOf(h.id) < 0) out.unsupported.push(h.id); continue; }
+      var end = k + 1 < hits.length ? hits[k + 1].a : t.length;
+      var from = out.steps.length === 0 ? 0 : h.a;
+      var step = { id: h.id };
+      var extra = STEP_PARSE[h.id](t.slice(from, end), o.slice(from, end));
+      for (var key in extra) step[key] = extra[key];
+      step.missing = missingOf(step);
+      out.steps.push(step);
+    }
+
+    // a size limit mentioned anywhere belongs to the compress step
+    var gs = parseSize(t);
+    var cs = null;
+    out.steps.forEach(function (s) { if (!cs && s.id === 'compress') cs = s; });
+    if (cs && cs.target == null && gs != null) cs.target = gs;
+    else if (!cs && gs != null && /\b(?:under|below|less\s+than|within|max(?:imum)?|at\s+most|up\s*to|smaller\s+than|no\s+more\s+than|not\s+more\s+than|around|about)\b|\bor\s+(?:less|smaller|under|below)\b|\bmax(?:imum)?\b/.test(t))
+      out.steps.push({ id: 'compress', target: gs, level: null, implicit: true, missing: null });
+
+    // "merge ... into one pdf" is a single merge
+    if (out.steps.some(function (s) { return s.id === 'merge'; }))
+      out.steps = out.steps.filter(function (s) { return s.id !== 'topdf'; });
+
+    if (!out.steps.length && !out.unsupported.length) {
+      out.intent = /\b(?:help|what\s+can\s+you|what\s+do\s+you|how\s+(?:does|do)\s+(?:this|it|i)|examples?|commands?|options|features|capabilit\w+)\b/.test(t) ? 'help' : 'unknown';
+    }
+    return out;
+  }
+
+  // answer to a clarifying question
+  function fillMissing(step, text) {
+    var t = ' ' + String(text || '').toLowerCase() + ' ';
+    var p;
+    switch (step.missing) {
+      case 'pages':
+        p = parsePages(t);
+        if (!p) {
+          var m = new RegExp('^\\s*(' + LIST + ')\\s*$').exec(t.trim());
+          if (m) p = { spec: { kind: 'list', items: parseItems(m[1]) } };
+          else if ((m = /^\s*(odd|even)\s*$/.exec(t))) p = { spec: { kind: m[1] } };
+        }
+        if (p && p.spec.kind !== 'all') { step.spec = p.spec; step.missing = null; return true; }
+        return false;
+      case 'angle': {
+        var a = parseAngle(t);
+        if (a != null) { step.angle = a; step.missing = null; return true; }
+        return false;
+      }
+      case 'split': {
+        var s = parseSplit(t);
+        if (!s) { var b = /^\s*(?:every\s+)?(\d{1,3})\s*(?:pages?)?\s*$/.exec(t); if (b) s = { mode: 'every', n: Math.max(1, +b[1]) }; }
+        if (!s) { var l = new RegExp('^\\s*(' + LIST + ')\\s*$').exec(t.trim()); if (l) s = { mode: 'extract', spec: { kind: 'list', items: parseItems(l[1]) } }; }
+        if (s) { step.split = s; step.missing = null; return true; }
+        return false;
+      }
+      case 'dims': {
+        var d = parseDims(t);
+        if (!d) { var n = /^\s*(\d{2,5})\s*$/.exec(t); if (n) d = { max: +n[1] }; }
+        if (d) { step.dims = d; step.missing = null; return true; }
+        return false;
+      }
+      case 'text': {
+        var x = String(text || '').trim().replace(/^["']|["']$/g, '').slice(0, 60);
+        if (x) { step.text = x; step.missing = null; return true; }
+        return false;
+      }
+    }
+    return false;
+  }
+
+  var api = { parse: parse, fillMissing: fillMissing, resolvePages: resolvePages, describePages: describePages,
+              parsePages: parsePages, parseSize: parseSize, parseAngle: parseAngle, parseDims: parseDims,
+              UNSUP: UNSUP, AskError: AskError };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.AskNLU = api;
+})(typeof window !== 'undefined' ? window : this);
+
+</script>
+<script>
+/* PDFSnap "Ask" — chat interface + processing engine.
+   Everything runs in the browser. Uses pdf-lib and pdf.js, loaded by app.js's ensurePdfLibs(). */
+(function () {
+  'use strict';
+  var NLU = window.AskNLU, AskError = NLU.AskError;
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ------------------------------------------------------------------ helpers
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fmt(n) { if (n < 1024) return n + ' B'; if (n < 1048576) return (n / 1024).toFixed(n < 10240 ? 1 : 0) + ' KB'; return (n / 1048576).toFixed(2) + ' MB'; }
+  function baseName(n) { return String(n).replace(/\.[^.]+$/, ''); }
+  function plural(n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); }
+  function tick() { return new Promise(function (r) { setTimeout(r, 0); }); }
+  var MIMES = { jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' };
+  var EXT = { jpeg: 'jpg', png: 'png', webp: 'webp' };
+  var FMTNAME = { jpeg: 'JPG', png: 'PNG', webp: 'WebP' };
+
+  function kindOf(f) {
+    var n = (f.name || '').toLowerCase();
+    if (f.type === 'application/pdf' || /\.pdf$/.test(n)) return 'pdf';
+    if (/^image\/(jpeg|png|webp|gif|bmp)$/.test(f.type) || /\.(jpe?g|png|webp|gif|bmp)$/.test(n)) return 'image';
+    return null;
+  }
+  function mimeFromName(n) {
+    n = (n || '').toLowerCase();
+    return /\.png$/.test(n) ? 'image/png' : /\.webp$/.test(n) ? 'image/webp' : /\.gif$/.test(n) ? 'image/gif' : /\.bmp$/.test(n) ? 'image/bmp' : /\.pdf$/.test(n) ? 'application/pdf' : 'image/jpeg';
+  }
+  function mk(name, blob, kind) {
+    return { name: name, blob: blob, size: blob.size, kind: kind || (blob.type === 'application/pdf' ? 'pdf' : 'image'), mime: blob.type || mimeFromName(name) };
+  }
+  function imgFmtOf(f) { return /png/.test(f.mime) ? 'png' : /webp/.test(f.mime) ? 'webp' : /jpe?g/.test(f.mime) ? 'jpeg' : 'other'; }
+  function outFmtFor(f) { var fm = imgFmtOf(f); if (fm === 'webp') return canWebp() ? 'webp' : 'jpeg'; return fm === 'other' ? 'png' : fm; }
+  function pagesLabel(arr) {
+    var out = [], i = 0;
+    while (i < arr.length) { var j = i; while (j + 1 < arr.length && arr[j + 1] === arr[j] + 1) j++; out.push(j > i ? arr[i] + '-' + arr[j] : String(arr[i])); i = j + 1; }
+    var s = out.join('_'); return s.length > 24 ? out[0] + '_etc' : s;
+  }
+
+  // -------------------------------------------------------------------- libs
+  var libsP = null;
+  function libs() {
+    if (libsP) return libsP;
+    libsP = new Promise(function (res, rej) {
+      var done = false;
+      var t = setTimeout(function () { if (!done) { done = true; libsP = null; rej(new AskError('I couldn’t load the PDF engine. Check your internet connection and try again.')); } }, 30000);
+      function ok() { if (done) return; done = true; clearTimeout(t); res(); }
+      if (typeof ensurePdfLibs === 'function') ensurePdfLibs(ok);
+      else if (window.PDFLib && window.pdfjsLib) ok();
+      else { done = true; clearTimeout(t); libsP = null; rej(new AskError('The PDF engine isn’t available on this page.')); }
+    });
+    return libsP;
+  }
+  function PL() { return window.PDFLib; }
+
+  // ------------------------------------------------------------ image helpers
+  async function decode(blob) {
+    if (window.createImageBitmap) { try { return await createImageBitmap(blob); } catch (e) { /* fall back */ } }
+    return await new Promise(function (res, rej) {
+      var u = URL.createObjectURL(blob), im = new Image();
+      im.onload = function () { URL.revokeObjectURL(u); res(im); };
+      im.onerror = function () { URL.revokeObjectURL(u); rej(new AskError('I couldn’t read one of the images.')); };
+      im.src = u;
+    });
+  }
+  function dim(img) { return { w: img.naturalWidth || img.width, h: img.naturalHeight || img.height }; }
+  function canvasOf(w, h) { var c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h)); return c; }
+  function toBlob(c, type, q) { return new Promise(function (res) { c.toBlob(res, type, q); }); }
+  async function encode(c, type, q) {
+    var b = await toBlob(c, type, q);
+    if (!b) throw new AskError('I couldn’t save the image (it may be too large for this device).');
+    return b;
+  }
+  var webpOK = null;
+  function canWebp() { if (webpOK === null) { try { webpOK = document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') === 0; } catch (e) { webpOK = false; } } return webpOK; }
+  function paint(img, w, h, fmtName) {
+    var c = canvasOf(w, h), x = c.getContext('2d');
+    if (fmtName === 'jpeg') { x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); }
+    x.imageSmoothingQuality = 'high'; x.drawImage(img, 0, 0, c.width, c.height);
+    return c;
+  }
+  function unique(name, taken) {
+    if (!taken[name]) { taken[name] = 1; return name; }
+    var m = /^(.*?)(\.[^.]*)?$/.exec(name), i = 2, n;
+    do { n = m[1] + ' (' + i + ')' + (m[2] || ''); i++; } while (taken[n]);
+    taken[n] = 1; return n;
+  }
+  function suffix(name, add, ext) {
+    var b = baseName(name); if (b.slice(-add.length - 1) === '_' + add) return b + '.' + ext;
+    return b + '_' + add + '.' + ext;
+  }
+
+  // ------------------------------------------------------------- image steps
+  async function imgCompress(f, s, c) {
+    var img = await decode(f.blob), d = dim(img);
+    var outFmt = (imgFmtOf(f) === 'webp' && canWebp()) ? 'webp' : 'jpeg', type = MIMES[outFmt];
+    var q0 = { low: 0.85, medium: 0.7, high: 0.5 }[s.level || 'medium'];
+    var target = s.target, best = null, scale = 1;
+    async function enc(sc, q) { return await encode(paint(img, d.w * sc, d.h * sc, outFmt), type, q); }
+    if (!target) best = await enc(1, q0);
+    else {
+      for (var tries = 0; tries < 8 && !best; tries++) {
+        var hiB = await enc(scale, 0.92);
+        if (hiB.size <= target) { best = hiB; break; }
+        var loB = await enc(scale, 0.15);
+        if (loB.size <= target) {
+          var l = 0.15, h = 0.92; best = loB;
+          for (var i = 0; i < 6; i++) { var m = (l + h) / 2, bm = await enc(scale, m); if (bm.size <= target) { best = bm; l = m; } else h = m; }
+          break;
+        }
+        c.last = loB; scale *= 0.8;
+      }
+      if (!best) best = c.last;
+    }
+    if (!target && best.size >= f.size) { c.notes.push('“' + f.name + '” is already well compressed, so I kept it as is.'); return [f]; }
+    if (target && best.size > target) c.notes.push('The smallest I could make “' + f.name + '” was ' + fmt(best.size) + ', a bit over your ' + fmt(target) + ' limit.');
+    if (best.size >= f.size) { c.notes.push('“' + f.name + '” was already smaller than I could make it, so I kept it as is.'); return [f]; }
+    return [mk(suffix(f.name, 'compressed', EXT[outFmt]), best, 'image')];
+  }
+
+  async function imgResize(f, s) {
+    var img = await decode(f.blob), d = dim(img), o = s.dims, w, h, r;
+    if (o.pct) { w = d.w * o.pct / 100; h = d.h * o.pct / 100; }
+    else if (o.max) { r = o.max / Math.max(d.w, d.h); w = d.w * r; h = d.h * r; }
+    else if (o.w && o.h) { if (o.exact) { w = o.w; h = o.h; } else { r = Math.min(o.w / d.w, o.h / d.h); w = d.w * r; h = d.h * r; } }
+    else if (o.w) { r = o.w / d.w; w = o.w; h = d.h * r; }
+    else { r = o.h / d.h; h = o.h; w = d.w * r; }
+    w = Math.max(1, Math.round(w)); h = Math.max(1, Math.round(h));
+    if (w * h > 60e6) throw new AskError('That size would be too big for your device to handle. Try a smaller size.');
+    var fm = outFmtFor(f);
+    var b = await encode(paint(img, w, h, fm), MIMES[fm], 0.92);
+    return [mk(baseName(f.name) + '_' + w + 'x' + h + '.' + EXT[fm], b, 'image')];
+  }
+
+  async function imgConvert(f, s, c) {
+    var fm = s.fmt || 'jpeg';
+    if (fm === 'webp' && !canWebp()) throw new AskError('Your browser can’t save WebP images. Try JPG or PNG instead.');
+    if (imgFmtOf(f) === fm) { c.notes.push('“' + f.name + '” is already ' + FMTNAME[fm] + '.'); return [f]; }
+    var img = await decode(f.blob), d = dim(img);
+    var b = await encode(paint(img, d.w, d.h, fm), MIMES[fm], 0.92);
+    return [mk(baseName(f.name) + '.' + EXT[fm], b, 'image')];
+  }
+
+  async function imgTransform(f, name, draw, swap) {
+    var img = await decode(f.blob), d = dim(img), fm = outFmtFor(f);
+    var c = swap ? canvasOf(d.h, d.w) : canvasOf(d.w, d.h), x = c.getContext('2d');
+    if (fm === 'jpeg') { x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); }
+    draw(x, img, d, c);
+    var b = await encode(c, MIMES[fm], 0.92);
+    return [mk(suffix(f.name, name, EXT[fm]), b, 'image')];
+  }
+  function imgRotate(f, s) {
+    var a = s.angle;
+    return imgTransform(f, 'rotated', function (x, img, d, c) {
+      x.translate(c.width / 2, c.height / 2); x.rotate(a * Math.PI / 180); x.drawImage(img, -d.w / 2, -d.h / 2);
+    }, a === 90 || a === 270);
+  }
+  function imgFlip(f, s) {
+    return imgTransform(f, 'flipped', function (x, img, d, c) {
+      var h = s.dir.indexOf('h') >= 0, v = s.dir.indexOf('v') >= 0;
+      x.translate(h ? c.width : 0, v ? c.height : 0); x.scale(h ? -1 : 1, v ? -1 : 1); x.drawImage(img, 0, 0);
+    }, false);
+  }
+  function imgGray(f) {
+    return imgTransform(f, 'grayscale', function (x, img, d, c) {
+      x.drawImage(img, 0, 0); var id = x.getImageData(0, 0, c.width, c.height), p = id.data;
+      for (var i = 0; i < p.length; i += 4) { var g = p[i] * 0.299 + p[i + 1] * 0.587 + p[i + 2] * 0.114; p[i] = p[i + 1] = p[i + 2] = g; }
+      x.putImageData(id, 0, 0);
+    }, false);
+  }
+
+  // --------------------------------------------------------------- PDF helpers
+  async function openPdf(f) {
+    await libs();
+    var buf = await f.blob.arrayBuffer();
+    try { return await PL().PDFDocument.load(buf, { ignoreEncryption: true }); }
+    catch (e) { throw new AskError('I couldn’t open “' + f.name + '”. It may be damaged or password-protected. (Password-protected files can be opened with the Unlock PDF tool.)'); }
+  }
+  async function pdfjsOpen(f) {
+    await libs();
+    var buf = await f.blob.arrayBuffer();
+    try { return await pdfjsLib.getDocument({ data: new Uint8Array(buf) }).promise; }
+    catch (e) { throw new AskError('I couldn’t read “' + f.name + '”. It may be damaged or password-protected.'); }
+  }
+  function pdfFile(name, bytes) { return mk(name, new Blob([bytes], { type: 'application/pdf' }), 'pdf'); }
+
+  async function jpegBytesFor(f) {
+    var img = await decode(f.blob), d = dim(img);
+    var b = await encode(paint(img, d.w, d.h, 'jpeg'), 'image/jpeg', 0.92);
+    return { bytes: await b.arrayBuffer(), w: d.w, h: d.h };
+  }
+  async function addImagePage(doc, f) {
+    var emb, w, h;
+    if (imgFmtOf(f) === 'png') {
+      emb = await doc.embedPng(await f.blob.arrayBuffer()); w = emb.width; h = emb.height;
+    } else { var j = await jpegBytesFor(f); emb = await doc.embedJpg(j.bytes); w = j.w; h = j.h; }
+    var k = Math.min(1, 842 / Math.max(w, h)), pw = Math.max(1, Math.round(w * k)), ph = Math.max(1, Math.round(h * k));
+    var page = doc.addPage([pw, ph]); page.drawImage(emb, { x: 0, y: 0, width: pw, height: ph });
+  }
+
+  async function hasText(pdf) {
+    var n = Math.min(3, pdf.numPages), chars = 0;
+    for (var i = 1; i <= n; i++) {
+      var page = await pdf.getPage(i), tc = await page.getTextContent();
+      chars += tc.items.map(function (it) { return it.str || ''; }).join('').trim().length;
+    }
+    return chars > 60;
+  }
+
+  // Redraws each page as a JPEG, trying steps from best quality to smallest until `target` bytes is reached.
+  async function rasterize(f, pdf, o, prog) {
+    var BASE = 1.5, n = pdf.numPages, sizes = [], pix = 0, i;
+    for (i = 1; i <= n; i++) { var p1 = await pdf.getPage(i), v1 = p1.getViewport({ scale: 1 }); sizes.push([v1.width, v1.height]); pix += v1.width * BASE * v1.height * BASE * 4; }
+    var cache = pix <= 120e6, canv = [];
+    async function render(idx, scale) {
+      var pg = await pdf.getPage(idx), vp = pg.getViewport({ scale: scale }), c = canvasOf(vp.width, vp.height), x = c.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height);
+      await pg.render({ canvasContext: x, viewport: vp, canvas: c }).promise;
+      return c;
+    }
+    async function build(step, label) {
+      var out = await PL().PDFDocument.create();
+      for (var k = 1; k <= n; k++) {
+        prog(label + ' (page ' + k + ' of ' + n + ')…');
+        var src;
+        if (cache) { if (!canv[k]) canv[k] = await render(k, BASE); src = canv[k]; } else src = await render(k, Math.min(BASE, step.s));
+        var w = Math.max(1, Math.round(sizes[k - 1][0] * step.s)), h = Math.max(1, Math.round(sizes[k - 1][1] * step.s));
+        var c = canvasOf(w, h), x = c.getContext('2d');
+        x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.imageSmoothingQuality = 'high'; x.drawImage(src, 0, 0, w, h);
+        if (o.gray) { var id = x.getImageData(0, 0, w, h), d = id.data; for (var j = 0; j < d.length; j += 4) { var g = d[j] * 0.299 + d[j + 1] * 0.587 + d[j + 2] * 0.114; d[j] = d[j + 1] = d[j + 2] = g; } x.putImageData(id, 0, 0); }
+        var jb = await encode(c, 'image/jpeg', step.q), img = await out.embedJpg(await jb.arrayBuffer());
+        var pg = out.addPage([sizes[k - 1][0], sizes[k - 1][1]]); pg.drawImage(img, { x: 0, y: 0, width: sizes[k - 1][0], height: sizes[k - 1][1] });
+        if (k % 3 === 0) await tick();
+      }
+      return await out.save({ useObjectStreams: true });
+    }
+    var bytes = null, reached = false;
+    for (i = 0; i < o.steps.length; i++) {
+      bytes = await build(o.steps[i], o.label + (o.steps.length > 1 ? ' — try ' + (i + 1) + ' of ' + o.steps.length : ''));
+      if (!o.target || bytes.length <= o.target) { reached = true; break; }
+    }
+    return { bytes: bytes, reached: reached };
+  }
+
+  var LADDER = [{ s: 1.5, q: 0.8 }, { s: 1.25, q: 0.7 }, { s: 1.0, q: 0.6 }, { s: 0.85, q: 0.5 }, { s: 0.7, q: 0.45 }, { s: 0.55, q: 0.4 }, { s: 0.45, q: 0.35 }];
+
+  async function pdfCompress(f, s, c) {
+    var target = s.target, level = s.level;
+    if (target && f.size <= target) { c.notes.push('“' + f.name + '” is already ' + fmt(f.size) + ', under your limit, so I left it as is.'); return [f]; }
+    var doc = await openPdf(f);
+    var lossless = await doc.save({ useObjectStreams: true });
+    var llOK = lossless.length < f.size;
+    if (target ? lossless.length <= target : level === 'low') {
+      if (!llOK) { c.notes.push('“' + f.name + '” is already compact, so I kept it as is.'); return [f]; }
+      return [pdfFile(suffix(f.name, 'compressed', 'pdf'), lossless)];
+    }
+    var pdf = await pdfjsOpen(f);
+    if (!target && !level && await hasText(pdf)) {
+      c.notes.push('“' + f.name + '” is mostly selectable text, so I only optimized it without changing how it looks. For a much smaller file, say something like “compress to under 200 KB” (the pages then become images and the text can’t be selected).');
+      if (!llOK) return [f];
+      return [pdfFile(suffix(f.name, 'compressed', 'pdf'), lossless)];
+    }
+    var steps = target ? LADDER : (level === 'high' ? [{ s: 0.9, q: 0.5 }] : [{ s: 1.25, q: 0.7 }]);
+    var r = await rasterize(f, pdf, { steps: steps, target: target, gray: false, label: 'Compressing' }, c.prog);
+    var out = r.bytes;
+    if (llOK && lossless.length < out.length && (!target || lossless.length <= target || !r.reached)) out = lossless;
+    else c.notes.push('To make “' + f.name + '” smaller, its pages were saved as images, so the text in the new file can’t be selected.');
+    if (out.length >= f.size) { c.notes.push('I couldn’t make “' + f.name + '” any smaller than it already is, so I kept the original.'); return [f]; }
+    if (target && out.length > target) c.notes.push('The smallest I could make “' + f.name + '” was ' + fmt(out.length) + ', a bit over your ' + fmt(target) + ' limit.');
+    return [pdfFile(suffix(f.name, 'compressed', 'pdf'), out)];
+  }
+
+  async function pdfGray(f, s, c) {
+    var pdf = await pdfjsOpen(f);
+    var r = await rasterize(f, pdf, { steps: [{ s: 1.5, q: 0.8 }], target: 0, gray: true, label: 'Converting to black and white' }, c.prog);
+    c.notes.push('Pages were redrawn as black-and-white images, so the text in the new file can’t be selected.');
+    return [pdfFile(suffix(f.name, 'grayscale', 'pdf'), r.bytes)];
+  }
+
+  async function copyPagesTo(src, idx0) {
+    var out = await PL().PDFDocument.create();
+    var pages = await out.copyPages(src, idx0); pages.forEach(function (p) { out.addPage(p); });
+    return await out.save();
+  }
+
+  async function pdfSplit(f, s) {
+    var src = await openPdf(f), total = src.getPageCount(), sp = s.split, base = baseName(f.name), out = [], i, a;
+    function range(a, b) { var r = []; for (var k = a; k <= b; k++) r.push(k - 1); return r; }
+    if (sp.mode === 'extract') {
+      var arr = NLU.resolvePages(sp.spec, total);
+      return [pdfFile(base + '_pages_' + pagesLabel(arr) + '.pdf', await copyPagesTo(src, arr.map(function (n) { return n - 1; })))];
+    }
+    if (sp.mode === 'each') {
+      if (total > 200) throw new AskError('That PDF has ' + total + ' pages — too many to split one by one here. Ask for “every 10 pages”, for example.');
+      for (i = 1; i <= total; i++) out.push(pdfFile(base + '_page-' + i + '.pdf', await copyPagesTo(src, [i - 1])));
+      return out;
+    }
+    if (sp.mode === 'every' || sp.mode === 'parts') {
+      var n = sp.mode === 'every' ? sp.n : Math.ceil(total / sp.k), part = 0;
+      if (n >= total) throw new AskError('That PDF has only ' + plural(total, 'page') + ', so there’s nothing to split at that size.');
+      if (Math.ceil(total / n) > 200) throw new AskError('That would make more than 200 files. Try a bigger number of pages per file.');
+      for (a = 1; a <= total; a += n) { part++; out.push(pdfFile(base + '_part' + part + '.pdf', await copyPagesTo(src, range(a, Math.min(total, a + n - 1))))); }
+      return out;
+    }
+    if (sp.mode === 'at') {
+      var p = sp.page, cut = sp.side === 'before' ? p - 1 : p;
+      if (cut < 1 || cut >= total) throw new AskError('That PDF has ' + plural(total, 'page') + ', so I can’t split ' + sp.side + ' page ' + p + '.');
+      return [pdfFile(base + '_part1.pdf', await copyPagesTo(src, range(1, cut))), pdfFile(base + '_part2.pdf', await copyPagesTo(src, range(cut + 1, total)))];
+    }
+    throw new AskError('Tell me how to split it, for example “every 2 pages” or “pages 2 to 4”.');
+  }
+
+  async function pdfExtract(f, s) {
+    var src = await openPdf(f), arr = NLU.resolvePages(s.spec, src.getPageCount());
+    return [pdfFile(baseName(f.name) + '_pages_' + pagesLabel(arr) + '.pdf', await copyPagesTo(src, arr.map(function (n) { return n - 1; })))];
+  }
+  async function pdfDelete(f, s) {
+    var src = await openPdf(f), total = src.getPageCount(), del = NLU.resolvePages(s.spec, total), gone = {}, keep = [];
+    del.forEach(function (n) { gone[n] = 1; });
+    for (var i = 1; i <= total; i++) if (!gone[i]) keep.push(i - 1);
+    if (!keep.length) throw new AskError('That would delete every page of “' + f.name + '”. Tell me which pages to keep instead.');
+    return [pdfFile(suffix(f.name, 'edited', 'pdf'), await copyPagesTo(src, keep))];
+  }
+  async function pdfRotate(f, s) {
+    var doc = await openPdf(f), total = doc.getPageCount();
+    var set = {}; (s.spec ? NLU.resolvePages(s.spec, total) : NLU.resolvePages({ kind: 'all' }, total)).forEach(function (n) { set[n] = 1; });
+    doc.getPages().forEach(function (p, i) { if (set[i + 1]) p.setRotation(PL().degrees((((p.getRotation().angle || 0) + s.angle) % 360 + 360) % 360)); });
+    return [pdfFile(suffix(f.name, 'rotated', 'pdf'), await doc.save())];
+  }
+  async function pdfReverse(f) {
+    var src = await openPdf(f), idx = [];
+    for (var i = src.getPageCount() - 1; i >= 0; i--) idx.push(i);
+    return [pdfFile(suffix(f.name, 'reversed', 'pdf'), await copyPagesTo(src, idx))];
+  }
+  async function pdfNumbers(f, s) {
+    var doc = await openPdf(f), font = await doc.embedFont(PL().StandardFonts.Helvetica), pages = doc.getPages(), total = pages.length;
+    pages.forEach(function (p, i) {
+      if (i < s.skip) return;
+      var label = s.start != null ? s.start + (i - s.skip) : i + 1;
+      var text = s.fmt === 'of' ? label + ' of ' + total : String(label), size = 11, sz = p.getSize(), w = font.widthOfTextAtSize(text, size), m = 28;
+      var x = s.hpos === 'left' ? m : s.hpos === 'right' ? sz.width - w - m : (sz.width - w) / 2;
+      var y = s.vpos === 'top' ? sz.height - m : m - 6;
+      p.drawText(text, { x: x, y: y, size: size, font: font, color: PL().rgb(0.2, 0.2, 0.2) });
+    });
+    return [pdfFile(suffix(f.name, 'numbered', 'pdf'), await doc.save())];
+  }
+  async function pdfWatermark(f, s) {
+    var doc = await openPdf(f), font = await doc.embedFont(PL().StandardFonts.HelveticaBold), text = s.text;
+    var unit; try { unit = font.widthOfTextAtSize(text, 1); } catch (e) { throw new AskError('I can only draw plain letters and numbers in a watermark. Try simpler text.'); }
+    doc.getPages().forEach(function (p) {
+      var sz = p.getSize(), diag = Math.sqrt(sz.width * sz.width + sz.height * sz.height);
+      var size = Math.max(16, Math.min(96, (0.62 * diag) / Math.max(unit, 0.5))), w = unit * size, rad = Math.PI / 4;
+      p.drawText(text, { x: sz.width / 2 - (w / 2) * Math.cos(rad) + (size * 0.3) * Math.sin(rad), y: sz.height / 2 - (w / 2) * Math.sin(rad) - (size * 0.3) * Math.cos(rad),
+        size: size, font: font, color: PL().rgb(0.5, 0.5, 0.5), opacity: 0.28, rotate: PL().degrees(45) });
+    });
+    return [pdfFile(suffix(f.name, 'watermarked', 'pdf'), await doc.save())];
+  }
+  async function pdfToImages(f, s, c) {
+    var pdf = await pdfjsOpen(f), n = pdf.numPages, pages = [], i;
+    if (s.spec) pages = NLU.resolvePages(s.spec, n); else for (i = 1; i <= n; i++) pages.push(i);
+    if (pages.length > 100) throw new AskError('That’s ' + pages.length + ' pages — a lot of images. Ask for specific pages, like “pages 1 to 20 as JPG”.');
+    var fm = s.fmt === 'png' ? 'png' : 'jpeg', out = [], base = baseName(f.name);
+    for (i = 0; i < pages.length; i++) {
+      c.prog('Converting page ' + pages[i] + ' (' + (i + 1) + ' of ' + pages.length + ')…');
+      var pg = await pdf.getPage(pages[i]), vp = pg.getViewport({ scale: s.scale || 2 }), cv = canvasOf(vp.width, vp.height), x = cv.getContext('2d');
+      x.fillStyle = '#fff'; x.fillRect(0, 0, cv.width, cv.height);
+      await pg.render({ canvasContext: x, viewport: vp, canvas: cv }).promise;
+      var b = await encode(cv, MIMES[fm], 0.9);
+      out.push(mk(base + '_page-' + pages[i] + '.' + EXT[fm], b, 'image'));
+      await tick();
+    }
+    return out;
+  }
+
+  async function mergeFiles(items, c) {
+    await libs();
+    var out = await PL().PDFDocument.create();
+    for (var i = 0; i < items.length; i++) {
+      c.prog('Merging file ' + (i + 1) + ' of ' + items.length + '…');
+      var f = items[i];
+      if (f.kind === 'pdf') { var src = await openPdf(f), pages = await out.copyPages(src, src.getPageIndices()); pages.forEach(function (p) { out.addPage(p); }); }
+      else await addImagePage(out, f);
+      await tick();
+    }
+    return pdfFile('merged.pdf', await out.save({ useObjectStreams: true }));
+  }
+
+  // ------------------------------------------------------------- step runners
+  function needKind(work, kind, what) {
+    if (!work.some(function (f) { return f.kind === kind; }))
+      throw new AskError(kind === 'pdf' ? '“' + what + '” needs a PDF, but I only have images here.' : '“' + what + '” works on images, but I only have PDFs here.');
+  }
+  async function each(work, kind, fn) {
+    var out = [];
+    for (var i = 0; i < work.length; i++) {
+      if (work[i].kind === kind) { var r = await fn(work[i]); out = out.concat(r); } else out.push(work[i]);
+      await tick();
+    }
+    return out;
+  }
+  async function eachAny(work, fnPdf, fnImg) {
+    var out = [];
+    for (var i = 0; i < work.length; i++) { out = out.concat(await (work[i].kind === 'pdf' ? fnPdf : fnImg)(work[i])); await tick(); }
+    return out;
+  }
+  function skipNote(work, kind, c, what) {
+    var skipped = work.filter(function (f) { return f.kind !== kind; });
+    if (skipped.length) c.notes.push(what + ' only applies to ' + (kind === 'pdf' ? 'PDFs' : 'images') + ', so I left ' + skipped.map(function (f) { return '“' + f.name + '”'; }).join(', ') + ' unchanged.');
+  }
+
+  var RUN = {
+    merge: async function (work, s, c) {
+      if (work.length < 2) { c.notes.push('There was only one file, so there was nothing to merge.'); return work; }
+      return [await mergeFiles(work, c)];
+    },
+    topdf: async function (work, s, c) {
+      var imgs = work.filter(function (f) { return f.kind === 'image'; }), pdfs = work.filter(function (f) { return f.kind === 'pdf'; });
+      if (!imgs.length) {
+        if (pdfs.length > 1) return [await mergeFiles(pdfs, c)];
+        c.notes.push('That file is already a PDF.'); return work;
+      }
+      await libs();
+      if (s.separate || imgs.length === 1) {
+        var out = [];
+        for (var i = 0; i < imgs.length; i++) { var d = await PL().PDFDocument.create(); await addImagePage(d, imgs[i]); out.push(pdfFile(baseName(imgs[i].name) + '.pdf', await d.save())); }
+        return pdfs.concat(out);
+      }
+      var doc = await PL().PDFDocument.create();
+      for (var k = 0; k < imgs.length; k++) { c.prog('Adding image ' + (k + 1) + ' of ' + imgs.length + '…'); await addImagePage(doc, imgs[k]); await tick(); }
+      return pdfs.concat([pdfFile('images.pdf', await doc.save({ useObjectStreams: true }))]);
+    },
+    split: async function (work, s, c) { needKind(work, 'pdf', 'Split'); skipNote(work, 'pdf', c, 'Splitting'); return each(work, 'pdf', function (f) { return pdfSplit(f, s); }); },
+    extract: async function (work, s, c) { needKind(work, 'pdf', 'Extract pages'); skipNote(work, 'pdf', c, 'Extracting pages'); return each(work, 'pdf', function (f) { return pdfExtract(f, s); }); },
+    'delete': async function (work, s, c) { needKind(work, 'pdf', 'Delete pages'); skipNote(work, 'pdf', c, 'Deleting pages'); return each(work, 'pdf', function (f) { return pdfDelete(f, s); }); },
+    reverse: async function (work, s, c) { needKind(work, 'pdf', 'Reverse pages'); skipNote(work, 'pdf', c, 'Reversing pages'); return each(work, 'pdf', pdfReverse); },
+    numbers: async function (work, s, c) { needKind(work, 'pdf', 'Add page numbers'); skipNote(work, 'pdf', c, 'Page numbers'); return each(work, 'pdf', function (f) { return pdfNumbers(f, s); }); },
+    watermark: async function (work, s, c) { needKind(work, 'pdf', 'Watermark'); skipNote(work, 'pdf', c, 'Watermarks'); return each(work, 'pdf', function (f) { return pdfWatermark(f, s); }); },
+    rotate: function (work, s, c) { return eachAny(work, function (f) { return pdfRotate(f, s); }, function (f) { return imgRotate(f, s); }); },
+    compress: function (work, s, c) { return eachAny(work, function (f) { return pdfCompress(f, s, c); }, function (f) { return imgCompress(f, s, c); }); },
+    grayscale: function (work, s, c) { return eachAny(work, function (f) { return pdfGray(f, s, c); }, imgGray); },
+    toimg: async function (work, s, c) {
+      return eachAny(work, function (f) { return pdfToImages(f, s, c); }, function (f) { return imgConvert(f, s, c); });
+    },
+    resize: async function (work, s, c) { needKind(work, 'image', 'Resize'); skipNote(work, 'image', c, 'Resizing'); return each(work, 'image', function (f) { return imgResize(f, s); }); },
+    flip: async function (work, s, c) { needKind(work, 'image', 'Flip'); skipNote(work, 'image', c, 'Flipping'); return each(work, 'image', function (f) { return imgFlip(f, s); }); }
+  };
+  var TOOL_PAGE = { merge: 'merge-pdf.html', split: 'split-pdf.html', extract: 'extract-pdf-pages.html', 'delete': 'delete-pdf-pages.html', rotate: 'rotate-pdf.html', reverse: 'reverse-pdf-pages.html', numbers: 'add-page-numbers-pdf.html', compress: 'compress-pdf.html', grayscale: 'pdf-to-grayscale.html', toimg: 'pdf-to-jpg.html', topdf: 'jpg-to-pdf.html', resize: 'resize-image.html', flip: 'flip-image.html', watermark: 'watermark-pdf.html' };
+
+  function stepText(s) {
+    switch (s.id) {
+      case 'merge': return 'merge the files into one PDF';
+      case 'topdf': return 'turn the images into a PDF';
+      case 'split': { var p = s.split;
+        return p.mode === 'extract' ? 'extract ' + NLU.describePages(p.spec) : p.mode === 'each' ? 'split into single pages' : p.mode === 'every' ? 'split every ' + plural(p.n, 'page') :
+          p.mode === 'parts' ? 'split into ' + p.k + ' parts' : 'split ' + p.side + ' page ' + p.page; }
+      case 'extract': return 'keep only ' + NLU.describePages(s.spec);
+      case 'delete': return 'delete ' + NLU.describePages(s.spec);
+      case 'rotate': return 'rotate ' + (s.angle === 270 ? '90° counter-clockwise' : s.angle === 180 ? '180°' : '90° clockwise') + (s.spec ? ' (' + NLU.describePages(s.spec) + ')' : '');
+      case 'reverse': return 'reverse the page order';
+      case 'numbers': return 'add page numbers';
+      case 'compress': return s.target ? 'compress to under ' + fmt(s.target) : s.level === 'high' ? 'compress as much as possible' : s.level === 'low' ? 'compress, keeping quality' : 'compress';
+      case 'grayscale': return 'convert to black and white';
+      case 'toimg': return 'convert to ' + FMTNAME[s.fmt];
+      case 'resize': { var d = s.dims; return 'resize to ' + (d.pct ? d.pct + '%' : d.max ? d.max + ' px' : d.w && d.h ? d.w + '×' + d.h : d.w ? d.w + ' px wide' : d.h + ' px tall'); }
+      case 'flip': return s.dir === 'v' ? 'flip vertically' : s.dir === 'hv' ? 'flip both ways' : 'flip horizontally';
+      case 'watermark': return 'add the watermark “' + s.text + '”';
+    }
+    return s.id;
+  }
+
+  // ------------------------------------------------------------------- ZIP
+  var crcT = null;
+  function crc32(u8) {
+    if (!crcT) { crcT = new Uint32Array(256); for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; crcT[n] = c >>> 0; } }
+    var crc = 0xFFFFFFFF; for (var i = 0; i < u8.length; i++) crc = crcT[(crc ^ u8[i]) & 255] ^ (crc >>> 8);
+    return (crc ^ 0xFFFFFFFF) >>> 0;
+  }
+  async function makeZip(files) {
+    var enc = new TextEncoder(), parts = [], central = [], offset = 0, cdSize = 0;
+    for (var i = 0; i < files.length; i++) {
+      var data = new Uint8Array(await files[i].blob.arrayBuffer()), name = enc.encode(files[i].name), crc = crc32(data), len = data.length;
+      var lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true); lh.setUint16(10, 0, true); lh.setUint16(12, 0x21, true);
+      lh.setUint32(14, crc, true); lh.setUint32(18, len, true); lh.setUint32(22, len, true); lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+      parts.push(lh.buffer, name, data);
+      var ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true); ch.setUint16(12, 0, true); ch.setUint16(14, 0x21, true);
+      ch.setUint32(16, crc, true); ch.setUint32(20, len, true); ch.setUint32(24, len, true); ch.setUint16(28, name.length, true);
+      ch.setUint16(30, 0, true); ch.setUint16(32, 0, true); ch.setUint16(34, 0, true); ch.setUint16(36, 0, true); ch.setUint32(38, 0, true); ch.setUint32(42, offset, true);
+      central.push(ch.buffer, name); offset += 30 + name.length + len; cdSize += 46 + name.length;
+    }
+    var end = new DataView(new ArrayBuffer(22));
+    end.setUint32(0, 0x06054b50, true); end.setUint16(8, files.length, true); end.setUint16(10, files.length, true); end.setUint32(12, cdSize, true); end.setUint32(16, offset, true);
+    return new Blob(parts.concat(central, [end.buffer]), { type: 'application/zip' });
+  }
+
+  // =========================================================================== UI
+  var S = { tray: [], work: [], pending: null, awaiting: null, busy: false, urls: [] };
+  var log, msg, sendBtn, tray, fileIn;
+
+  function scrollDown() { requestAnimationFrame(function () { log.scrollTop = log.scrollHeight; }); }
+  function bubble(role, html) {
+    var row = document.createElement('div'); row.className = 'm ' + role;
+    row.innerHTML = (role === 'bot' ? '<div class="av" aria-hidden="true">✨</div>' : '') + '<div class="b">' + html + '</div>';
+    log.appendChild(row); scrollDown(); return row;
+  }
+  function chipsHtml(list, cls) { return '<div class="chips">' + list.map(function (t) { return '<button type="button" class="ask-chip ' + (cls || '') + '" data-t="' + esc(t) + '">' + esc(t) + '</button>'; }).join('') + '</div>'; }
+  function bot(html, chips, cls) { return bubble('bot', html + (chips ? chipsHtml(chips, cls) : '')); }
+  function user(text, files) {
+    var h = '';
+    if (files && files.length) h += '<div class="ufiles">' + files.map(function (f) { return '<span class="ufile">' + (f.kind === 'pdf' ? '📄' : '🖼️') + ' ' + esc(f.name) + '</span>'; }).join('') + '</div>';
+    if (text) h += '<div>' + esc(text).replace(/\n/g, '<br>') + '</div>';
+    return bubble('user', h);
+  }
+  function working(text) {
+    var row = bubble('bot', '<div class="work"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><div><div class="wplan"></div><div class="wprog"></div></div></div>');
+    row.querySelector('.wplan').textContent = text || '';
+    row.setProgress = function (t) { row.querySelector('.wprog').textContent = t; };
+    return row;
+  }
+
+  function renderTray() {
+    tray.innerHTML = S.tray.map(function (f, i) {
+      return '<span class="tf">' + (f.kind === 'pdf' ? '📄' : '🖼️') + ' <span class="tn">' + esc(f.name) + '</span> <small>' + fmt(f.size) + '</small><button type="button" class="tx" data-i="' + i + '" aria-label="Remove ' + esc(f.name) + '">×</button></span>';
+    }).join('');
+    tray.style.display = S.tray.length ? 'flex' : 'none';
+    scrollDown();
+  }
+  function intake(fileList) {
+    var rejected = [], added = 0;
+    Array.prototype.forEach.call(fileList, function (f) {
+      var k = kindOf(f);
+      if (!k) { rejected.push(f.name); return; }
+      if (S.tray.length >= 30) { return; }
+      S.tray.push(mk(f.name, f.type ? f : new Blob([f], { type: mimeFromName(f.name) }), k)); added++;
+    });
+    renderTray();
+    if (rejected.length) bot('I can only work with PDFs and images (JPG, PNG, WebP). I skipped: ' + rejected.map(esc).join(', ') + '.');
+    if (added && S.awaiting) { send(''); }
+    else if (added && window.matchMedia && matchMedia('(pointer:fine)').matches) msg.focus();
+  }
+
+  function hasFiles() { return S.work.length > 0; }
+  function suggestFor(files) {
+    var pdfs = files.filter(function (f) { return f.kind === 'pdf'; }).length, imgs = files.length - pdfs;
+    if (pdfs > 1 && !imgs) return ['Merge them into one PDF', 'Compress them to under 200 KB', 'Add page numbers'];
+    if (pdfs === 1 && !imgs) return ['Compress to under 200 KB', 'Split every page separately', 'Convert to JPG', 'Rotate 90° clockwise'];
+    if (imgs && !pdfs) return imgs > 1 ? ['Combine into one PDF', 'Compress each under 100 KB', 'Resize to 800 px'] : ['Convert to PDF', 'Compress under 100 KB', 'Resize to 800 px', 'Convert to PNG'];
+    return ['Merge everything into one PDF', 'Compress to under 500 KB'];
+  }
+
+  function helpHtml() {
+    return 'Here’s what I can do with PDFs and images, all on your device:<ul>' +
+      '<li><b>Merge</b> PDFs (and photos) into one</li><li><b>Split</b> by pages, every N pages, or one page per file</li>' +
+      '<li><b>Extract</b> or <b>delete</b> pages</li><li><b>Rotate</b>, <b>reverse</b>, add <b>page numbers</b> or a <b>watermark</b></li>' +
+      '<li><b>Compress</b> PDFs and images (even to a size like “under 200 KB”)</li><li><b>Convert</b> PDF ⇄ JPG/PNG, images ⇄ PDF, JPG/PNG/WebP</li>' +
+      '<li><b>Resize</b> or <b>flip</b> images, make things <b>black and white</b></li></ul>You can chain steps: “merge these, then compress to under 1 MB”.';
+  }
+  var EXAMPLES = ['Merge my PDFs', 'Compress to under 200 KB', 'Split pages 2 to 4', 'Add page numbers', 'Convert PDF to JPG', 'Resize to 800 px'];
+
+  function unsupportedHtml(ids) {
+    return ids.map(function (id) {
+      var u = NLU.UNSUP[id]; if (!u) return '';
+      return u.link ? '<li>' + esc(u.label) + ': use <a href="' + u.link + '">' + esc(u.tool) + '</a></li>' : '<li>' + esc(u.label) + ' isn’t something I can do here.</li>';
+    }).join('');
+  }
+
+  var QUESTIONS = {
+    pages: ['Which pages? For example “2-4”, “1, 3, 5” or “the first 3 pages”.', null],
+    angle: ['Which way should I rotate it?', ['90° clockwise', '90° counter-clockwise', '180°']],
+    split: ['How should I split it?', ['Every page separately', 'Every 2 pages', 'Pages 2 to 4', 'In half']],
+    dims: ['What size? For example “800x600”, “width 1200” or “50%”.', ['50%', 'Width 1200', '800x600']],
+    text: ['What should the watermark say?', null]
+  };
+
+  function askNext(plan) {
+    for (var i = 0; i < plan.steps.length; i++) {
+      var st = plan.steps[i];
+      if (st.missing) {
+        S.pending = { plan: plan, idx: i };
+        var q = QUESTIONS[st.missing];
+        bot(esc(q[0]), q[1], 'ans');
+        return true;
+      }
+    }
+    return false;
+  }
+
+  async function runText(text) {
+    var plan, p;
+    if (S.pending) {
+      p = S.pending; var st = p.plan.steps[p.idx];
+      if (NLU.fillMissing(st, text)) { S.pending = null; return proceed(p.plan); }
+      var np = NLU.parse(text);
+      if (np.steps.length || np.unsupported.length) S.pending = null;
+      else { bot('Sorry, I didn’t catch that. ' + esc(QUESTIONS[st.missing][0]), QUESTIONS[st.missing][1], 'ans'); return; }
+    }
+    plan = NLU.parse(text);
+    if (plan.intent === 'greet') { bot('Hi! 👋 Attach your files with the + button and tell me what to do with them.', suggestFor(S.work.length ? S.work : [])); return; }
+    if (plan.intent === 'thanks') { bot('You’re welcome! 😊 Anything else I can do?'); return; }
+    if (plan.intent === 'help') { bot(helpHtml(), EXAMPLES); return; }
+    if (plan.intent === 'unknown' || plan.intent === 'empty') {
+      bot('I’m not sure what you’d like me to do. I understand requests like “merge these and compress to under 1 MB”, “split pages 2 to 4” or “rotate 90°”. Tap an example, or say “help” to see everything I can do.', EXAMPLES);
+      return;
+    }
+    if (!plan.steps.length) { bot('I can’t do that one here:<ul>' + unsupportedHtml(plan.unsupported) + '</ul>', EXAMPLES); return; }
+    if (!hasFiles()) {
+      S.awaiting = text;
+      bot('I’ll do that as soon as you attach your file(s). Tap the <b>+</b> button and pick them.');
+      return;
+    }
+    return proceed(plan);
+  }
+
+  function proceed(plan) {
+    if (askNext(plan)) return;
+    return execute(plan);
+  }
+
+  function setBusy(b) { S.busy = b; sendBtn.disabled = b; msg.disabled = b; if (!b && window.matchMedia && matchMedia('(pointer:fine)').matches) msg.focus(); }
+  function errText(e, plan) {
+    if (e && e.isAsk) return esc(e.message);
+    var id = (e && TOOL_PAGE[e.step]) ? e.step : null; if (!id && plan) for (var i = 0; i < plan.steps.length; i++) if (TOOL_PAGE[plan.steps[i].id]) { id = plan.steps[i].id; break; }
+    return 'Sorry, something went wrong while processing that' + (e && e.message ? ' (' + esc(String(e.message).slice(0, 120)) + ')' : '') + '. ' +
+      (id ? 'You can try the dedicated tool instead: <a href="' + TOOL_PAGE[id] + '">open it here</a>.' : 'Please try again.');
+  }
+
+  async function execute(plan) {
+    S.awaiting = null;
+    var input = S.work.slice(), c = { notes: [], prog: function () { }, last: null }, row, i;
+    var steps = plan.steps;
+    var summary = 'Here’s the plan: ' + steps.map(function (s, k) { return (steps.length > 1 ? (k + 1) + ') ' : '') + stepText(s); }).join('  ') + ' — on ' + plural(input.length, 'file') + '.';
+    setBusy(true); row = working(summary); c.prog = function (t) { row.setProgress(t); };
+    try {
+      if (input.some(function (f) { return f.kind === 'pdf'; }) || steps.some(function (s) { return s.id === 'merge' || s.id === 'topdf'; })) { row.setProgress('Starting the PDF engine…'); await libs(); }
+      var out = input;
+      for (i = 0; i < steps.length; i++) {
+        row.setProgress((steps.length > 1 ? 'Step ' + (i + 1) + ' of ' + steps.length + ': ' : '') + stepText(steps[i]) + '…');
+        await tick();
+        try { out = await RUN[steps[i].id](out, steps[i], c); }
+        catch (e) { if (e && e.isAsk) throw e; e.step = steps[i].id; throw e; }
+      }
+      row.remove();
+      showResult(out, input, c.notes, plan);
+      S.work = out;
+    } catch (e) {
+      row.remove(); if (!(e && e.isAsk)) { try { console.error(e); } catch (x) { } }
+      bot(errText(e, plan));
+    } finally { setBusy(false); }
+  }
+
+  function showResult(out, input, notes, plan) {
+    var inSize = input.reduce(function (a, f) { return a + f.size; }, 0), outSize = out.reduce(function (a, f) { return a + f.size; }, 0);
+    var unchanged = out.length === input.length && out.every(function (f, i) { return f === input[i]; });
+    var head = unchanged ? 'Nothing needed changing. ✅' : 'Done! ✅';
+    var shrank = plan.steps.some(function (s) { return s.id === 'compress' || s.id === 'grayscale'; });
+    if (shrank && !unchanged && out.length === 1 && input.length >= 1 && outSize < inSize) head += ' ' + fmt(inSize) + ' → <b>' + fmt(outSize) + '</b> (' + Math.round((1 - outSize / inSize) * 100) + '% smaller)';
+    var cards = out.map(function (f, i) {
+      var u = URL.createObjectURL(f.blob); S.urls.push(u);
+      return '<div class="rc"><span class="ri">' + (f.kind === 'pdf' ? '📄' : '🖼️') + '</span><div class="rn"><b>' + esc(f.name) + '</b><small>' + fmt(f.size) + '</small></div>' +
+        '<a class="dl" href="' + u + '" download="' + esc(f.name) + '">Download</a></div>';
+    }).join('');
+    var h = '<div>' + head + '</div><div class="rcs">' + cards + '</div>';
+    if (out.length > 1) h += '<button type="button" class="ask-chip zipbtn">⬇ Download all (' + out.length + ' files, ZIP)</button>';
+    if (notes.length) h += '<ul class="notes">' + notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>';
+    var un = plan.unsupported.filter(function (id) { return NLU.UNSUP[id]; });
+    if (un.length) h += '<div class="unsup">I couldn’t do these here:<ul>' + unsupportedHtml(un) + '</ul></div>';
+    h += '<div class="hint">Want to do more? Just type — I’ll use these results, or attach new files to start over.</div>';
+    var row = bot(h);
+    var zb = row.querySelector('.zipbtn');
+    if (zb) zb.addEventListener('click', async function () {
+      zb.disabled = true; zb.textContent = 'Preparing ZIP…';
+      try {
+        var taken = {}, files = out.map(function (f) { return { name: unique(f.name, taken), blob: f.blob }; });
+        var z = await makeZip(files), u = URL.createObjectURL(z); S.urls.push(u);
+        var a = document.createElement('a'); a.href = u; a.download = 'pdfsnap-files.zip'; document.body.appendChild(a); a.click(); a.remove();
+        zb.textContent = '✅ ZIP downloaded'; setTimeout(function () { zb.disabled = false; zb.textContent = '⬇ Download all (' + out.length + ' files, ZIP)'; }, 2500);
+      } catch (e) { zb.disabled = false; zb.textContent = 'Couldn’t make the ZIP — download the files one by one.'; }
+    });
+    scrollDown();
+  }
+
+  async function send(raw) {
+    if (S.busy) return;
+    var text = String(raw == null ? msg.value : raw).trim();
+    var files = S.tray.splice(0); renderTray();
+    if (!text && !files.length) return;
+    msg.value = ''; autosize();
+    user(text, files);
+    if (files.length) { S.work = files; S.pending = null; }
+    if (!text) {
+      if (S.awaiting) { var t = S.awaiting; S.awaiting = null; return runText(t); }
+      bot('Got ' + plural(files.length, 'file') + '. What would you like me to do with ' + (files.length === 1 ? 'it' : 'them') + '?', suggestFor(files));
+      return;
+    }
+    return runText(text);
+  }
+
+  function autosize() { msg.style.height = 'auto'; msg.style.height = Math.min(msg.scrollHeight, 130) + 'px'; }
+
+  function reset() {
+    S.urls.forEach(function (u) { try { URL.revokeObjectURL(u); } catch (e) { } });
+    S = { tray: [], work: [], pending: null, awaiting: null, busy: false, urls: [] };
+    log.innerHTML = ''; renderTray(); msg.value = ''; autosize(); setBusy(false);
+    welcome();
+  }
+  function welcome() {
+    bot('Hi! 👋 I’m the PDFSnap assistant. Attach PDFs or images with the <b>+</b> button, then tell me what you want — like <i>“merge these and compress to under 1 MB”</i>. Everything happens on your device.', EXAMPLES);
+    requestAnimationFrame(function () { log.scrollTop = 0; });
+  }
+
+  function init() {
+    log = $('chatLog'); msg = $('msg'); sendBtn = $('sendBtn'); tray = $('tray'); fileIn = $('fileIn');
+    if (!log) return;
+    $('attachBtn').addEventListener('click', function () { fileIn.click(); });
+    fileIn.addEventListener('change', function () { intake(fileIn.files); fileIn.value = ''; });
+    sendBtn.addEventListener('click', function () { send(); });
+    msg.addEventListener('input', autosize);
+    msg.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); send(); } });
+    $('newChat').addEventListener('click', reset);
+    tray.addEventListener('click', function (e) { var b = e.target.closest('.tx'); if (b) { S.tray.splice(+b.getAttribute('data-i'), 1); renderTray(); } });
+    log.addEventListener('click', function (e) {
+      var b = e.target.closest('.ask-chip'); if (!b || !b.getAttribute('data-t')) return;
+      var t = b.getAttribute('data-t');
+      if (b.classList.contains('ans')) send(t); else { msg.value = t; autosize(); msg.focus(); }
+    });
+    var card = $('chatCard');
+    ['dragenter', 'dragover'].forEach(function (ev) { card.addEventListener(ev, function (e) { e.preventDefault(); card.classList.add('drop'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { card.addEventListener(ev, function (e) { e.preventDefault(); card.classList.remove('drop'); }); });
+    card.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files.length) intake(e.dataTransfer.files); });
+    welcome();
+    window.__ask = { state: function () { return S; }, send: send };
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+</script>
 </body>
 </html>

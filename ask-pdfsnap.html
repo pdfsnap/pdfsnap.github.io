@@ -430,8 +430,8 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 .m.user .b{background:var(--acc);color:#fff;border-bottom-right-radius:6px}
 .m .b ul{margin:.4rem 0 .2rem 1.1rem;padding:0}.m .b li{margin:.15rem 0}.m .b a{color:var(--acc);font-weight:600}
 .chips{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.65rem}
-.chip{background:var(--sur);border:1.5px solid var(--bdr);color:var(--txt);border-radius:99px;padding:.4rem .8rem;font:inherit;font-size:.85rem;cursor:pointer;text-align:left}
-.chip:hover{border-color:var(--acc);color:var(--acc)}.chip:disabled{opacity:.6;cursor:default}
+.ask-chip{background:var(--sur);border:1.5px solid var(--bdr);color:var(--txt);border-radius:99px;padding:.4rem .8rem;font:inherit;font-size:.85rem;cursor:pointer;text-align:left}
+.ask-chip:hover{border-color:var(--acc);color:var(--acc)}.ask-chip:disabled{opacity:.6;cursor:default}
 .ufiles{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.3rem}
 .ufile{background:rgba(255,255,255,.2);border-radius:10px;padding:.25rem .6rem;font-size:.82rem;overflow-wrap:anywhere}
 .work{display:flex;gap:.7rem;align-items:flex-start}.wplan{font-size:.88rem;color:var(--mut);margin-bottom:.3rem}.wprog{font-weight:600}
@@ -1619,7 +1619,7 @@ window.addEventListener('scroll', function(){
     row.innerHTML = (role === 'bot' ? '<div class="av" aria-hidden="true">✨</div>' : '') + '<div class="b">' + html + '</div>';
     log.appendChild(row); scrollDown(); return row;
   }
-  function chipsHtml(list, cls) { return '<div class="chips">' + list.map(function (t) { return '<button type="button" class="chip ' + (cls || '') + '" data-t="' + esc(t) + '">' + esc(t) + '</button>'; }).join('') + '</div>'; }
+  function chipsHtml(list, cls) { return '<div class="chips">' + list.map(function (t) { return '<button type="button" class="ask-chip ' + (cls || '') + '" data-t="' + esc(t) + '">' + esc(t) + '</button>'; }).join('') + '</div>'; }
   function bot(html, chips, cls) { return bubble('bot', html + (chips ? chipsHtml(chips, cls) : '')); }
   function user(text, files) {
     var h = '';
@@ -1776,7 +1776,7 @@ window.addEventListener('scroll', function(){
         '<a class="dl" href="' + u + '" download="' + esc(f.name) + '">Download</a></div>';
     }).join('');
     var h = '<div>' + head + '</div><div class="rcs">' + cards + '</div>';
-    if (out.length > 1) h += '<button type="button" class="chip zipbtn">⬇ Download all (' + out.length + ' files, ZIP)</button>';
+    if (out.length > 1) h += '<button type="button" class="ask-chip zipbtn">⬇ Download all (' + out.length + ' files, ZIP)</button>';
     if (notes.length) h += '<ul class="notes">' + notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>';
     var un = plan.unsupported.filter(function (id) { return NLU.UNSUP[id]; });
     if (un.length) h += '<div class="unsup">I couldn’t do these here:<ul>' + unsupportedHtml(un) + '</ul></div>';
@@ -1821,6 +1821,7 @@ window.addEventListener('scroll', function(){
   }
   function welcome() {
     bot('Hi! 👋 I’m the PDFSnap assistant. Attach PDFs or images with the <b>+</b> button, then tell me what you want — like <i>“merge these and compress to under 1 MB”</i>. Everything happens on your device.', EXAMPLES);
+    requestAnimationFrame(function () { log.scrollTop = 0; });
   }
 
   function init() {
@@ -1834,7 +1835,7 @@ window.addEventListener('scroll', function(){
     $('newChat').addEventListener('click', reset);
     tray.addEventListener('click', function (e) { var b = e.target.closest('.tx'); if (b) { S.tray.splice(+b.getAttribute('data-i'), 1); renderTray(); } });
     log.addEventListener('click', function (e) {
-      var b = e.target.closest('.chip'); if (!b || !b.getAttribute('data-t')) return;
+      var b = e.target.closest('.ask-chip'); if (!b || !b.getAttribute('data-t')) return;
       var t = b.getAttribute('data-t');
       if (b.classList.contains('ans')) send(t); else { msg.value = t; autosize(); msg.focus(); }
     });
