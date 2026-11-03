@@ -1396,7 +1396,7 @@ btn.disabled=false; btn.textContent='Submit Report';
 var _shareUrl='', _shareText='';
 function shareTool(e, toolId, toolName){
 e.stopPropagation();
-var url='https://pdfsnap.github.io/#'+toolId;
+var url='https://pdfsnapai.com/#'+toolId;
 var text='Check out this free '+toolName+' tool — no signup, runs in your browser!';
 _shareUrl=url; _shareText=text;
 document.getElementById('shareUrlInput').value=url;
@@ -1631,7 +1631,7 @@ if(title)doc.setTitle(title);
 if(author)doc.setAuthor(author);
 if(subject)doc.setSubject(subject);
 if(keywords)doc.setKeywords([keywords]);
-doc.setProducer('PDFSnap — pdfsnap.github.io');
+doc.setProducer('PDFSnap — pdfsnapai.com');
 doc.setCreationDate(new Date());
 doc.setModificationDate(new Date());
 setP(85, 'Saving…');
