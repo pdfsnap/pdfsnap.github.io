@@ -141,7 +141,7 @@ if(allEl)allEl.textContent=TOOLS.length;
 if(document.getElementById('toolCount'))document.getElementById('toolCount').textContent=TOOLS.length+'+';
 TOOLS.forEach(function(t){
 var card=document.createElement('div');
-card.className='tool-card';
+card.className='tool-card'+(t.id==='aisum'?' tool-card-ai':'');
 card.dataset.cat=t.cat;
 card.dataset.subcat=t.subcat;
 card.dataset.name=t.name.toLowerCase();
@@ -1884,9 +1884,9 @@ function buildAISumUI(){
 var savedKey='';
 try {savedKey=localStorage.getItem('pdfsnap_ai_key')||''; }catch(e){}
 return '<div id="aiSumWrap">'+
-'<div style="background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.1));border:1px solid rgba(139,92,246,.3);border-radius:12px;padding:1rem;margin-bottom:1rem">'+
-'<div style="font-size:.85rem;font-weight:700;color:#8B5CF6;margin-bottom:.3rem">🤖 Powered by Claude AI</div>'+
-'<div style="font-size:.78rem;color:var(--mut)">Your PDF text is extracted in your browser, then summarized via Anthropic\'s API. Files never leave your device.</div>'+
+'<div class="aisum-hero">'+
+'<div class="aisum-hero-title">✨ Powered by Claude AI</div>'+
+'<div class="aisum-hero-text">Your PDF text is extracted in your browser, then sent to Anthropic with your own API key to create the summary.</div>'+
 '</div>'+
 '<div class="dropzone" id="dz" style="margin-bottom:.8rem">'+
 '<input type="file" id="fileMain" accept=".pdf" onchange="addFiles(this.files)"/>'+

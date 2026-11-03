@@ -1,6 +1,6 @@
 // PDFSnap Service Worker v14 — network-first, so new uploads show up straight away.
 // Offline still works: if the network fails, the last saved copy is used.
-const CACHE_NAME = 'pdfsnap-v24';
+const CACHE_NAME = 'pdfsnap-v22';
 
 const SHELL_ASSETS = [
   '/',
