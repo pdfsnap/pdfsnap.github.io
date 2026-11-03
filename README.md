@@ -1,6 +1,6 @@
 # PDFSnap — Free PDF & Image Tools
 
-**PDFSnap** is a free, browser-based PDF and image tool suite available at [https://pdfsnap.github.io](https://pdfsnap.github.io)
+**PDFSnap** is a free, browser-based PDF and image tool suite available at [https://pdfsnapai.com](https://pdfsnapai.com)
 
 ## What it does
 
@@ -24,8 +24,8 @@ All processing runs **entirely in your browser** using [pdf-lib](https://github.
 
 ## Links
 
-- 🌐 **Site:** [https://pdfsnap.github.io](https://pdfsnap.github.io)
-- 📝 **Blog:** [https://pdfsnap.github.io/blog.html](https://pdfsnap.github.io/blog.html)
+- 🌐 **Site:** [https://pdfsnapai.com](https://pdfsnapai.com)
+- 📝 **Blog:** [https://pdfsnapai.com/blog.html](https://pdfsnapai.com/blog.html)
 - 📧 **Contact:** pdfsnap.tools@gmail.com
 
 ---
