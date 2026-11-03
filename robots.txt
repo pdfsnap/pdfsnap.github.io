@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /app.apk
 
-Sitemap: https://pdfsnap.github.io/sitemap.xml
+Sitemap: https://pdfsnapai.com/sitemap.xml
