@@ -8,7 +8,6 @@
 - 🖼️ Convert PDF to JPG/PNG and images to PDF
 - 🔒 Password protect, unlock, sign PDFs
 - 📐 Compress, resize, crop, convert images
-- 🤖 AI PDF summarizer (100% free)
 - 📱 QR Code generator
 
 ## How it works
