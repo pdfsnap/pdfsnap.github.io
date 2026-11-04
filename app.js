@@ -89,7 +89,6 @@ var TOOLS=[
 {id:'organizer', cat:'pdf', subcat:'pdf-org', icon:'🧩', bg:'rgba(234,88,12,0.12)', badge:'pro', label:'💎 Pro Free', name:'PDF Page Organizer', desc:'Visual drag-and-drop to reorder, delete, or rotate individual pages. See page thumbnails.', accept:'.pdf', multi:false, opts:'none'},
 {id:'pdfsign', cat:'pdf', subcat:'pdf-sec', icon:'✍️', bg:'rgba(16,185,129,0.12)', badge:'pro', label:'💎 Pro Free', name:'Sign PDF', desc:'Draw your signature on a canvas or type it, then embed it anywhere on your PDF document.', accept:'.pdf', multi:false, opts:'signopt'},
 {id:'pdfocr', cat:'pdf', subcat:'pdf-conv', icon:'🔍', bg:'rgba(245,158,11,0.12)', badge:'pro', label:'💎 Pro Free', name:'OCR — Extract Text', desc:'Extract selectable text from scanned PDFs or images using Tesseract AI. Runs 100% in your browser.', accept:'.pdf,image/*', multi:false, opts:'ocropt'},
-{id:'aisum', cat:'pdf', subcat:'pdf-conv', icon:'🤖', bg:'rgba(99,102,241,0.12)', badge:'pro', label:'💎 Pro Free', name:'AI PDF Summarizer', desc:'Get a smart summary of any PDF using AI. Needs your own Anthropic API key, and the PDF text is sent to Anthropic.', accept:'.pdf', multi:false, opts:'none', type:'ai'},
 {id:'qrcode', cat:'image', subcat:'utility', icon:'📱', bg:'rgba(80,80,200,0.12)', badge:'new', label:'✨ New', name:'QR Code Generator', desc:'Turn any URL or text into a QR code. Download as PNG instantly. Free, no limits.', accept:null, multi:false, opts:'qropt', type:'text'},
 {id:'imginfo', cat:'image', subcat:'utility', icon:'ℹ️', bg:'rgba(77,143,255,0.1)', badge:'new', label:'✨ New', name:'Image Info', desc:'View your image dimensions, file size, format, and aspect ratio instantly.', accept:'image/*', multi:false, opts:'none'},
 {id:'imgbase64', cat:'image', subcat:'utility', icon:'🔤', bg:'rgba(0,184,148,0.1)', badge:'new', label:'✨ New', name:'Image to Base64', desc:'Convert any image to a Base64 string for embedding in HTML/CSS/JSON.', accept:'image/*', multi:false, opts:'none'},
@@ -308,7 +307,7 @@ document.getElementById('toolTitle').textContent=t.icon+' '+t.name;
 document.getElementById('toolSub').textContent=t.desc;
 var bodyHTML='';
 if(t.type==='ai'){
-bodyHTML=buildAISumUI();
+bodyHTML='';
 }else if(t.type==='text'){
 bodyHTML='<div class="qr-input-section">'+
 '<div class="fg"><label>Enter URL or text to encode</label><textarea id="qrTextInput" placeholder="https://yourwebsite.com or any text…" style="min-height:90px"></textarea></div>'+
@@ -511,7 +510,6 @@ case 'pdfmeta': await tPDFMeta(); break;
 case 'organizer': await tOrganizerSave(); break;
 case 'pdfsign': await tSignPDF(); break;
 case 'pdfocr': await tOCR(); break;
-case 'aisum': await tAISummarize(); break;
 default: toast('Tool not found','err');
 }
 }catch(err){
@@ -1880,123 +1878,3 @@ var btn=document.getElementById('runBtn');
 if(btn){btn.textContent='▶ Run Again'; btn.disabled=false; btn.onclick=function(){openTool('pdfocr');}; }
 toast('✅ Text extracted! '+Math.round(fullText.length/1000)+'k characters found.','ok');
 }
-function buildAISumUI(){
-var savedKey='';
-try {savedKey=localStorage.getItem('pdfsnap_ai_key')||''; }catch(e){}
-return '<div id="aiSumWrap">'+
-'<div class="aisum-hero">'+
-'<div class="aisum-hero-title">✨ Powered by Claude AI</div>'+
-'<div class="aisum-hero-text">Your PDF text is extracted in your browser, then sent to Anthropic with your own API key to create the summary.</div>'+
-'</div>'+
-'<div class="dropzone" id="dz" style="margin-bottom:.8rem">'+
-'<input type="file" id="fileMain" accept=".pdf" onchange="addFiles(this.files)"/>'+
-'<div class="dz-icon">📂</div>'+
-'<div class="dz-text"><strong>Tap to select a PDF</strong><br/>or drag &amp; drop here</div>'+
-'<div class="dz-fmt">.pdf</div>'+
-'</div>'+
-'<div class="file-list" id="fileList"></div>'+
-'<div class="fg" style="margin-top:.8rem">'+
-'<label>Anthropic API Key <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener" style="font-size:.75rem;color:var(--bl)">(Get free key \u2192)</a></label>'+
-'<input type="password" id="aiKeyInput" placeholder="sk-ant-\u2026" value="'+savedKey+'" oninput="saveAiKey(this.value)"/>'+
-'</div>'+
-'<div class="fg">'+
-'<label>Summary Style</label>'+
-'<select id="aiSumStyle">'+
-'<option value="bullet">Bullet points (key takeaways)</option>'+
-'<option value="paragraph">Short paragraph summary</option>'+
-'<option value="detailed">Detailed analysis</option>'+
-'<option value="eli5">Explain it simply (ELI5)</option>'+
-'</select>'+
-'</div>'+
-'<div class="prog-wrap" id="progWrap"><div class="prog-bg"><div class="prog-bar" id="progBar"></div></div><div class="prog-txt" id="progTxt">Processing…</div></div>'+
-'<div id="aiSumResult" style="display:none;background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;padding:1rem;margin-bottom:.8rem;white-space:pre-wrap;font-size:.87rem;line-height:1.65;max-height:400px;overflow-y:auto"></div>'+
-'<button class="btn-primary" id="runBtn" onclick="tAISummarize()" disabled>🤖 Summarize PDF</button>'+
-'<div style="font-size:.75rem;color:var(--mut);margin-top:.5rem;text-align:center">Your API key is stored only in your browser. PDFSnap never sees it. The text from your PDF is sent to Anthropic to create the summary.</div>'+
-'</div>';
-}
-async function tAISummarize(){
-if(!toolFiles.length){toast('Please select a PDF first!','err'); return; }
-var apiKey=(document.getElementById('aiKeyInput')||{}).value||'';
-if(!apiKey||!apiKey.startsWith('sk-ant')){toast('Please enter your Anthropic API key!','err'); return; }
-if(!libsOK){
-toast('Loading PDF engine…','info');
-ensurePdfLibs(function(){tAISummarize(); });
-return;
-}
-var btn=document.getElementById('runBtn');
-if(btn){btn.disabled=true; btn.textContent='⏳ Summarizing…'; }
-setP(10,'Extracting text from PDF…');
-var buf=await toolFiles[0].arrayBuffer();
-var pdf=await pdfjsLib.getDocument({data:buf}).promise;
-var n=pdf.numPages;
-var allText='';
-var maxPages=Math.min(n, 30);
-for(var i=1; i<=maxPages; i++){
-setP(10+Math.round(30*i/maxPages), 'Reading page '+i+'…');
-var page=await pdf.getPage(i);
-var content=await page.getTextContent();
-allText += content.items.map(function(s){return s.str; }).join(' ')+'\n';
-}
-if(allText.trim().length<100){
-toast('Could not extract text. Try the OCR tool instead (for scanned PDFs)!','err');
-if(btn){btn.disabled=false; btn.textContent='🤖 Summarize PDF'; }
-return;
-}
-if(allText.length>12000){
-var cutAt=allText.lastIndexOf(' ', 12000);
-allText=allText.substring(0, cutAt>0 ? cutAt:12000)+'\n[...text truncated for length — summarising first portion...]';
-}
-setP(50,'Sending to Claude AI…');
-var style=(document.getElementById('aiSumStyle')||{}).value||'bullet';
-var styleInstructions={
-bullet: 'Provide a summary as clear bullet points covering: main topic, key points, important findings/conclusions, and any action items. Use • for bullets.',
-paragraph: 'Write a concise 3-4 sentence paragraph summary of the main content and key takeaways.',
-detailed: 'Provide a detailed analysis including: overview, main sections/topics, key arguments or data, conclusions, and any limitations or caveats.',
-eli5: 'Explain this document as if to someone with no prior knowledge of the subject. Use simple language and analogies. Avoid jargon.'
-};
-var prompt='Please summarize the following PDF document.\n\n' +
-'Summary style: '+styleInstructions[style]+'\n\n' +
-'Document text:\n---\n'+allText+'\n---\n\n' +
-'Provide only the summary, no preamble.';
-try {
-var response=await fetch('https://api.anthropic.com/v1/messages', {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-'x-api-key': apiKey,
-'anthropic-version': '2023-06-01',
-'anthropic-dangerous-direct-browser-access': 'true'
-},
-body: JSON.stringify({
-model: 'claude-sonnet-4-20250514',
-max_tokens: 1500,
-messages: [{role:'user', content:prompt}]
-})
-});
-if(!response.ok){
-var errData=await response.json();
-throw new Error(errData.error ? errData.error.message:'API error '+response.status);
-}
-var data=await response.json();
-var summaryText=data.content&&data.content[0]? data.content[0].text:'No summary returned.';
-setP(100,'Summary ready!');
-var resultEl=document.getElementById('aiSumResult');
-if(resultEl){
-resultEl.style.display='block';
-resultEl.textContent=summaryText;
-}
-var copyArea=document.createElement('div');
-copyArea.style.cssText='display:flex;gap:.5rem;margin-bottom:.8rem';
-copyArea.innerHTML =
-'<button onclick="navigator.clipboard.writeText(document.getElementById(\'aiSumResult\').textContent).then(function(){toast(\'Copied!\',\'ok\')})" style="background:none;border:1px solid var(--bdr);border-radius:8px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem">📋 Copy Summary</button>'+
-'<button onclick="var b=new Blob([document.getElementById(\'aiSumResult\').textContent],{type:\'text/plain\'});var a=document.createElement(\'a\');a.href=URL.createObjectURL(b);a.download=\'summary.txt\';a.click()" style="background:none;border:1px solid var(--bdr);border-radius:8px;padding:.35rem .8rem;cursor:pointer;font-size:.82rem">⬇ Save .txt</button>';
-if(resultEl)resultEl.insertAdjacentElement('afterend', copyArea);
-toast('✅ Summary ready!','ok');
-if(btn){btn.disabled=false; btn.textContent='🔄 Summarize Again'; }
-}catch(err){
-toast('AI Error: '+err.message,'err');
-setP(100,'❌ Error');
-if(btn){btn.disabled=false; btn.textContent='🤖 Summarize PDF'; }
-}
-}
-function saveAiKey(v){try {localStorage.setItem('pdfsnap_ai_key', v); }catch(e){}}
