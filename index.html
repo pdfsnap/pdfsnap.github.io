@@ -378,36 +378,10 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 #backTop.show{opacity:1;pointer-events:all}
 #backTop:hover{transform:translateY(-3px)}
 
-/* ===== AI Summarizer — elegant look ===== */
-.aisum-card{grid-column:1/-1;cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;padding:1.5rem 1.6rem;border-radius:20px;color:#F5F3FF;background:radial-gradient(120% 140% at 0% 0%,#3B2F8F 0%,rgba(59,47,143,0) 55%),radial-gradient(100% 120% at 100% 100%,#1D4ED8 0%,rgba(29,78,216,0) 50%),#15122B;border:1px solid rgba(167,139,250,.45);box-shadow:0 10px 34px rgba(91,70,230,.35),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .18s,box-shadow .18s}
-.aisum-card:hover{transform:translateY(-2px);box-shadow:0 14px 42px rgba(91,70,230,.5),inset 0 1px 0 rgba(255,255,255,.1)}
-.aisum-card:focus-visible{outline:3px solid #C4B5FD;outline-offset:3px}
-.aisum-card-text{flex:1 1 260px;min-width:0}
-.aisum-card-badge{display:inline-block;font-size:.74rem;font-weight:700;color:#DDD6FE;background:rgba(167,139,250,.16);border:1px solid rgba(167,139,250,.35);border-radius:99px;padding:.22rem .7rem;margin-bottom:.65rem}
-.aisum-card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.45rem;font-weight:800;letter-spacing:-.02em;color:#fff;margin-bottom:.3rem}
-.aisum-card-desc{font-size:.88rem;line-height:1.6;color:#C9C4EA;max-width:52ch}
-.aisum-card-btn{flex:0 0 auto;font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:700;color:#1E1B4B;background:#fff;border-radius:12px;padding:.8rem 1.4rem;box-shadow:0 4px 16px rgba(0,0,0,.25)}
-@media(max-width:520px){.aisum-card{padding:1.25rem}.aisum-card-btn{width:100%;text-align:center}}
 /* popup: smooth scrolling, no "stuck" scroll chaining */
 .modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .overlay{overscroll-behavior:contain}
-#aiSumWrap .aisum-hero{background:linear-gradient(135deg,#1B1838,#2C2566);border:1px solid rgba(167,139,250,.4);border-radius:14px;padding:1rem 1.1rem;margin-bottom:1rem;color:#F5F3FF}
-#aiSumWrap .aisum-hero-title{font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.25rem}
-#aiSumWrap .aisum-hero-text{font-size:.78rem;line-height:1.55;color:#C9C4EA}
-#aiSumWrap .dropzone{border:2px dashed rgba(139,124,246,.6);background:rgba(139,124,246,.06)}
-#aiSumWrap .dropzone:hover{border-color:#7C6CF0;background:rgba(139,124,246,.12)}
-#aiSumWrap .fg input:focus,#aiSumWrap .fg select:focus{border-color:#7C6CF0;box-shadow:0 0 0 3px rgba(124,108,240,.2)}
-#aiSumWrap .btn-primary:not(:disabled){background:linear-gradient(135deg,#6D5BEF,#3B82F6);box-shadow:0 6px 20px rgba(91,70,230,.35)}
-#aiSumWrap .btn-primary:not(:disabled):hover{filter:brightness(1.08)}
-#aiSumResult{border-left:4px solid #7C6CF0 !important}
 
-/* AI Summarizer card inside the tools grid */
-.tool-card.tool-card-ai{background:radial-gradient(120% 140% at 0% 0%,#3B2F8F 0%,rgba(59,47,143,0) 60%),#15122B;border:1px solid rgba(167,139,250,.55);box-shadow:0 8px 28px rgba(91,70,230,.4)}
-.tool-card.tool-card-ai:hover{border-color:#C4B5FD;box-shadow:0 12px 36px rgba(91,70,230,.55)}
-.tool-card.tool-card-ai .tool-name{color:#fff}
-.tool-card.tool-card-ai .tool-desc,.tool-card.tool-card-ai .tool-cat{color:#C9C4EA}
-.tool-card.tool-card-ai .tool-foot{border-top-color:rgba(167,139,250,.25)}
-.tool-card.tool-card-ai .tool-badge{background:#fff;color:#4C1D95;border-color:#fff}
 
 /* Ask chat: empty strip on the right scrolls the page; messages scroll only inside */
 .chat-log{margin-right:2.75rem;padding-right:.4rem}
@@ -513,6 +487,33 @@ section.chat .newchat{border-color:#FFCFE6}
 section.chat .ask-chip{border-color:#C9E7FF}
 section.chat .ask-chip:hover{border-color:var(--acc)}
 section.chat .tf,section.chat .rc{border-color:#C9E7FF}
+/* AI Summarizer: LED look only (white box, black border, pink and blue light) */
+@property --ang2{syntax:'<angle>';initial-value:0deg;inherits:false}
+.aisum-card,.tool-card.tool-card-ai,#aiSumWrap .aisum-hero{border:3px solid #000;border-radius:20px;background:#fff;color:#1F1B2E;box-shadow:0 0 18px rgba(143,211,255,.4),0 0 22px rgba(255,158,207,.3)}
+@supports (background:conic-gradient(from 0deg,red,blue)){
+.aisum-card,.tool-card.tool-card-ai,#aiSumWrap .aisum-hero{border-color:transparent;background:linear-gradient(#fff,#fff) padding-box,conic-gradient(from var(--ang2),#000 0%,#000 45%,#FFB3D9 60%,#9FDBFF 76%,#FFB3D9 88%,#000 100%) border-box;animation:ledspin2 3.2s linear infinite}
+}
+@keyframes ledspin2{to{--ang2:360deg}}
+@media(prefers-reduced-motion:reduce){.aisum-card,.tool-card.tool-card-ai,#aiSumWrap .aisum-hero{animation:none}}
+.aisum-card{grid-column:1/-1;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;padding:1.5rem 1.6rem;transition:transform .18s}
+.aisum-card:hover{transform:translateY(-2px)}
+.aisum-card:focus-visible{outline:3px solid #9FDBFF;outline-offset:4px}
+.aisum-card-text{flex:1 1 260px;min-width:0}
+.aisum-card-badge{display:inline-block;font-size:.74rem;font-weight:700;color:#1E4E79;background:#E6F4FF;border:1px solid #9FDBFF;border-radius:99px;padding:.22rem .7rem;margin-bottom:.65rem}
+.aisum-card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.45rem;font-weight:800;letter-spacing:-.02em;color:#1F1B2E;margin-bottom:.3rem}
+.aisum-card-desc{font-size:.88rem;line-height:1.6;color:#5B5470;max-width:52ch}
+.aisum-card-btn{flex:0 0 auto;font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:700;color:#fff;background:#111;border-radius:12px;padding:.8rem 1.4rem}
+@media(max-width:520px){.aisum-card{padding:1.25rem}.aisum-card-btn{width:100%;text-align:center}}
+.tool-card.tool-card-ai .tool-name{color:#1F1B2E}
+.tool-card.tool-card-ai .tool-desc,.tool-card.tool-card-ai .tool-cat{color:#5B5470}
+.tool-card.tool-card-ai .tool-badge{background:#000;color:#fff;border:1px solid #000}
+#aiSumWrap .aisum-hero-title{font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:800;color:#1F1B2E;margin-bottom:.25rem}
+#aiSumWrap .aisum-hero-text{font-size:.78rem;line-height:1.55;color:#5B5470}
+#aiSumWrap .dropzone{border:2px dashed #9FDBFF;background:#F5FBFF}
+#aiSumWrap .dropzone:hover{border-color:#FFB3D9}
+#aiSumWrap .fg input:focus,#aiSumWrap .fg select:focus{border-color:#9FDBFF;box-shadow:0 0 0 3px rgba(159,219,255,.3)}
+#aiSumWrap .btn-primary:not(:disabled){background:#111;color:#fff}
+#aiSumResult{border-left:4px solid #FFB3D9 !important}
 </style>
 </head>
 <body>
