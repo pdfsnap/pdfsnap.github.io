@@ -381,6 +381,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 .chat-log{margin-right:2.75rem;padding-right:.4rem}
 .m.bot .av{display:none}
 @media(max-width:420px){.chat-log{margin-right:2.4rem}}
+
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Ask PDFSnap", "url": "https://pdfsnapai.com/ask-pdfsnap.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Any (web browser)", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "description": "Attach PDFs or images and type what you need – merge, split, compress to a size, rotate, convert. Free, no signup, and your files never leave your device."}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is Ask PDFSnap an AI chatbot?", "acceptedAnswer": {"@type": "Answer", "text": "No. It is a built-in assistant that understands a defined set of requests (merge, split, compress, rotate, convert and so on) using rules that run in your browser. No AI service is involved, so your messages and files are never sent anywhere. If it doesn’t understand you, it says so and shows examples."}}, {"@type": "Question", "name": "Are my files or messages uploaded?", "acceptedAnswer": {"@type": "Answer", "text": "No. Your files are processed by code running on your own device. The page only downloads the open-source PDF libraries it needs, never your files or what you type."}}, {"@type": "Question", "name": "What can I ask it to do?", "acceptedAnswer": {"@type": "Answer", "text": "Merge PDFs (and photos) into one, split by page ranges or every N pages, extract or delete pages, rotate, reverse pages, add page numbers or a text watermark, compress PDFs and images (even to a size such as “under 200 KB”), convert PDF to JPG or PNG, turn images into a PDF, resize and flip images, and make files black and white. You can chain steps in one sentence."}}, {"@type": "Question", "name": "Why couldn’t it reach the size I asked for?", "acceptedAnswer": {"@type": "Answer", "text": "Some files simply can’t get that small without becoming unreadable, for example PDFs full of photos. In that case it gets as close as it can and tells you the result, so you can decide."}}, {"@type": "Question", "name": "Does compressing a PDF change the text?", "acceptedAnswer": {"@type": "Answer", "text": "To reach a small target size, PDF pages may be saved as images, which means the text can no longer be selected or searched. If you simply ask it to “compress” a text-based PDF, it optimizes the file without changing how it looks."}}, {"@type": "Question", "name": "Does it work on my phone?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. It is designed for phones first. Tap the + button to pick files from your phone, then type or tap an example."}}]}</script>
@@ -471,6 +472,26 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 .ask .more{margin-top:1rem;font-size:.92rem}.ask .more a{color:var(--acc);font-weight:600}
 @media(max-width:600px){.ask{padding-top:1rem}.ask h1{font-size:1.5rem}.ask .tp-intro{font-size:.92rem;margin-bottom:.8rem}.chat{height:calc(100vh - 250px);height:calc(100dvh - 250px);min-height:430px}}
 @media(max-width:360px){.nav-badge{display:none}}
+/* Ask chat: black border with a running pink/blue LED light (placed last so it wins) */
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+section.chat{border:3px solid #000;box-shadow:0 0 18px rgba(143,211,255,.4),0 0 22px rgba(255,158,207,.3)}
+@supports (background:conic-gradient(from 0deg,red,blue)){
+section.chat{border-color:transparent;background:linear-gradient(var(--sur),var(--sur)) padding-box,conic-gradient(from var(--ang),#000 0%,#000 45%,#FFB3D9 60%,#9FDBFF 76%,#FFB3D9 88%,#000 100%) border-box;animation:askspin 3.2s linear infinite}
+section.chat.drop{border-color:transparent}
+}
+@keyframes askspin{to{--ang:360deg}}
+@media(prefers-reduced-motion:reduce){section.chat{animation:none}}
+section.chat .chat-log{padding-right:.4rem}
+/* Ask chat: lighter pink/blue inner borders */
+section.chat .chat-head{border-bottom:1.5px solid #FFCFE6}
+section.chat .chat-foot{border-top:1.5px solid #C9E7FF}
+section.chat .composer{border:1.5px solid #BFE3FF;box-shadow:0 0 0 3px rgba(255,179,217,.16)}
+section.chat .composer:focus-within{border-color:#FFB3D9;box-shadow:0 0 0 3px rgba(159,219,255,.3)}
+section.chat .m.bot .b{border-color:#FFD3E8}
+section.chat .newchat{border-color:#FFCFE6}
+section.chat .ask-chip{border-color:#C9E7FF}
+section.chat .ask-chip:hover{border-color:var(--acc)}
+section.chat .tf,section.chat .rc{border-color:#C9E7FF}
 </style>
 </head>
 <body>

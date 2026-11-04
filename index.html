@@ -413,6 +413,7 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 .chat-log{margin-right:2.75rem;padding-right:.4rem}
 .m.bot .av{display:none}
 @media(max-width:420px){.chat-log{margin-right:2.4rem}}
+
 </style>
 <script type="application/ld+json">
 {
@@ -492,7 +493,27 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 .ask-home .chat{height:min(560px,78vh);height:min(560px,78dvh);min-height:420px}
 .ask-home .ask-more{margin-top:.7rem;font-size:.88rem;text-align:center}.ask-home .ask-more a{color:var(--acc);font-weight:600}
 </style>
-<style id="narrow-fix">@media(max-width:360px){.nav-badge{display:none}}</style>
+<style id="narrow-fix">@media(max-width:360px){.nav-badge{display:none}}/* Ask chat: black border with a running pink/blue LED light (placed last so it wins) */
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+section.chat{border:3px solid #000;box-shadow:0 0 18px rgba(143,211,255,.4),0 0 22px rgba(255,158,207,.3)}
+@supports (background:conic-gradient(from 0deg,red,blue)){
+section.chat{border-color:transparent;background:linear-gradient(var(--sur),var(--sur)) padding-box,conic-gradient(from var(--ang),#000 0%,#000 45%,#FFB3D9 60%,#9FDBFF 76%,#FFB3D9 88%,#000 100%) border-box;animation:askspin 3.2s linear infinite}
+section.chat.drop{border-color:transparent}
+}
+@keyframes askspin{to{--ang:360deg}}
+@media(prefers-reduced-motion:reduce){section.chat{animation:none}}
+section.chat .chat-log{padding-right:.4rem}
+/* Ask chat: lighter pink/blue inner borders */
+section.chat .chat-head{border-bottom:1.5px solid #FFCFE6}
+section.chat .chat-foot{border-top:1.5px solid #C9E7FF}
+section.chat .composer{border:1.5px solid #BFE3FF;box-shadow:0 0 0 3px rgba(255,179,217,.16)}
+section.chat .composer:focus-within{border-color:#FFB3D9;box-shadow:0 0 0 3px rgba(159,219,255,.3)}
+section.chat .m.bot .b{border-color:#FFD3E8}
+section.chat .newchat{border-color:#FFCFE6}
+section.chat .ask-chip{border-color:#C9E7FF}
+section.chat .ask-chip:hover{border-color:var(--acc)}
+section.chat .tf,section.chat .rc{border-color:#C9E7FF}
+</style>
 </head>
 <body>
 <div class="toast-wrap" id="toastWrap"></div>
