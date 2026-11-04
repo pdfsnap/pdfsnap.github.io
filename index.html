@@ -377,6 +377,42 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 #backTop{position:fixed;bottom:1.4rem;right:1.4rem;z-index:999;background:var(--acc);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(255,77,0,.35);opacity:0;pointer-events:none;transition:opacity .3s,transform .2s}
 #backTop.show{opacity:1;pointer-events:all}
 #backTop:hover{transform:translateY(-3px)}
+
+/* ===== AI Summarizer — elegant look ===== */
+.aisum-card{grid-column:1/-1;cursor:pointer;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;padding:1.5rem 1.6rem;border-radius:20px;color:#F5F3FF;background:radial-gradient(120% 140% at 0% 0%,#3B2F8F 0%,rgba(59,47,143,0) 55%),radial-gradient(100% 120% at 100% 100%,#1D4ED8 0%,rgba(29,78,216,0) 50%),#15122B;border:1px solid rgba(167,139,250,.45);box-shadow:0 10px 34px rgba(91,70,230,.35),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .18s,box-shadow .18s}
+.aisum-card:hover{transform:translateY(-2px);box-shadow:0 14px 42px rgba(91,70,230,.5),inset 0 1px 0 rgba(255,255,255,.1)}
+.aisum-card:focus-visible{outline:3px solid #C4B5FD;outline-offset:3px}
+.aisum-card-text{flex:1 1 260px;min-width:0}
+.aisum-card-badge{display:inline-block;font-size:.74rem;font-weight:700;color:#DDD6FE;background:rgba(167,139,250,.16);border:1px solid rgba(167,139,250,.35);border-radius:99px;padding:.22rem .7rem;margin-bottom:.65rem}
+.aisum-card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.45rem;font-weight:800;letter-spacing:-.02em;color:#fff;margin-bottom:.3rem}
+.aisum-card-desc{font-size:.88rem;line-height:1.6;color:#C9C4EA;max-width:52ch}
+.aisum-card-btn{flex:0 0 auto;font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:700;color:#1E1B4B;background:#fff;border-radius:12px;padding:.8rem 1.4rem;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+@media(max-width:520px){.aisum-card{padding:1.25rem}.aisum-card-btn{width:100%;text-align:center}}
+/* popup: smooth scrolling, no "stuck" scroll chaining */
+.modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.overlay{overscroll-behavior:contain}
+#aiSumWrap .aisum-hero{background:linear-gradient(135deg,#1B1838,#2C2566);border:1px solid rgba(167,139,250,.4);border-radius:14px;padding:1rem 1.1rem;margin-bottom:1rem;color:#F5F3FF}
+#aiSumWrap .aisum-hero-title{font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:800;color:#fff;margin-bottom:.25rem}
+#aiSumWrap .aisum-hero-text{font-size:.78rem;line-height:1.55;color:#C9C4EA}
+#aiSumWrap .dropzone{border:2px dashed rgba(139,124,246,.6);background:rgba(139,124,246,.06)}
+#aiSumWrap .dropzone:hover{border-color:#7C6CF0;background:rgba(139,124,246,.12)}
+#aiSumWrap .fg input:focus,#aiSumWrap .fg select:focus{border-color:#7C6CF0;box-shadow:0 0 0 3px rgba(124,108,240,.2)}
+#aiSumWrap .btn-primary:not(:disabled){background:linear-gradient(135deg,#6D5BEF,#3B82F6);box-shadow:0 6px 20px rgba(91,70,230,.35)}
+#aiSumWrap .btn-primary:not(:disabled):hover{filter:brightness(1.08)}
+#aiSumResult{border-left:4px solid #7C6CF0 !important}
+
+/* AI Summarizer card inside the tools grid */
+.tool-card.tool-card-ai{background:radial-gradient(120% 140% at 0% 0%,#3B2F8F 0%,rgba(59,47,143,0) 60%),#15122B;border:1px solid rgba(167,139,250,.55);box-shadow:0 8px 28px rgba(91,70,230,.4)}
+.tool-card.tool-card-ai:hover{border-color:#C4B5FD;box-shadow:0 12px 36px rgba(91,70,230,.55)}
+.tool-card.tool-card-ai .tool-name{color:#fff}
+.tool-card.tool-card-ai .tool-desc,.tool-card.tool-card-ai .tool-cat{color:#C9C4EA}
+.tool-card.tool-card-ai .tool-foot{border-top-color:rgba(167,139,250,.25)}
+.tool-card.tool-card-ai .tool-badge{background:#fff;color:#4C1D95;border-color:#fff}
+
+/* Ask chat: empty strip on the right scrolls the page; messages scroll only inside */
+.chat-log{margin-right:2.75rem;padding-right:.4rem}
+.m.bot .av{display:none}
+@media(max-width:420px){.chat-log{margin-right:2.4rem}}
 </style>
 <script type="application/ld+json">
 {
@@ -645,12 +681,13 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 <div style="font-size:.72rem;font-weight:700;color:#3B82F6">PDF editors → up to $8/mo  ·  PDFSnap → Free ✓</div>
 </div>
 <!-- AI Summarizer -->
-<div onclick="openTool('aisum')" onmouseout="this.style.transform='';this.style.boxShadow=''" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 28px rgba(99,102,241,.18)'" role="button" style="cursor:pointer;background:linear-gradient(145deg,rgba(99,102,241,.07),rgba(79,70,229,.04));border:1.5px solid rgba(99,102,241,.22);border-radius:16px;padding:1.2rem 1.3rem;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden" tabindex="0">
-<div style="position:absolute;top:.75rem;right:.85rem;font-size:.6rem;font-weight:800;letter-spacing:.08em;background:linear-gradient(135deg,#6366F1,#4F46E5);color:#fff;border-radius:99px;padding:2px 8px;text-transform:uppercase">FREE</div>
-<div style="font-size:1.8rem;margin-bottom:.55rem">🤖</div>
-<div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1rem;font-weight:800;color:var(--txt);margin-bottom:.3rem">AI PDF Summarizer</div>
-<div style="font-size:.8rem;color:var(--mut);line-height:1.55;margin-bottom:.8rem">Get instant AI-generated summaries of any PDF — key points, themes, takeaways. Runs entirely in your browser.</div>
-<div style="font-size:.72rem;font-weight:700;color:#6366F1">AI PDF tools → up to $5/mo  ·  PDFSnap → Free ✓</div>
+<div class="aisum-card" onclick="openTool('aisum')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openTool('aisum')}" role="button" tabindex="0" aria-label="Open AI PDF Summarizer">
+<div class="aisum-card-text">
+<div class="aisum-card-badge">✨ AI · Free to use</div>
+<div class="aisum-card-title">AI PDF Summarizer</div>
+<div class="aisum-card-desc">Turn any long PDF into clear key points in seconds. Powered by Claude, using your own Anthropic API key.</div>
+</div>
+<div class="aisum-card-btn">Summarize a PDF</div>
 </div>
 </div>
 <!-- Bottom note -->
