@@ -758,25 +758,111 @@ window.addEventListener('scroll', function(){
 
 <script>
 /* PDFSnap "Ask" — turns a plain-English request into a list of steps.
-   Pure functions: no DOM, no network, nothing leaves the device. */
+   Pure functions: no DOM, no network, nothing leaves the device.
+   v2: typo tolerance, number words, ordinals, richer page / size / format parsing,
+       smarter watermark text, "all except", step ordering, many more phrasings. */
 (function (root) {
   'use strict';
 
   function AskError(msg) { this.message = msg; this.isAsk = true; }
   AskError.prototype = Object.create(Error.prototype);
 
+  // ------------------------------------------------------------ pre-processing
+  // Splits text into [text, protected] chunks so quoted strings (watermark text) are never touched.
+  function chunks(s) {
+    var out = [], i = 0, buf = '', q, j;
+    while (i < s.length) {
+      var ch = s.charAt(i), prev = i === 0 ? ' ' : s.charAt(i - 1);
+      if (ch === '"' || (ch === "'" && /\s/.test(prev))) {
+        q = ch; j = i + 1;
+        while (j < s.length && !(s.charAt(j) === q && (q === '"' || j + 1 >= s.length || /[\s.,;!?)]/.test(s.charAt(j + 1))))) j++;
+        if (j < s.length && j - i <= 62) {
+          if (buf) { out.push([buf, false]); buf = ''; }
+          out.push([s.slice(i, j + 1), true]); i = j + 1; continue;
+        }
+      }
+      buf += ch; i++;
+    }
+    if (buf) out.push([buf, false]);
+    return out;
+  }
+
+  var NUMW = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, fifteen: 15, twenty: 20 };
+  var NW = '(?:' + Object.keys(NUMW).join('|') + ')';
+  function numberWords(s) {
+    // "first two pages" -> "first 2 pages", "every three pages" -> "every 3 pages", "page one" -> "page 1"
+    s = s.replace(new RegExp('\\b(pages?|first|last|every|into|by|than|under|below|to|in|of|about|around)\\s+(' + NW + ')\\b', 'gi'), function (m, a, b) { return a + ' ' + NUMW[b.toLowerCase()]; });
+    s = s.replace(new RegExp('\\b(' + NW + ')(?=\\s*-?\\s*(?:pages?|parts?|files?|pieces?|chunks?|kb|mb|px|pixels?|degrees?|percent)\\b)', 'gi'), function (m) { return NUMW[m.toLowerCase()]; });
+    s = s.replace(/\b(\d{1,3})\s*percent\b/gi, '$1%');
+    return s;
+  }
+
+  var VOCAB = ['compress', 'compressed', 'compressing', 'merge', 'merging', 'combine', 'combining', 'split', 'splitting', 'rotate', 'rotated', 'extract', 'delete', 'remove',
+    'reverse', 'watermark', 'resize', 'convert', 'grayscale', 'greyscale', 'clockwise', 'anticlockwise', 'counterclockwise', 'together', 'separate', 'separately',
+    'smaller', 'upside', 'sideways', 'pages', 'numbers', 'number', 'images', 'image', 'photos', 'picture', 'pictures', 'first', 'under', 'below', 'every', 'only', 'individually',
+    'vertically', 'horizontally', 'reduce', 'shrink', 'single', 'flatten', 'mirror', 'landscape', 'portrait', 'download', 'document', 'optimize', 'quality', 'between', 'except'];
+  var COMMON = {}; ('order other lower later paper pager cover covers layer large larger letter letters batch match patch watch catch pagers images mages ' +
+    'image imaged merged merger mergers spill splits flight rotates number remote emerge reduce deleted deletes extras extra under unders dozen frozen photo ' +
+    'phone prefer prefix printed prints print scale scales skill state style white whole whale whale write wrote sized sizes shrunk stand start since share ' +
+    'sharp shape short sides slide small smart solid sorted space speed spell spend steps still stuff super table taken takes thank thing think those three ' +
+    'times title total touch track treat trial trust truth twice units upper usage using usual value video views waste water where which while whose width world worth').split(/\s+/).forEach(function (w) { COMMON[w] = 1; });
+
+  function osa(a, b) {
+    var m = a.length, n = b.length, d = [], i, j, c;
+    for (i = 0; i <= m; i++) { d[i] = [i]; }
+    for (j = 1; j <= n; j++) d[0][j] = j;
+    for (i = 1; i <= m; i++) for (j = 1; j <= n; j++) {
+      c = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + c);
+      if (i > 1 && j > 1 && a.charAt(i - 1) === b.charAt(j - 2) && a.charAt(i - 2) === b.charAt(j - 1)) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+    return d[m][n];
+  }
+  var VSET = {}; VOCAB.forEach(function (w) { VSET[w] = 1; });
+  function fixWord(w) {
+    var lw = w.toLowerCase();
+    if (lw.length < 5 || VSET[lw] || COMMON[lw]) return null;
+    var best = null, bd = 9, tie = false, lim = lw.length >= 8 ? 2 : 1;
+    for (var i = 0; i < VOCAB.length; i++) {
+      var v = VOCAB[i];
+      if (Math.abs(v.length - lw.length) > lim) continue;
+      var d = osa(lw, v);
+      if (d < bd) { bd = d; best = v; tie = false; } else if (d === bd && v !== best) tie = true;
+    }
+    if (best && bd <= lim && !tie && lw.charAt(0) === best.charAt(0)) return best;
+    return null;
+  }
+  function preprocess(s) {
+    var fixes = [];
+    var out = chunks(s).map(function (c) {
+      if (c[1]) return c[0];
+      var t = c[0].replace(/\b[A-Za-z]{5,}\b/g, function (w) {
+        if (w === w.toUpperCase()) return w;                       // ALLCAPS = probably watermark text
+        var f = fixWord(w);
+        if (f) { fixes.push({ from: w, to: f }); return f; }
+        return w;
+      });
+      return numberWords(t);
+    }).join('');
+    return { text: out, fixes: fixes };
+  }
+
   // ---------------------------------------------------------------- page lists
-  var RC = '\\s*(?:-|–|—|to|through|thru|till|until)\\s*(?:pages?\\s*)?';
+  var RC = '\\s*(?:-|–|—|to|through|thru|till|until)\\s*(?:the\\s+)?(?:pages?\\s*)?';
   var LC = '\\s*(?:,|&|and|plus)\\s*(?:pages?\\s*)?';
-  var ITEM = '\\d{1,4}(?:' + RC + '(?:\\d{1,4}|end|last))?';
+  var PGW = '(?:\\d{1,4}|first|last|end|final)';
+  var ITEM = PGW + '(?:' + RC + PGW + ')?';
   var LIST = ITEM + '(?:' + LC + ITEM + ')*';
+  var ORDW = { second: 2, third: 3, fourth: 4, fifth: 5, sixth: 6, seventh: 7, eighth: 8, ninth: 9, tenth: 10 };
+
+  function pgVal(x) { return /^\d+$/.test(x) ? +x : (x === 'first' ? 1 : 'end'); }
 
   function parseItems(s) {
     var items = [];
     s.split(new RegExp(LC)).forEach(function (p) {
       p = p.trim(); if (!p) return;
-      var m = new RegExp('^(\\d+)(?:' + RC + '(\\d+|end|last))?$').exec(p);
-      if (m) items.push({ a: +m[1], b: m[2] === undefined ? null : (/^\d+$/.test(m[2]) ? +m[2] : 'end') });
+      var m = new RegExp('^(' + PGW + ')(?:' + RC + '(' + PGW + '))?$').exec(p);
+      if (m) items.push({ a: pgVal(m[1]), b: m[2] === undefined ? null : pgVal(m[2]) });
     });
     return items;
   }
@@ -785,23 +871,34 @@ window.addEventListener('scroll', function(){
     var m, r;
     function ret(spec) { return { spec: spec, a: m.index, b: m.index + m[0].length }; }
     if ((m = /\b(odd|even)(?:[\s-]numbered)?\s+pages?\b/.exec(c))) return ret({ kind: m[1] });
+    if ((m = /\b(?:first|front|cover|title)(?:\s+pages?)?\s*(?:,|&|\+|and|plus)\s*(?:the\s+)?(?:last|final|back)(?:\s+pages?)?\b/.exec(c)) ||
+        (m = /\b(?:last|final|back)(?:\s+pages?)?\s*(?:,|&|\+|and|plus)\s*(?:the\s+)?(?:first|front|cover|title)(?:\s+pages?)?\b/.exec(c)))
+      return ret({ kind: 'list', items: [{ a: 1, b: null }, { a: 'end', b: null }] });
     if ((m = /\bfirst\s+(\d{1,4})\s+pages?\b/.exec(c))) return ret({ kind: 'first', n: +m[1] });
     if ((m = /\blast\s+(\d{1,4})\s+pages?\b/.exec(c))) return ret({ kind: 'last', n: +m[1] });
     if ((m = /\b(?:first|front|cover|title)\s+page\b|\bcover\b/.exec(c))) return ret({ kind: 'first', n: 1 });
     if ((m = /\b(?:last|final|back)\s+page\b/.exec(c))) return ret({ kind: 'last', n: 1 });
+    if ((m = /\b(second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|\d{1,3}(?:st|nd|rd|th))\s+page\b/.exec(c))) {
+      var ov = ORDW[m[1]] || parseInt(m[1], 10);
+      return ret({ kind: 'list', items: [{ a: ov, b: null }] });
+    }
     if ((m = /\bpages?\s*(\d{1,4})\s*(?:onwards?|and\s+(?:after|beyond|later|above|on)|to\s+(?:the\s+)?end|(?:till|until)\s+(?:the\s+)?end)\b/.exec(c)))
       return ret({ kind: 'list', items: [{ a: +m[1], b: 'end' }] });
+    if ((m = /\bfrom\s+pages?\s*(\d{1,4})\b(?!\s*(?:-|–|—|to|through|thru|till|until|and|,|&))/.exec(c)))
+      return ret({ kind: 'list', items: [{ a: +m[1], b: 'end' }] });
+    if ((m = /\b(?:up\s+to|till|until)\s+(?:and\s+including\s+)?pages?\s*(\d{1,4})\b/.exec(c)))
+      return ret({ kind: 'list', items: [{ a: 1, b: +m[1] }] });
     if ((m = /\b(?:all|every|each)\s+(?:the\s+)?pages?\b/.exec(c))) return ret({ kind: 'all' });
     r = new RegExp('\\b(?:pages?|pgs?)\\s*(?:no\\.?|numbers?|#)?\\s*(?:from\\s+|:)?\\s*(' + LIST + ')');
     if ((m = r.exec(c))) { var it = parseItems(m[1]); if (it.length) return ret({ kind: 'list', items: it }); }
     if ((m = /\b(\d{1,4})\s*(?:-|–|—|to|through|thru)\s*(\d{1,4})\b(?!\s*(?:kb|mb|k\b|m\b|px|%|x\b|dpi|°|deg|\d))/.exec(c)))
       return ret({ kind: 'list', items: [{ a: +m[1], b: +m[2] }] });
-    if ((m = /\b(?:all|every|each)\s+(?:the\s+)?pages?\b/.exec(c))) return ret({ kind: 'all' });
     return null;
   }
 
   function resolvePages(spec, total) {
     var set = {}, i;
+    function val(x) { return x === 'end' ? total : x; }
     function chk(n) {
       if (n < 1 || n > total) throw new AskError('That PDF has only ' + total + ' page' + (total === 1 ? '' : 's') + ', so I can’t use page ' + n + '.');
       return n;
@@ -815,7 +912,7 @@ window.addEventListener('scroll', function(){
       case 'last': for (i = Math.max(1, total - spec.n + 1); i <= total; i++) add(i); break;
       case 'list':
         spec.items.forEach(function (it) {
-          var a = it.a, b = it.b === null ? it.a : (it.b === 'end' ? total : it.b);
+          var a = val(it.a), b = it.b === null ? a : val(it.b);
           if (a > b) { var t = a; a = b; b = t; }
           chk(a); chk(b);
           for (var k = a; k <= b; k++) add(k);
@@ -826,6 +923,7 @@ window.addEventListener('scroll', function(){
   }
 
   function describePages(spec) {
+    function lab(x) { return x === 'end' ? 'last' : x; }
     switch (spec.kind) {
       case 'all': return 'all pages';
       case 'odd': return 'odd pages';
@@ -834,30 +932,45 @@ window.addEventListener('scroll', function(){
       case 'last': return spec.n === 1 ? 'the last page' : 'the last ' + spec.n + ' pages';
       default:
         return 'page' + (spec.items.length > 1 || spec.items[0].b !== null ? 's ' : ' ') + spec.items.map(function (it) {
-          return it.b === null ? it.a : it.a + '–' + it.b;
+          return it.b === null ? lab(it.a) : lab(it.a) + '–' + lab(it.b);
         }).join(', ');
     }
   }
 
   // ------------------------------------------------------------------ values
+  var UNITS = '(kb|kbs|kilobytes?|mb|mbs|megabytes?|megs?|k|m)';
+  var FULLU = '(kb|kbs|kilobytes?|mb|mbs|megabytes?|megs?)';
+  function toBytes(n, u) { return Math.round(parseFloat(String(n).replace(',', '.')) * (u.charAt(0) === 'm' ? 1048576 : 1024)); }
+
   function parseSize(c) {
-    var m = /(?:\b(?:under|below|less\s+than|smaller\s+than|within|max(?:imum)?(?:\s+of|\s+size)?|at\s+most|up\s*to|not\s+(?:more|bigger|larger|greater|over|above)\s+than|no\s+(?:more|bigger|larger|greater)\s+than|to|around|about|approx(?:imately)?|lower\s+than|beneath)|<=?|≤)\s*(\d+(?:[.,]\d+)?)\s*(kb|kilobytes?|mb|megabytes?|k|m)\b/.exec(c);
-    if (!m) m = /(\d+(?:[.,]\d+)?)\s*(kb|kilobytes?|mb|megabytes?|k|m)\s*(?:or\s+(?:less|smaller|under|below)|max(?:imum)?|limit)/.exec(c);
+    var m = new RegExp('(?:\\b(?:under|below|less\\s+than|smaller\\s+than|within|max(?:imum)?(?:\\s+of|\\s+size)?|at\\s+most|up\\s*to|not\\s+(?:more|bigger|larger|greater|over|above)\\s+than|no\\s+(?:more|bigger|larger|greater)\\s+than|to|around|about|approx(?:imately)?|lower\\s+than|beneath|down\\s+to|limit(?:ed)?(?:\\s+(?:of|to))?|target)|<=?|≤)\\s*(\\d+(?:[.,]\\d+)?)\\s*' + UNITS + '\\b').exec(c);
+    if (!m) m = new RegExp('(\\d+(?:[.,]\\d+)?)\\s*' + UNITS + '\\s*(?:or\\s+(?:less|smaller|under|below|lower)|max(?:imum)?|limit)').exec(c);
+    if (!m) {
+      var re = new RegExp('(\\d+(?:[.,]\\d+)?)\\s*' + FULLU + '\\b', 'g'), x, last = null;
+      while ((x = re.exec(c))) last = x;
+      m = last;
+    }
     if (!m) return null;
-    var n = parseFloat(m[1].replace(',', '.')), u = m[2].charAt(0);
-    return Math.round(n * (u === 'm' ? 1048576 : 1024));
+    return toBytes(m[1], m[2]);
+  }
+
+  function parseReduce(c) {
+    var m = /\b(?:by|down\s+by)\s*(\d{1,2})\s*%/.exec(c) || /(\d{1,2})\s*%\s*(?:smaller|less|lighter|lower|reduction)/.exec(c);
+    if (m && +m[1] >= 1 && +m[1] <= 95) return +m[1];
+    if (/\b(?:half|halve)\s+(?:the\s+|its\s+)?(?:file\s+)?size\b|\bhalf[\s-]size\b|\bhalve\b/.test(c)) return 50;
+    return null;
   }
 
   function parseLevel(c) {
-    if (/\b(?:best|high|good|great|keep(?:ing)?(?:\s+the)?|same|original|maintain)\s+quality\b|\bwithout\s+(?:losing|loss|reducing)\b|\blossless\b|\blight(?:ly)?\b|\bslight(?:ly)?\b|\bgentle\b|\bminimal\b|\breadable\b|\blegible\b/.test(c)) return 'low';
-    if (/\b(?:max(?:imum)?|extreme|strong(?:est)?|high(?:est)?|heavy|heavily|smallest|tiny|as\s+(?:small|much)\s+as\s+possible|aggressive)\b/.test(c)) return 'high';
+    if (/\b(?:best|high|good|great|keep(?:ing)?(?:\s+the)?|same|original|maintain|decent)\s+quality\b|\bwithout\s+(?:losing|loss|reducing|lowering)\b|\blossless\b|\blight(?:ly)?\b|\bslight(?:ly)?\b|\bgentle\b|\bminimal\b|\breadable\b|\blegible\b|\bnot\s+too\s+(?:much|small)\b/.test(c)) return 'low';
+    if (/\b(?:max(?:imum)?|extreme|strong(?:est)?|high(?:est)?|heavy|heavily|smallest|tiny|as\s+(?:small|much)\s+as\s+possible|aggressive)\b|\blow(?:er|est)?\s+quality\b|\bpoor\s+quality\b/.test(c)) return 'high';
     return null;
   }
 
   function parseAngle(c) {
-    if (/\bupside[\s-]?down\b|\bhalf[\s-]?turn\b|\bturn(?:ed)?\s+around\b/.test(c)) return 180;
+    if (/\bupside[\s-]?down\b|\bhalf[\s-]?turn\b|\bturn(?:ed)?\s+around\b|\bflip(?:ped)?\s+(?:it\s+)?over\b/.test(c)) return 180;
     var m = /(?:^|[^\d.])(90|180|270)(?!\d)/.exec(c);
-    var ccw = /\b(?:anti|counter)[\s-]?clock\s?wise\b|\banticlockwise\b|\bccw\b|\b(?:to\s+the\s+)?left(?:wards?)?\b/.test(c);
+    var ccw = /\b(?:anti|counter)[\s-]?clock\s?wise\b|\banticlockwise\b|\bccw\b|\b(?:to\s+the\s+)?left(?:wards?)?\b|-\s?90\b/.test(c);
     var cw = /\bclock\s?wise\b|\bcw\b|\b(?:to\s+the\s+)?right(?:wards?)?\b/.test(c);
     var a;
     if (m) a = +m[1]; else if (ccw || cw) a = 90; else return null;
@@ -865,15 +978,18 @@ window.addEventListener('scroll', function(){
     return a;
   }
 
+  // output format: prefer the one after "to / into / as", otherwise the last one mentioned
   function parseFmt(c) {
-    var m = /\b(jpe?g|png|webp)\b/.exec(c);
-    if (!m) return null;
-    return m[1] === 'png' ? 'png' : m[1] === 'webp' ? 'webp' : 'jpeg';
+    var m, last = null, re = /\b(?:to|into|as|in)\s+(?:an?\s+|some\s+)?(?:high[\s-]quality\s+)?(jpe?g|png|webp)\b/g;
+    while ((m = re.exec(c))) last = m[1];
+    if (!last) { var re2 = /\b(jpe?g|png|webp)\b/g; while ((m = re2.exec(c))) last = m[1]; }
+    if (!last) return null;
+    return last === 'png' ? 'png' : last === 'webp' ? 'webp' : 'jpeg';
   }
 
   function parseDims(c) {
     var m, o = {};
-    if ((m = /(\d{2,5})\s*(?:x|×|by|\*)\s*(\d{2,5})/.exec(c))) { o.w = +m[1]; o.h = +m[2]; if (/\b(?:exact(?:ly)?|stretch|force)\b/.test(c)) o.exact = true; return o; }
+    if ((m = /(\d{2,5})\s*(?:px|pixels?)?\s*(?:x|×|by|\*)\s*(\d{2,5})/.exec(c))) { o.w = +m[1]; o.h = +m[2]; if (/\b(?:exact(?:ly)?|stretch|force)\b/.test(c)) o.exact = true; return o; }
     if ((m = /\bwidth\s*(?:of|to|=|:|is)?\s*(\d{2,5})\b|\b(\d{2,5})\s*(?:px|pixels?)?\s*wide\b/.exec(c))) o.w = +(m[1] || m[2]);
     if ((m = /\bheight\s*(?:of|to|=|:|is)?\s*(\d{2,5})\b|\b(\d{2,5})\s*(?:px|pixels?)?\s*(?:tall|high)\b/.exec(c))) o.h = +(m[1] || m[2]);
     if (o.w || o.h) return o;
@@ -882,20 +998,23 @@ window.addEventListener('scroll', function(){
     if (/\bquarter\b/.test(c)) { o.pct = 25; return o; }
     if (/\b(?:double|twice)\b/.test(c)) { o.pct = 200; return o; }
     if ((m = /(\d{2,5})\s*(?:px|pixels?)\b/.exec(c))) { o.max = +m[1]; return o; }
+    if ((m = /\b(?:to|at|=)\s*(\d{3,5})\b(?!\s*(?:kb|mb|%|pages?))/.exec(c))) { o.max = +m[1]; return o; }
     return null;
   }
 
   function parseSplit(c) {
     var m;
     if ((m = /\bevery\s+(\d{1,3})\s+pages?\b/.exec(c)) ||
-        (m = /\binto\s+(\d{1,3})[\s-]*pages?(?:\s+(?:parts?|chunks?|files?|pdfs?|pieces?|sections?))?\b/.exec(c)) ||
-        (m = /\b(\d{1,3})[\s-]+pages?\s+(?:each|per\s+(?:file|part|pdf)|chunks?|parts?|pieces?|at\s+a\s+time)\b/.exec(c)))
+        (m = /\b(?:into|in|by)\s+(\d{1,3})[\s-]*pages?(?:\s+(?:parts?|chunks?|files?|pdfs?|pieces?|sections?))?\b/.exec(c)) ||
+        (m = /\b(\d{1,3})[\s-]+pages?\s+(?:each|per\s+(?:file|part|pdf|chunk)|chunks?|parts?|pieces?|at\s+a\s+time|long)\b/.exec(c)) ||
+        (m = /\beach\s+(?:file|part|pdf|chunk|piece)\s+(?:with|has|having|of)\s+(\d{1,3})\s+pages?\b/.exec(c)))
       return { mode: 'every', n: Math.max(1, +m[1]) };
-    if (/\b(?:each|every|single|individual|separate|all)\s+pages?\b|\bpage\s+by\s+page\b|\bone\s+page\s+per\b|\bpages?\s+(?:separately|individually)\b|\binto\s+(?:single|individual|separate)\s+pages\b|\bone\s+(?:pdf|file)\s+per\s+page\b/.test(c))
+    if (/\b(?:each|every|single|individual|separate|all)\s+pages?\b|\bpage\s+by\s+page\b|\bpage[\s-]?wise\b|\bone\s+(?:page|file)\s+per\s+page\b|\bpages?\s+(?:separately|individually)\b|\binto\s+(?:single|individual|separate|its|their)?\s*pages\b|\bone\s+(?:pdf|file)\s+per\s+page\b|\b1\s+(?:pdf|file|page)\s+per\s+page\b/.test(c))
       return { mode: 'each' };
-    if ((m = /\binto\s+(\d{1,2})\s+(?:equal\s+)?(?:parts?|files?|pdfs?|pieces?|sections?|halves)\b/.exec(c))) return { mode: 'parts', k: Math.max(2, +m[1]) };
-    if (/\bin\s+half\b|\binto\s+(?:two|2)\s+halves\b/.test(c)) return { mode: 'parts', k: 2 };
-    if ((m = /\b(at|after|before)\s+page\s*(\d{1,4})\b/.exec(c))) return { mode: 'at', page: +m[2], side: m[1] };
+    if ((m = /\b(?:into|in)\s+(\d{1,2})\s+(?:equal\s+)?(?:parts?|files?|pdfs?|pieces?|sections?|halves|chunks?|docs?|documents?)\b/.exec(c))) return { mode: 'parts', k: Math.max(2, +m[1]) };
+    if (/\bin\s+half\b|\binto\s+(?:two|2)\s+halves\b|\bhalve\b|\bin\s+(?:two|2)\b(?!\s*(?:pages?|px|kb|mb))/.test(c)) return { mode: 'parts', k: 2 };
+    if ((m = /\b(?:into|in)\s+(\d{1,2})\b(?!\s*(?:pages?|px|kb|mb|%|x))/.exec(c)) && +m[1] >= 2) return { mode: 'parts', k: +m[1] };
+    if ((m = /\b(at|after|before)\s+(?:page\s*)?(\d{1,4})\b(?!\s*(?:kb|mb|px|%))/.exec(c))) return { mode: 'at', page: +m[2], side: m[1] };
     var p = parsePages(c);
     if (p && p.spec.kind !== 'all') return { mode: 'extract', spec: p.spec };
     return null;
@@ -903,11 +1022,44 @@ window.addEventListener('scroll', function(){
 
   function blank(c, p) { return p ? c.slice(0, p.a) + new Array(p.b - p.a + 1).join(' ') + c.slice(p.b) : c; }
 
+  function exceptSpec(c) {
+    var m = /\b(?:except|excluding|exclude|other\s+than|apart\s+from|but\s+not|everything\s+but|all\s+but|besides|skip(?:ping)?)\b(.*)$/.exec(c);
+    if (!m) return null;
+    var p = parsePages(m[1]);
+    if (!p) { var l = new RegExp('^\\s*(?:page|pages|pg)?\\s*(' + LIST + ')').exec(m[1]); if (l) { var it = parseItems(l[1]); if (it.length) return { kind: 'list', items: it }; } }
+    return p && p.spec.kind !== 'all' ? p.spec : null;
+  }
+
+  // ------------------------------------------------------- watermark text
+  var WM_BAD_START = /^(?:it|them|this|these|those|that|all|each|every|my|the|a|an|on|to|with|in|for|please|as|and|then|pdf|file|files|pages?|document|text|image|images|photos?|diagonal(?:ly)?|light|faint|transparent|big|small|large|grey|gray|red|blue|black|simple|new|some|something|your|our)\b/i;
+  function cleanWm(s) {
+    if (!s) return null;
+    s = s.replace(/\s+as\s+(?:a\s+|the\s+)?(?:watermark|stamp)\b.*$/i, '').replace(/\s+(?:watermark|stamp)s?\b.*$/i, '').replace(/^[\s:"'-]+|[\s"'.!?,;:-]+$/g, '');
+    if (!s || s.length > 40 || /^(?:watermark|stamp)s?$/i.test(s) || WM_BAD_START.test(s)) return null;
+    return s;
+  }
+  function wmText(o) {
+    var m = /"([^"]{1,60})"|'([^']{1,60})'/.exec(o);
+    if (m) return cleanWm(m[1] || m[2]);
+    var tail = '(?=\\s+(?:as|on|onto|across|to|in|over|and|then|diagonally|at|for)\\b|[,.;!?]|$)', i, x;
+    var res = [
+      new RegExp('\\b(?:word|words|text|saying|reading|says|label(?:l?ed)?|stamped?)\\s*:?\\s+(?:the\\s+|a\\s+)?(?:(?:word|text)\\s+)?([^,.;!?]+?)' + tail, 'i'),
+      new RegExp('\\bwith\\s+(?:the\\s+|a\\s+)?(?:(?:word|words|text)\\s+)?([^,.;!?]+?)' + tail, 'i'),
+      new RegExp('\\bwatermark\\w*\\s*:?\\s+([^,.;!?]+?)' + tail, 'i'),
+      /\b(?:add|put|apply|insert|place|use|make|stamp)\s+(?:an?\s+|the\s+)?([A-Za-z0-9][\w -]{0,38}?)\s+(?:watermark|stamp)\b/i
+    ];
+    for (i = 0; i < res.length; i++) { m = res[i].exec(o); if (m) { x = cleanWm(m[1]); if (x) return x; } }
+    return null;
+  }
+
   // ---------------------------------------------------------- step parsers
   var STEP_PARSE = {
     merge: function () { return {}; },
     split: function (c) { var s = parseSplit(c); return s ? { split: s } : {}; },
-    extract: function (c) { var p = parsePages(c); return p ? { spec: p.spec } : {}; },
+    extract: function (c) {
+      var ex = exceptSpec(c); if (ex) return { exceptSpec: ex };
+      var p = parsePages(c); return p ? { spec: p.spec } : {};
+    },
     'delete': function (c) { var p = parsePages(c); return p ? { spec: p.spec } : {}; },
     rotate: function (c) {
       var p = parsePages(c), o = {};
@@ -919,15 +1071,19 @@ window.addEventListener('scroll', function(){
     reverse: function () { return {}; },
     numbers: function (c) {
       var o = { vpos: 'bottom', hpos: 'center', fmt: 'n', start: null, skip: 0 }, m;
-      if ((m = /\b(top|bottom)\b/.exec(c))) o.vpos = m[1];
+      if ((m = /\b(top|bottom|header|footer)\b/.exec(c))) o.vpos = /top|header/.test(m[1]) ? 'top' : 'bottom';
       if ((m = /\b(left|right|cent(?:er|re)|middle)\b/.exec(c))) o.hpos = /left/.test(m[1]) ? 'left' : /right/.test(m[1]) ? 'right' : 'center';
-      if (/\b\d+\s+of\s+\d+\b|\bx\s+of\s+y\b|\b1\s+of\s+n\b|\bof\s+(?:the\s+)?total\b/.test(c)) o.fmt = 'of';
+      if (/\b\d+\s+of\s+\d+\b|\bx\s+of\s+y\b|\b1\s+of\s+n\b|\bof\s+(?:the\s+)?total\b|\bpage\s+\d+\s+of\b/.test(c)) o.fmt = 'of';
       if ((m = /\bstart(?:ing)?\s+(?:from|at|with|number|on)?\s*(\d{1,4})\b/.exec(c))) o.start = +m[1];
       if ((m = /\bskip(?:ping)?\s+(?:the\s+)?(?:first|cover|title)(?:\s+(\d{1,3}))?/.exec(c))) o.skip = m[1] ? +m[1] : 1;
-      else if (/\b(?:except|excluding|without)\s+(?:the\s+)?(?:first|cover|title)\s+page\b/.test(c)) o.skip = 1;
+      else if (/\b(?:except|excluding|without|not\s+on|skip)\s+(?:the\s+)?(?:first|cover|title)\s*(?:page)?\b/.test(c)) o.skip = 1;
       return o;
     },
-    compress: function (c) { return { target: parseSize(c), level: parseLevel(c) }; },
+    compress: function (c) {
+      var o = { target: parseSize(c), level: parseLevel(c) }, r = parseReduce(c);
+      if (r && o.target == null) o.reduceBy = r;
+      return o;
+    },
     grayscale: function () { return {}; },
     toimg: function (c) {
       var o = { fmt: parseFmt(c) || 'jpeg', scale: /\b(?:high|hd|best)\s+(?:res|resolution|quality)\b|\b300\s*dpi\b/.test(c) ? 3 : 2 };
@@ -937,17 +1093,8 @@ window.addEventListener('scroll', function(){
     topdf: function (c) { return { separate: /\b(?:each|separately|individually|one\s+pdf\s+per|their\s+own)\b/.test(c) }; },
     resize: function (c) { var d = parseDims(c); return d ? { dims: d } : {}; },
     flip: function (c) { return { dir: /\bboth\b/.test(c) ? 'hv' : /\bvertical(?:ly)?\b|\bupside\b|\btop\s*(?:to|and)\s*bottom\b/.test(c) ? 'v' : 'h' }; },
-    watermark: function (c, o) {
-      var m = /"([^"]{1,60})"|'([^']{1,60})'/.exec(o);
-      var text = m ? (m[1] || m[2]) : null;
-      if (!text) {
-        var lo = c.search(/\b(?:with|saying|reading|says|text|word|words|as)\s*:?\s+/);
-        if (lo >= 0) {
-          var rest = o.slice(lo).replace(/^\s*(?:with|saying|reading|says|text|word|words|as)\s*:?\s+(?:the\s+)?(?:text\s+|word\s+|words\s+)?/i, '');
-          rest = rest.split(/\s+(?:and\s+then|then|and\s+(?:compress|merge|split|rotate|add|convert))\b/i)[0].replace(/[.!?,;]+$/, '').trim();
-          if (rest && rest.length <= 40 && !/^(?:it|them|this|these|all|each|every|my|the|a|an)$/i.test(rest)) text = rest;
-        }
-      }
+    watermark: function (c, o, wide) {
+      var text = wmText(wide || o);
       return text ? { text: text } : {};
     }
   };
@@ -985,7 +1132,9 @@ window.addEventListener('scroll', function(){
     removenumbers: { label: 'removing page numbers', link: null, tool: null },
     rmwatermark: { label: 'removing watermarks', link: null, tool: null },
     nobg: { label: 'removing backgrounds', link: null, tool: null },
-    office: { label: 'converting to or from Word, Excel or PowerPoint', link: null, tool: null }
+    office: { label: 'converting to or from Word, Excel or PowerPoint', link: null, tool: null },
+    blankpages: { label: 'finding and removing blank pages automatically (tell me the page numbers and I’ll delete them)', link: null, tool: null },
+    extractimg: { label: 'pulling embedded pictures out of a PDF (say “convert to JPG” to save each page as a picture)', link: null, tool: null }
   };
 
   var VERBS = [
@@ -1004,26 +1153,28 @@ window.addEventListener('scroll', function(){
     ['invert', /\binvert\b|\bnegative\b/],
     ['base64', /\bbase\s?64\b/],
     ['reorder', /\b(?:reorder|re-order|rearrange|re-arrange|shuffle|move\s+page|swap\s+pages?)\b/],
+    ['blankpages', /\b(?:blank|empty)\s+(?:pages?|sheets?)\b/],
+    ['extractimg', /\b(?:extract|get|save|pull|grab|download|export)\s+(?:all\s+|the\s+)?(?:embedded\s+)?(?:images?|pictures?|photos?)\s+(?:from|in|out\s+of|of)\b/],
     ['edit', /\b(?:remove|delete|erase)\s+(?:the\s+|that\s+|some\s+)?(?:text|words?|annotations?|comments?|highlights?|signature)\b|\b(?:edit|annotate|highlight|fill(?:\s+in)?|type\s+(?:on|into)|add\s+(?:some\s+)?text|redact|black\s*out)\b/],
     ['translate', /\btranslat\w+\b/],
     ['rmwatermark', /\b(?:remove|delete|erase|get\s+rid\s+of|clean)\s+(?:the\s+|that\s+|this\s+|a\s+)?watermarks?\b/],
-    ['removenumbers', /\bremove\s+(?:the\s+)?page\s+numbers?\b/],
+    ['removenumbers', /\bremove\s+(?:the\s+)?page\s+numbers\b|\bremove\s+(?:the\s+)?page\s+number\b(?!\s*\d)/],
     ['nobg', /\bremove\s+(?:the\s+)?background\b|\bbackground\s+remov\w+\b/],
     ['office', /\b(?:to|into|from)\s+(?:ms\s+)?(?:word|docx?|excel|xlsx?|powerpoint|pptx?|ppt|txt|html|epub)\b/],
 
-    ['numbers', /\bpage\s+numbers?\b|\bnumber(?:ing)?\s+(?:the\s+|all\s+|my\s+|these\s+|every\s+|each\s+)?pages?\b|\bpaginat\w+\b|\badd\s+numbers\b/],
+    ['numbers', /\bpage\s+numbers\b|\bpage\s+number\b(?!\s*\d)|\bnumber(?:ing)?\s+(?:the\s+|all\s+|my\s+|these\s+|every\s+|each\s+)?pages?\b|\bpaginat\w+\b|\badd\s+numbers\b|\bpage\s+nos?\b/],
     ['toimg', /\b(?:to|into|as)\s+(?:an?\s+|some\s+)?(?:high[\s-]quality\s+)?(?:jpe?gs?|pngs?|webps?|images?|pictures?|photos?)\b/],
     ['topdf', /\b(?:to|into|as|in)\s+(?:an?\s+|one\s+|single\s+|1\s+)*(?:single\s+|one\s+)?pdf\b|\b(?:make|create|build|generate|produce)\s+(?:me\s+)?(?:an?\s+|one\s+)?pdf\b(?!\s+(?:smaller|lighter|bigger|larger|shorter))|\bpdf\s+(?:out\s+of|from)\s+(?:\w+\s+){0,2}?(?:images?|photos?|pictures?|jpe?gs?|pngs?|scans?)\b/],
     ['grayscale', /\bgr[ae]y[\s-]?scale\b|\bblack\s*(?:and|&|n|-)\s*white\b|\bb\s?&\s?w\b|\bmonochrome\b|\bdesaturat\w+\b|\bgr[ae]y\b/],
-    ['compress', /\bcompress\w*\b|\bshrink\b|\bsmaller\b|\breduc(?:e|ing)\s+(?:the\s+|its\s+|their\s+)?(?:file\s+)?size\b|\bminimi[sz]e\b|\bdownsize\b|\b(?:lower|less)\s+(?:the\s+)?size\b|\blighter\b/],
-    ['rotate', /\brotat\w*\b|\bspin\b|\b(?:turn|flip)\s+(?:\w+\s+){0,3}?(?:upside[\s-]?down|sideways|clock\s?wise|anti[\s-]?clock\s?wise|counter[\s-]?clock\s?wise)\b/],
+    ['compress', /\bcompress\w*\b|\bshrink\b|\bsmaller\b|\breduc(?:e|ing)\s+(?:the\s+|its\s+|their\s+|my\s+)?(?:\w+\s+){0,2}?size\b|\bminimi[sz]e\b|\bdownsize\b|\b(?:lower|less)\s+(?:the\s+)?size\b|\blighter\b|\boptimi[sz]e\b|\bbring\s+(?:it\s+|this\s+|them\s+)?down\b|\b(?:reduce|cut|lower|decrease)\b.{0,15}?\bby\s+\d+\s*%|\d+\s*%\s*(?:smaller|less|lighter|lower)\b|\btoo\s+(?:big|large|heavy)\b|\bsave\s+space\b|\b(?:chhota|chota|chhoti|choti)\b|\bsize\s+kam\b/],
+    ['rotate', /\brotat\w*\b|\bspin\b|\b(?:turn|flip)\s+(?:\w+\s+){0,3}?(?:upside[\s-]?down|sideways|clock\s?wise|anti[\s-]?clock\s?wise|counter[\s-]?clock\s?wise)\b|\b(?:ghumao|ghuma\s+do|palto)\b/],
     ['rotatemod', /\bupside[\s-]?down\b|\bsideways\b/],
     ['reverse', /\breverse\b|\bbackwards?\b|\b(?:last|end)\s+to\s+(?:the\s+)?(?:first|beginning|start)\b|\bflip\s+(?:the\s+)?(?:page\s+)?order\b/],
-    ['merge', /\b(?:merge|merging|combine|combining|join|joining|concatenate|stitch)\b|\b(?:put|stick|glue|bring)\s+(?:\w+\s+){0,2}?together\b/],
-    ['split', /\b(?:split|splitting|separate|divide|slice)\b|\bbreak\s+(?:it\s+)?(?:up|apart|into)\b/],
-    ['extract', /\bextract(?:ing)?\b|\b(?:keep|retain|take|pull\s+out|grab|select|get|save)\s+(?:only\s+|just\s+)?(?:the\s+)?(?:first|last|front|cover|pages?|odd|even)\b|\bonly\s+(?:keep\s+)?(?:the\s+)?pages?\b/],
-    ['delete', /\b(?:delete|deleting|remove|removing|drop|discard|erase|get\s+rid\s+of|trim\s+off|take\s+out|cut\s+out)\b(?!\s+(?:the\s+|that\s+|this\s+|all\s+)?(?:exif|metadata|gps|location|geotag|watermark|password|background|text|words?|annotations?|comments?|signature))/],
-    ['resize', /\bresiz\w+\b|\brescale\b|\bscale\b|\bdimensions?\b|\bwidth\b|\bheight\b|\b\d{2,5}\s*(?:x|×|by)\s*\d{2,5}\b|\b\d{2,5}\s*px\b|\bhalf\s+(?:the\s+)?size\b/],
+    ['merge', /\b(?:merge|merging|combine|combining|join|joining|concatenate|stitch)\b|\b(?:put|stick|glue|bring)\s+(?:\w+\s+){0,2}?together\b|\bin(?:to)?\s+(?:a\s+|one\s+|1\s+)(?:single\s+)?(?:file|document)\b|\b(?:jodo|jod\s+do|milao|mila\s+do)\b/],
+    ['split', /\b(?:split|splitting|separate|divide|slice)\b|\bbreak\s+(?:it\s+)?(?:up|apart|into)\b|\bcut\s+(?:\w+\s+){0,3}?(?:in|into)\s+(?:half|halves|two|2|\d+)\b|\bhalve\b|\b(?:todo|tod\s+do|alag\s+karo)\b/],
+    ['extract', /\bextract(?:ing)?\b|\b(?:keep|retain|take|pull\s+out|grab|select|get|save|give\s+me)\s+(?:only\s+|just\s+)?(?:the\s+)?(?:first|last|front|cover|pages?|odd|even)\b|\bonly\s+(?:keep\s+)?(?:the\s+)?(?:pages?|first|last|odd|even|cover)\b|\bi\s+(?:only\s+)?(?:need|want)\s+(?:only\s+|just\s+)?(?:the\s+)?(?:pages?|first|last|odd|even|cover)\b/],
+    ['delete', /\b(?:delete|deleting|remove|removing|drop|discard|erase|get\s+rid\s+of|trim\s+off|take\s+out|cut\s+out|hatao|hata\s+do|nikalo|nikal\s+do)\b(?!\s+(?:the\s+|that\s+|this\s+|all\s+)?(?:exif|metadata|gps|location|geotag|watermark|password|background|text|words?|annotations?|comments?|signature))/],
+    ['resize', /\bresiz\w+\b|\brescale\b|\bscale\b|\bdimensions?\b|\bwidth\b|\bheight\b|\b\d{2,5}\s*(?:px\s*)?(?:x|×|by)\s*\d{2,5}\b|\b\d{2,5}\s*(?:px|pixels?)\b|\bhalf\s+(?:the\s+)?size\b|\b(?:make|set|change)\s+(?:it|this|them|the\s+(?:image|photo|picture)s?|image|photo|picture)s?\s+(?:to\s+|be\s+)?\d{1,3}\s*%/],
     ['flip', /\bmirror\b|\bflip\b/],
     ['watermark', /\bwatermark\w*\b|\bstamp\b/]
   ];
@@ -1043,11 +1194,26 @@ window.addEventListener('scroll', function(){
     return hits;
   }
 
+  // steps that should run *before* a size-limited compress so the final file really meets the limit
+  var LATE_OK = { merge: 1, numbers: 1, watermark: 1, extract: 1, 'delete': 1, rotate: 1, reverse: 1, grayscale: 1, resize: 1, flip: 1, toimg: 1, topdf: 1 };
+  function orderSteps(steps) {
+    for (var i = 0; i < steps.length; i++) {
+      if (steps[i].id !== 'compress') continue;
+      var later = steps.slice(i + 1);
+      if (later.length && later.every(function (s) { return LATE_OK[s.id]; })) {
+        var c = steps.splice(i, 1)[0]; steps.push(c); i--;
+      }
+    }
+    return steps;
+  }
+
   // ------------------------------------------------------------------ parse
   function parse(orig) {
-    var o = ' ' + String(orig || '').replace(/[“”]/g, '"').replace(/[‘’]/g, "'") + ' ';
+    var raw = String(orig || '').replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
+    var pre = preprocess(raw);
+    var o = ' ' + pre.text + ' ';
     var t = o.toLowerCase();
-    var out = { steps: [], unsupported: [], intent: null };
+    var out = { steps: [], unsupported: [], intent: null, corrections: pre.fixes };
     var tr = t.trim();
     if (!tr) { out.intent = 'empty'; return out; }
     if (/^(?:hi+|hello|hey+|hola|namaste|yo|good\s+(?:morning|afternoon|evening))\b[\s!.,]*$/.test(tr)) { out.intent = 'greet'; return out; }
@@ -1064,24 +1230,54 @@ window.addEventListener('scroll', function(){
       if (UNSUP[h.id]) { if (out.unsupported.indexOf(h.id) < 0) out.unsupported.push(h.id); continue; }
       var end = k + 1 < hits.length ? hits[k + 1].a : t.length;
       var from = out.steps.length === 0 ? 0 : h.a;
+      var wideFrom = k === 0 ? 0 : hits[k - 1].b;
       var step = { id: h.id };
-      var extra = STEP_PARSE[h.id](t.slice(from, end), o.slice(from, end));
+      var extra = STEP_PARSE[h.id](t.slice(from, end), o.slice(from, end), o.slice(wideFrom, end));
       for (var key in extra) step[key] = extra[key];
+      if (step.exceptSpec) { step.id = 'delete'; step.spec = step.exceptSpec; delete step.exceptSpec; }
       step.missing = missingOf(step);
       out.steps.push(step);
     }
 
-    // a size limit mentioned anywhere belongs to the compress step
-    var gs = parseSize(t);
-    var cs = null;
+    // "unlock a password protected pdf" is an unlock request, not a protect request
+    if (out.unsupported.indexOf('unlock') >= 0 && /\b(?:protected|encrypted|locked)\b/.test(t)) out.unsupported = out.unsupported.filter(function (u) { return u !== 'protect'; });
+    // blank pages / embedded pictures can't be done here, so don't also ask "which pages?"
+    if (out.unsupported.indexOf('blankpages') >= 0 || out.unsupported.indexOf('extractimg') >= 0)
+      out.steps = out.steps.filter(function (s) { return !((s.id === 'delete' || s.id === 'extract') && s.missing); });
+
+    // "keep everything except page 3"
+    var hasPg = out.steps.some(function (s) { return s.id === 'extract' || s.id === 'delete'; });
+    if (!hasPg && /\b(?:keep|retain|save|take|get|give\s+me|want|need|all|everything)\b/.test(t)) {
+      var ex = exceptSpec(t);
+      if (ex) { var ds = { id: 'delete', spec: ex, missing: null }; out.steps.unshift(ds); }
+    }
+
+    // a file-size limit mentioned anywhere belongs to the compress step
+    var gs = parseSize(t), cs = null;
     out.steps.forEach(function (s) { if (!cs && s.id === 'compress') cs = s; });
-    if (cs && cs.target == null && gs != null) cs.target = gs;
-    else if (!cs && gs != null && /\b(?:under|below|less\s+than|within|max(?:imum)?|at\s+most|up\s*to|smaller\s+than|no\s+more\s+than|not\s+more\s+than|around|about)\b|\bor\s+(?:less|smaller|under|below)\b|\bmax(?:imum)?\b/.test(t))
+    if (cs && cs.target == null && gs != null) { cs.target = gs; delete cs.reduceBy; }
+    else if (!cs && gs != null && !out.steps.some(function (s) { return s.id === 'split'; }))
       out.steps.push({ id: 'compress', target: gs, level: null, implicit: true, missing: null });
+    else if (!cs && !out.steps.length) {
+      var rb = parseReduce(t);
+      if (rb) out.steps.push({ id: 'compress', target: null, level: null, reduceBy: rb, implicit: true, missing: null });
+    }
 
     // "merge ... into one pdf" is a single merge
     if (out.steps.some(function (s) { return s.id === 'merge'; }))
       out.steps = out.steps.filter(function (s) { return s.id !== 'topdf'; });
+
+    // bare requests with no recognised verb
+    if (!out.steps.length && !out.unsupported.length) {
+      var sp = parseSplit(t), fm = parseFmt(t), pg = parsePages(t), sx;
+      if (sp && sp.mode !== 'extract' && /\b(?:every|each|per|in\s+half|into|parts?|pages?)\b/.test(t)) out.steps.push({ id: 'split', split: sp, missing: null });
+      else if (pg && pg.spec.kind !== 'all' && /\b(?:only|just|need|want|keep|give)\b/.test(t)) out.steps.push({ id: 'extract', spec: pg.spec, missing: null });
+      else if (fm && (/\b(?:convert|make|change|save|turn|export|give|get|want|need|as|to|into)\b/.test(t) || /^\s*(?:jpe?g|png|webp)\s*[.!]?\s*$/.test(t)))
+        out.steps.push({ id: 'toimg', fmt: fm, scale: 2, missing: null });
+      else if ((sx = exceptSpec(t))) out.steps.push({ id: 'delete', spec: sx, missing: null });
+    }
+
+    orderSteps(out.steps);
 
     if (!out.steps.length && !out.unsupported.length) {
       out.intent = /\b(?:help|what\s+can\s+you|what\s+do\s+you|how\s+(?:does|do)\s+(?:this|it|i)|examples?|commands?|options|features|capabilit\w+)\b/.test(t) ? 'help' : 'unknown';
@@ -1091,7 +1287,8 @@ window.addEventListener('scroll', function(){
 
   // answer to a clarifying question
   function fillMissing(step, text) {
-    var t = ' ' + String(text || '').toLowerCase() + ' ';
+    var pre = preprocess(String(text || '').replace(/[“”]/g, '"').replace(/[‘’]/g, "'"));
+    var t = ' ' + pre.text.toLowerCase() + ' ';
     var p;
     switch (step.missing) {
       case 'pages':
@@ -1105,6 +1302,7 @@ window.addEventListener('scroll', function(){
         return false;
       case 'angle': {
         var a = parseAngle(t);
+        if (a == null && /^\s*(?:cw|right)\s*$/.test(t)) a = 90;
         if (a != null) { step.angle = a; step.missing = null; return true; }
         return false;
       }
@@ -1235,7 +1433,7 @@ window.addEventListener('scroll', function(){
     var img = await decode(f.blob), d = dim(img);
     var outFmt = (imgFmtOf(f) === 'webp' && canWebp()) ? 'webp' : 'jpeg', type = MIMES[outFmt];
     var q0 = { low: 0.85, medium: 0.7, high: 0.5 }[s.level || 'medium'];
-    var target = s.target, best = null, scale = 1;
+    var target = s.target || (s.reduceBy ? Math.max(1024, Math.round(f.size * (1 - s.reduceBy / 100))) : null), best = null, scale = 1;
     async function enc(sc, q) { return await encode(paint(img, d.w * sc, d.h * sc, outFmt), type, q); }
     if (!target) best = await enc(1, q0);
     else {
@@ -1385,7 +1583,7 @@ window.addEventListener('scroll', function(){
   var LADDER = [{ s: 1.5, q: 0.8 }, { s: 1.25, q: 0.7 }, { s: 1.0, q: 0.6 }, { s: 0.85, q: 0.5 }, { s: 0.7, q: 0.45 }, { s: 0.55, q: 0.4 }, { s: 0.45, q: 0.35 }];
 
   async function pdfCompress(f, s, c) {
-    var target = s.target, level = s.level;
+    var target = s.target || (s.reduceBy ? Math.max(1024, Math.round(f.size * (1 - s.reduceBy / 100))) : null), level = s.level;
     if (target && f.size <= target) { c.notes.push('“' + f.name + '” is already ' + fmt(f.size) + ', under your limit, so I left it as is.'); return [f]; }
     var doc = await openPdf(f);
     var lossless = await doc.save({ useObjectStreams: true });
@@ -1598,7 +1796,7 @@ window.addEventListener('scroll', function(){
       case 'rotate': return 'rotate ' + (s.angle === 270 ? '90° counter-clockwise' : s.angle === 180 ? '180°' : '90° clockwise') + (s.spec ? ' (' + NLU.describePages(s.spec) + ')' : '');
       case 'reverse': return 'reverse the page order';
       case 'numbers': return 'add page numbers';
-      case 'compress': return s.target ? 'compress to under ' + fmt(s.target) : s.level === 'high' ? 'compress as much as possible' : s.level === 'low' ? 'compress, keeping quality' : 'compress';
+      case 'compress': return s.target ? 'compress to under ' + fmt(s.target) : s.reduceBy ? 'make it about ' + s.reduceBy + '% smaller' : s.level === 'high' ? 'compress as much as possible' : s.level === 'low' ? 'compress, keeping quality' : 'compress';
       case 'grayscale': return 'convert to black and white';
       case 'toimg': return 'convert to ' + FMTNAME[s.fmt];
       case 'resize': { var d = s.dims; return 'resize to ' + (d.pct ? d.pct + '%' : d.max ? d.max + ' px' : d.w && d.h ? d.w + '×' + d.h : d.w ? d.w + ' px wide' : d.h + ' px tall'); }
@@ -1740,7 +1938,7 @@ window.addEventListener('scroll', function(){
     if (plan.intent === 'thanks') { bot('You’re welcome! 😊 Anything else I can do?'); return; }
     if (plan.intent === 'help') { bot(helpHtml(), EXAMPLES); return; }
     if (plan.intent === 'unknown' || plan.intent === 'empty') {
-      bot('I’m not sure what you’d like me to do. I understand requests like “merge these and compress to under 1 MB”, “split pages 2 to 4” or “rotate 90°”. Tap an example, or say “help” to see everything I can do.', EXAMPLES);
+      bot('I’m not sure what you’d like me to do. I understand requests like “merge these and compress to under 1 MB”, “split pages 2 to 4” or “rotate 90°”. Tap an example, or say “help” to see everything I can do.', S.work.length ? suggestFor(S.work) : EXAMPLES);
       return;
     }
     if (!plan.steps.length) { bot('I can’t do that one here:<ul>' + unsupportedHtml(plan.unsupported) + '</ul>', EXAMPLES); return; }
@@ -1769,7 +1967,8 @@ window.addEventListener('scroll', function(){
     S.awaiting = null;
     var input = S.work.slice(), c = { notes: [], prog: function () { }, last: null }, row, i;
     var steps = plan.steps;
-    var summary = 'Here’s the plan: ' + steps.map(function (s, k) { return (steps.length > 1 ? (k + 1) + ') ' : '') + stepText(s); }).join('  ') + ' — on ' + plural(input.length, 'file') + '.';
+    var fixes = (plan.corrections || []).map(function (x) { return '“' + x.from + '” as “' + x.to + '”'; });
+    var summary = (fixes.length ? 'I read ' + fixes.join(', ') + '. ' : '') + 'Here’s the plan: ' + steps.map(function (s, k) { return (steps.length > 1 ? (k + 1) + ') ' : '') + stepText(s); }).join('  ') + ' — on ' + plural(input.length, 'file') + '.';
     setBusy(true); row = working(summary); c.prog = function (t) { row.setProgress(t); };
     try {
       if (input.some(function (f) { return f.kind === 'pdf'; }) || steps.some(function (s) { return s.id === 'merge' || s.id === 'topdf'; })) { row.setProgress('Starting the PDF engine…'); await libs(); }
