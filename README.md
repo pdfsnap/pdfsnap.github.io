@@ -29,4 +29,4 @@ All processing runs **entirely in your browser** using [pdf-lib](https://github.
 
 ---
 
-© 2026 PDFSnap · Built by Mohammad Armaan, Himachal Pradesh, India
+© 2026 PDFSnap · Built by Kazuto, Himachal Pradesh, India
