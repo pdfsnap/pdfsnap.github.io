@@ -49,21 +49,6 @@
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
 
-/* ── ADBLOCK ── */
-.ab-ov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(26,18,24,.92);align-items:center;justify-content:center;padding:1rem}
-.ab-ov.show{display:flex}
-.ab-box{background:var(--sur);border:2px solid var(--acc);border-radius:20px;padding:2rem;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.ab-icon{font-size:2.8rem;margin-bottom:.7rem}
-.ab-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:.5rem;color:var(--txt)}
-.ab-title span{color:var(--acc)}
-.ab-desc{color:var(--mut);font-size:.88rem;line-height:1.6;margin-bottom:1rem}
-.ab-steps{text-align:left;background:var(--bg);border-radius:10px;padding:.9rem;margin-bottom:1rem}
-.ab-step{display:flex;gap:.6rem;margin-bottom:.6rem;font-size:.84rem;align-items:flex-start;color:var(--txt)}
-.ab-step:last-child{margin-bottom:0}
-.ab-n{background:var(--acc);color:#fff;min-width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:1px}
-.btn-ab{display:block;width:100%;background:var(--acc);color:#fff;border:none;border-radius:12px;padding:.9rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s}
-.btn-ab:hover{background:var(--acc2);transform:translateY(-1px)}
-
 /* ── NAV ── */
 nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.85rem 2rem;background:rgba(255,248,244,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);box-shadow:0 1px 0 var(--bdr)}
 .ham-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:6px;border-radius:8px;transition:background .2s;flex-shrink:0}
@@ -392,6 +377,8 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 .tp ol.steps li::before{content:counter(s);position:absolute;left:1rem;top:.85rem;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--acc);color:#fff;font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center}
 .tp ol.steps strong{display:block;margin-bottom:.15rem}
 .tp ul.why{padding-left:1.2rem;line-height:1.8}
+.tp p.tp-body{line-height:1.75;margin:0 0 1rem}
+.tp ul.why a,.tp p.tp-body a{color:var(--acc);font-weight:600}
 .tp details{background:var(--sur);border:1.5px solid var(--bdr);border-radius:12px;padding:.8rem 1rem;margin-bottom:.6rem}
 .tp summary{cursor:pointer;font-weight:600}
 .tp details p{margin-top:.5rem;color:var(--mut);line-height:1.65}
@@ -413,7 +400,6 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 </head>
 <body>
 <div class="toast-wrap" id="toastWrap"></div>
-<div id="abOv" style="display:none"></div>
 <!-- SIDE OVERLAY -->
 <div class="side-overlay" id="sideOverlay" onclick="closeSideMenu()"></div>
 <!-- SIDE DRAWER -->
@@ -508,6 +494,14 @@ body.dark input,body.dark textarea,body.dark select{background:#12100E;color:#F0
 <ol class="steps"><li><strong>Upload your PDF</strong>Choose the restricted PDF.</li><li><strong>Press “Process Now”</strong>PDFSnap saves a new copy without the permission restrictions.</li><li><strong>Download</strong>Save the unlocked PDF.</li></ol>
 <h2>Why use PDFSnap</h2>
 <ul class="why"><li>Works on files with print, copy or edit permissions set.</li><li>Runs in your browser, so the document isn’t uploaded.</li><li>Private by design: your files are processed in your browser and are not uploaded to a server.</li><li>Free, with no signup and no watermark on the result.</li></ul>
+<h2>What it can and can’t do</h2>
+<ul class="why">
+<li>It removes print, copy and edit restrictions from a PDF that you can still open.</li>
+<li>It cannot remove a password that is needed just to open the file. You will see a message if that is the case.</li>
+<li>Restricted files are rebuilt page by page as images, so the text in the result can’t be selected. Use <a href="pdf-ocr.html">PDF OCR</a> if you need the text.</li>
+<li>A PDF without restrictions comes back unchanged.</li>
+</ul>
+<p class="tp-body">Only unlock files you own or have permission to modify. Other PDFSnap tools need an unlocked file, so run restricted files through here before merging, splitting or editing them.</p>
 <h2>Frequently asked questions</h2>
 <details><summary>Can it open a PDF that asks for a password to open?</summary><p>No. It removes permission restrictions only. If a file needs a password just to open, you need that password.</p></details><details><summary>Is it legal to unlock a PDF?</summary><p>Only unlock files you own or have permission to modify. Respect the copyright and rights of the document’s author.</p></details><details><summary>Is Unlock PDF really free?</summary><p>Yes. There is no signup, no watermark and no paid plan. The site is supported by ads.</p></details><details><summary>Is my data sent to a server?</summary><p>No. Your file is processed by code running in your browser. The page only downloads the open-source libraries it needs (for OCR, also the language data), never your file.</p></details>
 <h2>More free tools</h2>

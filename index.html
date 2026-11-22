@@ -50,21 +50,6 @@
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
 
-/* ── ADBLOCK ── */
-.ab-ov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(26,18,24,.92);align-items:center;justify-content:center;padding:1rem}
-.ab-ov.show{display:flex}
-.ab-box{background:var(--sur);border:2px solid var(--acc);border-radius:20px;padding:2rem;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.ab-icon{font-size:2.8rem;margin-bottom:.7rem}
-.ab-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:.5rem;color:var(--txt)}
-.ab-title span{color:var(--acc)}
-.ab-desc{color:var(--mut);font-size:.88rem;line-height:1.6;margin-bottom:1rem}
-.ab-steps{text-align:left;background:var(--bg);border-radius:10px;padding:.9rem;margin-bottom:1rem}
-.ab-step{display:flex;gap:.6rem;margin-bottom:.6rem;font-size:.84rem;align-items:flex-start;color:var(--txt)}
-.ab-step:last-child{margin-bottom:0}
-.ab-n{background:var(--acc);color:#fff;min-width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:1px}
-.btn-ab{display:block;width:100%;background:var(--acc);color:#fff;border:none;border-radius:12px;padding:.9rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s}
-.btn-ab:hover{background:var(--acc2);transform:translateY(-1px)}
-
 /* ── NAV ── */
 nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.85rem 2rem;background:rgba(255,248,244,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);box-shadow:0 1px 0 var(--bdr)}
 .ham-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:6px;border-radius:8px;transition:background .2s;flex-shrink:0}
@@ -513,24 +498,23 @@ section.chat .newchat{border-color:#FFCFE6}
 section.chat .ask-chip{border-color:#C9E7FF}
 section.chat .ask-chip:hover{border-color:var(--acc)}
 section.chat .tf,section.chat .rc{border-color:#C9E7FF}
+
+/* ── POPULAR TOOLS ── */
+.pop-tools{max-width:1000px;margin:0 auto 2rem;padding:0 1rem;scroll-margin-top:84px}
+.pop-tools h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.35rem;text-align:center}
+.pop-tools .pop-sub{color:var(--mut);line-height:1.6;margin:0 auto 1.1rem;font-size:.95rem;text-align:center;max-width:620px}
+.pop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1rem}
+.pop-card{display:flex;flex-direction:column;background:var(--card);border:1.5px solid var(--bdr);border-radius:var(--radius);padding:1.1rem 1.15rem;text-decoration:none;color:var(--txt);box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s,border-color .15s}
+.pop-card:hover,.pop-card:focus-visible{transform:translateY(-3px);box-shadow:var(--shadow-hover);border-color:var(--acc)}
+.pop-ico{font-size:1.9rem;line-height:1;margin-bottom:.55rem}
+.pop-name{font-family:'Bricolage Grotesque',sans-serif;font-size:1.05rem;font-weight:800;margin-bottom:.3rem}
+.pop-desc{color:var(--mut);font-size:.84rem;line-height:1.55;flex:1;margin-bottom:.8rem}
+.pop-go{color:var(--acc);font-weight:700;font-size:.84rem}
+.pop-all{text-align:center;margin-top:.9rem;font-size:.88rem}.pop-all a{color:var(--acc);font-weight:600;text-decoration:none}
 </style>
 </head>
 <body>
 <div class="toast-wrap" id="toastWrap"></div>
-<!-- ADBLOCK OVERLAY -->
-<div class="ab-ov" id="abOv">
-<div class="ab-box">
-<div class="ab-icon">🙏</div>
-<div class="ab-title">Quick favour? <span>Whitelist us!</span></div>
-<div class="ab-desc">All our tools are completely free. Small ads help us keep the lights on — no paywalls, ever.</div>
-<div class="ab-steps">
-<div class="ab-step"><div class="ab-n">1</div><div>Click the <strong>Ad Blocker icon</strong> in your browser toolbar</div></div>
-<div class="ab-step"><div class="ab-n">2</div><div>Tap <strong>"Disable on this site"</strong> or <strong>"Whitelist"</strong></div></div>
-<div class="ab-step"><div class="ab-n">3</div><div><strong>Refresh the page</strong> — thank you, truly! 🧡</div></div>
-</div>
-<button class="btn-ab" onclick="dismissAb()">✅ Done — take me to the tools!</button>
-</div>
-</div>
 <!-- SIDE OVERLAY -->
 <div class="side-overlay" id="sideOverlay" onclick="closeSideMenu()"></div>
 <!-- SIDE DRAWER -->
@@ -641,6 +625,17 @@ section.chat .tf,section.chat .rc{border-color:#C9E7FF}
 </div>
 </section>
 <p class="ask-more"><a href="ask-pdfsnap.html">Open the full-page version →</a></p>
+</section>
+<section class="pop-tools" id="popular" aria-label="Popular tools">
+<h2>🔥 Popular tools</h2>
+<p class="pop-sub">The quickest way to get started with everyday PDF jobs. Tap a tool to open it — your files stay on your device.</p>
+<div class="pop-grid">
+<a class="pop-card" href="jpg-to-pdf.html" onclick="if(window.openTool){openTool('jpg2pdf');return false;}"><span class="pop-ico" aria-hidden="true">🖼️</span><span class="pop-name">Images to PDF</span><span class="pop-desc">Turn JPG and PNG photos or scans into one PDF. Pick A4, US Letter or fit-to-image pages, set the margin, and keep your image order.</span><span class="pop-go">Open Images to PDF →</span></a>
+<a class="pop-card" href="compress-pdf.html" onclick="if(window.openTool){openTool('compress');return false;}"><span class="pop-ico" aria-hidden="true">🗜️</span><span class="pop-name">Compress PDF</span><span class="pop-desc">Make a PDF smaller for email and upload forms. Compress several files at once, or use grayscale mode for the biggest reduction.</span><span class="pop-go">Open Compress PDF →</span></a>
+<a class="pop-card" href="merge-pdf.html" onclick="if(window.openTool){openTool('merge');return false;}"><span class="pop-ico" aria-hidden="true">🗂️</span><span class="pop-name">Merge PDF</span><span class="pop-desc">Join several PDFs into one file, reverse the order if needed, name the result, and optionally tidy it up in the same step.</span><span class="pop-go">Open Merge PDF →</span></a>
+<a class="pop-card" href="split-pdf.html" onclick="if(window.openTool){openTool('split');return false;}"><span class="pop-ico" aria-hidden="true">✂️</span><span class="pop-name">Split PDF</span><span class="pop-desc">Pull out a page range, split every N pages, save each page on its own, or remove the pages you don’t need.</span><span class="pop-go">Open Split PDF →</span></a>
+</div>
+<p class="pop-all"><a href="#tools">Browse all 40+ free tools →</a></p>
 </section>
 
 <!-- TRUST STRIP -->
