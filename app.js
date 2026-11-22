@@ -32,6 +32,16 @@ var done=0;
 function onBothLoaded(){
 if(++done<2)return;
 if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS_WKR;
+if(window.PDFLib&&!PDFLib.__guarded){
+/* pdf-lib cannot decrypt files. Without this check, locked PDFs are saved as corrupt, unreadable files. */
+var _origLoad=PDFLib.PDFDocument.load.bind(PDFLib.PDFDocument);
+PDFLib.PDFDocument.load=async function(data,opts){
+var d=await _origLoad(data,opts);
+if(d.isEncrypted&&!(opts&&opts.allowEncrypted))throw new Error('This PDF is locked. Run it through Unlock PDF first (a PDF that needs a password just to open cannot be processed).');
+return d;
+};
+PDFLib.__guarded=true;
+}
 libsOK=true;
 var cbs=_pdfLibsCallbacks;
 _pdfLibsCallbacks=true;
@@ -96,19 +106,6 @@ var TOOLS=[
 ];
 var currentUser=null; var currentTool=null; var toolFiles=[]; var repToolName='';
 try {currentUser=JSON.parse(localStorage.getItem('fpdf_user')||'null'); }catch(e){}
-function detectAB(){
-var bait=document.createElement('div');
-bait.className='adsbox pub_300x250 text-ad ad-slot';
-bait.style.cssText='position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;';
-bait.innerHTML='&nbsp;';
-document.body.appendChild(bait);
-setTimeout(function(){
-var blocked=!bait.offsetHeight||!bait.offsetParent||window.getComputedStyle(bait).display==='none';
-if(blocked)document.getElementById('abOv').classList.add('show');
-try {document.body.removeChild(bait); }catch(e){}
-}, 200);
-}
-function dismissAb(){var o=document.getElementById('abOv'); if(o)o.classList.remove('show'); }
 /* ad-blocker popup removed */
 function searchTools(q){
 q=q.toLowerCase().trim();
@@ -194,6 +191,7 @@ if(opts==='rotate')return `<div class="opts"><div class="opts-title">⚙️ Rota
 <label>Rotation Angle</label><select id="optRot"><option value="90">90° Clockwise ↻</option><option value="180">180° Flip</option><option value="270">270° Counter-clockwise ↺</option></select></div>`;
 if(opts==='pdfquality')return `<div class="opts"><div class="opts-title">⚙️ Compression Options</div>
 <label>Compression Preset</label><select id="optPQ"><option value="screen">Screen (72 DPI)— smallest file</option><option value="ebook" selected>eBook (150 DPI)— balanced</option><option value="printer">Printer (300 DPI)— high quality</option><option value="prepress">Prepress (300 DPI)— maximum quality</option></select>
+<div style="font-size:.78rem;color:var(--mut);margin:-.2rem 0 .6rem;line-height:1.5">Pages are redrawn at this quality. If that would not make the file smaller, your original text and layout are kept.</div>
 <label>Output File Name</label><input type="text" id="optCompressName" value="compressed"/>
 <label style="display:flex;align-items:center;gap:.5rem"><input type="checkbox" id="optCompressGray"/> Convert to grayscale (smaller file)</label></div>`;
 if(opts==='pdf2jpg')return `<div class="opts"><div class="opts-title">⚙️ PDF to Image Options</div>
@@ -611,41 +609,53 @@ showResults([{name:toolFiles[0].name.replace(/\.pdf$/i,'')+'_rotated.pdf', size:
 async function tCompressPDF(){
 var PDFDoc=PDFLib.PDFDocument;
 var preset=document.getElementById('optPQ')? document.getElementById('optPQ').value:'ebook';
-var doGray=document.getElementById('optCompressGray')&&document.getElementById('optCompressGray').checked;
-var baseName=(document.getElementById('optCompressName')?document.getElementById('optCompressName').value.trim():'compressed')||'compressed';
+var doGray=!!(document.getElementById('optCompressGray')&&document.getElementById('optCompressGray').checked);
+var nameEl=document.getElementById('optCompressName');
+var baseName=(nameEl?nameEl.value.trim().replace(/\.pdf$/i,''):'')||'compressed';
+var dpiMap={screen:72, ebook:150, printer:300, prepress:300};
+var qualMap={screen:0.5, ebook:0.75, printer:0.9, prepress:0.95};
+var dpi=dpiMap[preset]||150, qual=qualMap[preset]||0.75, MAXPX=12000000;
 var results=[];
 for(var fi=0; fi<toolFiles.length; fi++){
 setP(Math.round(5+90*(fi/toolFiles.length)), 'Processing '+(fi+1)+' of '+toolFiles.length+'…');
 var buf=await toolFiles[fi].arrayBuffer();
 var doc=await PDFDoc.load(buf, {ignoreEncryption:true});
-var bytes;
-if(doGray){
+var lossless=await doc.save({useObjectStreams:true});
+var bytes=lossless, redrawn=false;
+try{
 var pdf=await pdfjsLib.getDocument({data: new Uint8Array(buf)}).promise;
-var scaleMap={screen:1.0, ebook:1.5, printer:2.0, prepress:2.5};
-var qualMap={screen:0.5, ebook:0.75, printer:0.9, prepress:0.95};
-var scale=scaleMap[preset]||1.5; var qual=qualMap[preset]||0.75;
 var newDoc=await PDFDoc.create();
 for(var i=1;i<=pdf.numPages;i++){
-setP(Math.round(5+85*(fi/toolFiles.length)+85*(i/pdf.numPages)/toolFiles.length),'File '+(fi+1)+' page '+i+'…');
-var page=await pdf.getPage(i); var vp=page.getViewport({scale:scale});
-var canvas=document.createElement('canvas'); canvas.width=vp.width; canvas.height=vp.height;
+setP(Math.round(5+85*(fi/toolFiles.length)+85*(i/pdf.numPages)/toolFiles.length),'File '+(fi+1)+' page '+i+' of '+pdf.numPages+'…');
+var page=await pdf.getPage(i); var base=page.getViewport({scale:1});
+var scale=Math.min(dpi/72, Math.sqrt(MAXPX/(base.width*base.height)));
+var vp=page.getViewport({scale:scale});
+var canvas=document.createElement('canvas'); canvas.width=Math.ceil(vp.width); canvas.height=Math.ceil(vp.height);
 var ctx=canvas.getContext('2d'); await page.render({canvasContext:ctx,viewport:vp}).promise;
+if(doGray){
 var id=ctx.getImageData(0,0,canvas.width,canvas.height);
 for(var j=0;j<id.data.length;j+=4){var g=id.data[j]*0.299+id.data[j+1]*0.587+id.data[j+2]*0.114;id.data[j]=id.data[j+1]=id.data[j+2]=g;}
 ctx.putImageData(id,0,0);
+}
 var blob=await new Promise(function(res){canvas.toBlob(res,'image/jpeg',qual);}); var imgBuf=await blob.arrayBuffer();
-var img=await newDoc.embedJpg(imgBuf); var np=newDoc.addPage([img.width,img.height]); np.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
+canvas.width=canvas.height=0;
+var img=await newDoc.embedJpg(imgBuf);
+/* keep the page's real size so printing and layout don't change */
+var np=newDoc.addPage([base.width,base.height]); np.drawImage(img,{x:0,y:0,width:base.width,height:base.height});
 }
-bytes=await newDoc.save({useObjectStreams:true});
-}else {
-bytes=await doc.save({useObjectStreams: true});
-}
-var fname=toolFiles[fi].name.replace(/\.pdf$/i,'')+'_compressed.pdf';
+var raster=await newDoc.save({useObjectStreams:true});
+/* grayscale was asked for, so always deliver it; otherwise use the redrawn copy only if it is really smaller */
+if(doGray || raster.length<lossless.length){bytes=raster; redrawn=true;}
+}catch(e){ if(doGray) throw e; /* colour mode: fall back to the lossless copy */ }
+var oneName=(toolFiles.length===1 && baseName!=='compressed');
+var fname=oneName? baseName+'.pdf' : toolFiles[fi].name.replace(/\.pdf$/i,'')+'_compressed.pdf';
 var saved=toolFiles[fi].size>bytes.length ? Math.round((1-bytes.length/toolFiles[fi].size)*100):0;
-results.push({name:fname, size:fmtSize(bytes.length)+' (saved '+saved+'%)', url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))});
+var note= bytes.length>toolFiles[fi].size ? 'larger than the original because this PDF is mostly text — try again without grayscale' : (saved===0 ? 'already well compressed — try a lower preset or grayscale' : (redrawn? 'pages converted to images' : 'text stays selectable'));
+results.push({name:fname, size:fmtSize(bytes.length)+' (saved '+saved+'% — '+note+')', url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))});
 }
 setP(100,'Done!'); showResults(results);
 }
+
 async function tPDF2JPG(){
 setP(5, 'Loading PDF renderer…');
 var buf=await toolFiles[0].arrayBuffer();
@@ -781,14 +791,14 @@ var pdf=await pdfjsLib.getDocument({data: new Uint8Array(buf)}).promise;
 var newDoc=await PDFDoc.create();
 for(var i=1;i<=pdf.numPages;i++){
 setP(Math.round(5+85*(fi/toolFiles.length)+85*(i/pdf.numPages)/toolFiles.length),'Page '+i+'…');
-var page=await pdf.getPage(i); var vp=page.getViewport({scale:1.5});
+var page=await pdf.getPage(i); var vp=page.getViewport({scale:1.5}); var base=page.getViewport({scale:1});
 var canvas=document.createElement('canvas'); canvas.width=vp.width; canvas.height=vp.height;
 var ctx=canvas.getContext('2d'); await page.render({canvasContext:ctx,viewport:vp}).promise;
 var id=ctx.getImageData(0,0,canvas.width,canvas.height);
 for(var j=0;j<id.data.length;j+=4){var g=id.data[j]*0.299+id.data[j+1]*0.587+id.data[j+2]*0.114;id.data[j]=id.data[j+1]=id.data[j+2]=g;}
 ctx.putImageData(id,0,0);
 var blob=await new Promise(function(res){canvas.toBlob(res,'image/jpeg',0.9);}); var imgBuf=await blob.arrayBuffer();
-var img=await newDoc.embedJpg(imgBuf); var np=newDoc.addPage([img.width,img.height]); np.drawImage(img,{x:0,y:0,width:img.width,height:img.height});
+var img=await newDoc.embedJpg(imgBuf); var np=newDoc.addPage([base.width,base.height]); np.drawImage(img,{x:0,y:0,width:base.width,height:base.height});
 }
 var bytes=await newDoc.save();
 var fname=toolFiles[fi].name.replace(/\.pdf$/i,'')+'_grayscale.pdf';
@@ -851,12 +861,38 @@ showResults([{name:toolFiles[0].name.replace(/\.pdf$/i,'')+'_deleted.pdf', size:
 async function tUnlockPDF(){
 setP(10,'Loading PDF…'); var PDFDoc=PDFLib.PDFDocument;
 var buf=await toolFiles[0].arrayBuffer();
-setP(40,'Removing restrictions…');
-var doc=await PDFDoc.load(buf, {ignoreEncryption:true});
-setP(80,'Saving unlocked PDF…');
-var bytes=await doc.save();
-showResults([{name:toolFiles[0].name.replace(/\.pdf$/i,'')+'_unlocked.pdf', size:fmtSize(bytes.length), url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+var outName=toolFiles[0].name.replace(/\.pdf$/i,'')+'_unlocked.pdf';
+var doc=await PDFDoc.load(buf, {ignoreEncryption:true, allowEncrypted:true});
+if(!doc.isEncrypted){
+var plain=await doc.save();
+showResults([{name:outName, size:fmtSize(plain.length)+' — this file had no restrictions, so it is unchanged', url:URL.createObjectURL(new Blob([plain],{type:'application/pdf'}))}]);
+return;
 }
+setP(25,'Opening the locked PDF…');
+var pdf;
+try{ pdf=await pdfjsLib.getDocument({data:new Uint8Array(buf)}).promise; }
+catch(e){
+if(e&&e.name==='PasswordException')throw new Error('This PDF needs a password just to open it. PDFSnap can only remove print, copy and edit restrictions, not an open password.');
+throw e;
+}
+/* Browsers can read restricted PDFs but cannot copy their encrypted content, so each page is redrawn into a clean new PDF. */
+var newDoc=await PDFDoc.create();
+for(var i=1;i<=pdf.numPages;i++){
+setP(Math.round(25+70*(i/pdf.numPages)),'Rebuilding page '+i+' of '+pdf.numPages+'…');
+var page=await pdf.getPage(i); var base=page.getViewport({scale:1});
+var scale=Math.min(2, Math.sqrt(12000000/(base.width*base.height)));
+var vp=page.getViewport({scale:scale});
+var canvas=document.createElement('canvas'); canvas.width=Math.ceil(vp.width); canvas.height=Math.ceil(vp.height);
+var ctx=canvas.getContext('2d'); await page.render({canvasContext:ctx,viewport:vp}).promise;
+var blob=await new Promise(function(res){canvas.toBlob(res,'image/jpeg',0.92);}); var imgBuf=await blob.arrayBuffer();
+canvas.width=canvas.height=0;
+var img=await newDoc.embedJpg(imgBuf);
+var np=newDoc.addPage([base.width,base.height]); np.drawImage(img,{x:0,y:0,width:base.width,height:base.height});
+}
+var bytes=await newDoc.save({useObjectStreams:true});
+showResults([{name:outName, size:fmtSize(bytes.length)+' — restrictions removed. Pages were rebuilt as images, so text is not selectable (use PDF OCR if you need it)', url:URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}))}]);
+}
+
 async function tCompress(){
 var qual=parseInt(document.getElementById('optQ').value)/100||0.85;
 var fmt=document.getElementById('optOutFmt')? document.getElementById('optOutFmt').value:'jpeg';
@@ -1516,7 +1552,7 @@ if(allowPrint)perm |= 4;
 if(allowCopy)perm |= 16;
 var pBytes=[perm&0xff,(perm>>8)&0xff,(perm>>16)&0xff,(perm>>24)&0xff];
 var eKey=_md5(userPad.concat(O).concat(pBytes).concat(fileId)).slice(0,5);
-var U=_rc4(eKey, PAD.slice()).concat(new Array(16).fill(0));
+var U=_rc4(eKey, PAD.slice()); /* the spec requires exactly 32 bytes for this encryption revision */
 function objKey(num, gen){
 return _md5(eKey.concat([num&0xff,(num>>8)&0xff,(num>>16)&0xff, gen&0xff,(gen>>8)&0xff])).slice(0,10);
 }

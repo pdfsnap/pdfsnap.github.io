@@ -49,21 +49,6 @@
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden}
 
-/* ── ADBLOCK ── */
-.ab-ov{display:none;position:fixed;inset:0;z-index:9999;background:rgba(26,18,24,.92);align-items:center;justify-content:center;padding:1rem}
-.ab-ov.show{display:flex}
-.ab-box{background:var(--sur);border:2px solid var(--acc);border-radius:20px;padding:2rem;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.ab-icon{font-size:2.8rem;margin-bottom:.7rem}
-.ab-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:.5rem;color:var(--txt)}
-.ab-title span{color:var(--acc)}
-.ab-desc{color:var(--mut);font-size:.88rem;line-height:1.6;margin-bottom:1rem}
-.ab-steps{text-align:left;background:var(--bg);border-radius:10px;padding:.9rem;margin-bottom:1rem}
-.ab-step{display:flex;gap:.6rem;margin-bottom:.6rem;font-size:.84rem;align-items:flex-start;color:var(--txt)}
-.ab-step:last-child{margin-bottom:0}
-.ab-n{background:var(--acc);color:#fff;min-width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;margin-top:1px}
-.btn-ab{display:block;width:100%;background:var(--acc);color:#fff;border:none;border-radius:12px;padding:.9rem;font-family:'Bricolage Grotesque',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s}
-.btn-ab:hover{background:var(--acc2);transform:translateY(-1px)}
-
 /* ── NAV ── */
 nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.85rem 2rem;background:rgba(255,248,244,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);box-shadow:0 1px 0 var(--bdr)}
 .ham-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:6px;border-radius:8px;transition:background .2s;flex-shrink:0}
@@ -496,7 +481,6 @@ section.chat .tf,section.chat .rc{border-color:#C9E7FF}
 </head>
 <body>
 <div class="toast-wrap" id="toastWrap"></div>
-<div id="abOv" style="display:none"></div>
 <!-- SIDE OVERLAY -->
 <div class="side-overlay" id="sideOverlay" onclick="closeSideMenu()"></div>
 <!-- SIDE DRAWER -->
